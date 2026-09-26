@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Java Lab – Lectures 1 &amp; 2</title>
+<style>
+:root{
+  --bg:#EEF2F9; --panel:#FFFFFF; --ink:#0F1F3D; --muted:#586A8E; --line:#D5DEEE;
+  --blue:#1E4FD6; --blue-d:#1638A3; --blue-l:#E4ECFF;
+  --sun:#F5A300; --sun-l:#FFF1D0;
+  --ok:#12805A; --ok-l:#DDF5EA; --bad:#C92A3A; --bad-l:#FDE4E7;
+  --con:#0F1B36; --con-ink:#E6EDFF; --con-dim:#8FA3CC;
+  --code-bg:#F6F8FD;
+  --f-body:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --f-head:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  --f-mono:"Cascadia Mono",Consolas,"SFMono-Regular",Menlo,"Courier New",monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1626;--panel:#161F35;--ink:#EAF0FF;--muted:#93A2C6;--line:#28345A;--code-bg:#101A30;}}
+:root[data-theme="dark"]{--bg:#0F1626;--panel:#161F35;--ink:#EAF0FF;--muted:#93A2C6;--line:#28345A;--code-bg:#101A30;}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.app{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100vh}
+
+/* ---------- sidebar ---------- */
+.side{background:var(--panel);border-right:1px solid var(--line);padding:20px 16px;display:flex;flex-direction:column;gap:18px;position:sticky;top:0;height:100vh;overflow:auto}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--f-head);font-weight:700;font-size:22px}
+.brand .logo{width:36px;height:36px;border-radius:9px;background:var(--blue);color:#fff;display:grid;place-items:center;font-family:var(--f-mono);font-size:17px;font-weight:700}
+.me{background:var(--code-bg);border:1px solid var(--line);border-radius:12px;padding:12px}
+.me .row{display:flex;justify-content:space-between;align-items:baseline;font-size:14px}
+.me .lv{font-weight:700;font-family:var(--f-head)}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin:8px 0 6px}
+.bar>i{display:block;height:100%;background:var(--sun);border-radius:99px;transition:width .35s}
+.me small{color:var(--muted)}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:3px;gap:3px}
+.seg button{border:0;background:transparent;border-radius:8px;padding:7px 4px;font-size:14px;font-weight:600;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--blue);color:#fff}
+.seglabel{font-size:13px;color:var(--muted);margin:0 0 6px}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav button{display:flex;align-items:center;gap:12px;border:0;background:transparent;text-align:left;padding:10px 12px;border-radius:10px;font-weight:600;color:var(--ink)}
+.nav button:hover{background:var(--code-bg)}
+.nav button[aria-current="page"]{background:var(--blue-l);color:var(--blue-d)}
+.nav .ico{display:grid;place-items:center;width:22px}
+.nav .sub{display:block;font-weight:400;font-size:13px;color:var(--muted)}
+
+/* ---------- main ---------- */
+main{padding:28px clamp(16px,4vw,48px) 60px;max-width:1080px;width:100%}
+h1,h2,h3{font-family:var(--f-head);line-height:1.2;margin:0}
+h1{font-size:clamp(26px,4vw,38px);letter-spacing:-.01em}
+h2{font-size:22px}
+.lead{color:var(--muted);font-size:17px;max-width:62ch;margin:8px 0 0}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:clamp(16px,3vw,26px);margin-top:20px}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.chip{display:inline-block;font-size:13px;font-weight:700;padding:2px 10px;border-radius:99px;background:var(--blue-l);color:var(--blue-d)}
+.chip.l2{background:var(--sun-l);color:#8A5A00}
+.progress{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin:14px 0 4px}
+.progress>i{display:block;height:100%;background:var(--blue);transition:width .3s}
+.qtext{font-size:clamp(18px,2.6vw,24px);font-family:var(--f-head);margin:14px 0 18px}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:14px;align-items:center;text-align:left;width:100%;background:#fff;border:2px solid var(--line);border-radius:12px;padding:12px 14px;font-size:17px}
+.opt:hover:not([disabled]){border-color:var(--blue)}
+.opt .k{flex:none;width:30px;height:30px;border-radius:8px;background:var(--code-bg);border:1px solid var(--line);display:grid;place-items:center;font-weight:700;font-size:14px}
+.opt.right{background:var(--ok-l);border-color:var(--ok)}
+.opt.right .k{background:var(--ok);color:#fff;border-color:var(--ok)}
+.opt.wrong{background:var(--bad-l);border-color:var(--bad)}
+.opt.wrong .k{background:var(--bad);color:#fff;border-color:var(--bad)}
+.opt[disabled]{cursor:default}
+.opt code,.qtext code{font-family:var(--f-mono);font-size:.92em}
+.fb{margin-top:16px;padding:12px 14px;border-radius:12px;font-size:16px}
+.fb.ok{background:var(--ok-l);border-left:5px solid var(--ok)}
+.fb.no{background:var(--bad-l);border-left:5px solid var(--bad)}
+.fb.info{background:var(--sun-l);border-left:5px solid var(--sun)}
+.fb b:first-child{display:block;margin-bottom:2px}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center}
+.btn{border:0;background:var(--blue);color:#fff;font-weight:700;padding:11px 20px;border-radius:10px;font-size:16px}
+.btn:hover{background:var(--blue-d)}
+.btn.sec{background:#fff;color:var(--blue-d);border:2px solid var(--blue)}
+.btn.sec:hover{background:var(--blue-l)}
+.btn.ghost{background:transparent;color:var(--muted);border:2px solid var(--line)}
+.btn.ghost:hover{border-color:var(--muted);color:var(--ink)}
+.btn.go{background:var(--ok)}
+.btn.go:hover{background:#0c6547}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.switch{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.switch input{width:18px;height:18px}
+
+/* code */
+.code{font-family:var(--f-mono);font-size:clamp(13px,1.9vw,15.5px);line-height:1.6;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:0;overflow:auto;white-space:pre;tab-size:2}
+.cm{color:#6B7FA6;font-style:italic}
+.kw{color:var(--blue);font-weight:700}
+.st{color:#B4470B}
+.num{color:#7A3FB5}
+.codeln{display:grid;grid-template-columns:34px 1fr;align-items:stretch}
+.codeln .n{color:var(--muted);text-align:right;padding-right:10px;user-select:none;font-size:.85em}
+
+/* console */
+.console{background:var(--con);color:var(--con-ink);border-radius:12px;font-family:var(--f-mono);font-size:15px;line-height:1.6;overflow:hidden}
+.console .ctitle{font-family:var(--f-body);font-size:13px;color:var(--con-dim);padding:9px 14px;border-bottom:1px solid #22345B;display:flex;justify-content:space-between}
+.console .body{padding:12px 14px;min-height:96px;white-space:pre-wrap;word-break:break-word}
+.console .err{color:#FFB4BC}
+.console .errhead{color:#FF8C99;font-weight:700}
+.console .hint{color:#FFD27A;font-family:var(--f-body);margin-top:8px;white-space:normal}
+.console .dim{color:var(--con-dim)}
+.caret{display:inline-block;width:8px;height:1.1em;background:var(--con-ink);vertical-align:text-bottom;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.dlgs{display:flex;gap:12px;flex-wrap:wrap;padding:0 14px 14px}
+.dlg{background:#D4D0C8;color:#000;font-family:Tahoma,Arial,sans-serif;font-size:13px;min-width:210px;border:2px solid #fff;border-right-color:#404040;border-bottom-color:#404040;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+.dlg .t{background:linear-gradient(90deg,#0A246A,#A6CAF0);color:#fff;padding:3px 6px;font-weight:700;display:flex;justify-content:space-between}
+.dlg .m{display:flex;gap:14px;align-items:center;padding:14px 16px}
+.dlg .ic{width:32px;height:32px;border-radius:50%;background:#8F8FD0;color:#fff;font-weight:700;display:grid;place-items:center;font-size:18px;font-family:Georgia,serif}
+.dlg .ic.ERROR_MESSAGE{background:#C33}.dlg .ic.WARNING_MESSAGE{background:#E0A800}.dlg .ic.QUESTION_MESSAGE{background:#4A8}
+.dlg .ok{display:block;margin:0 auto 12px;padding:3px 26px;background:#D4D0C8;border:2px solid #fff;border-right-color:#404040;border-bottom-color:#404040;font:inherit}
+textarea.ta{width:100%;font-family:var(--f-mono);font-size:16px;line-height:1.55;border:2px solid var(--line);border-radius:10px;padding:10px 12px;resize:vertical;background:#fff;color:var(--ink)}
+textarea.ta:focus{border-color:var(--blue);outline:none}
+.lab{font-weight:700;margin:16px 0 6px;display:block}
+
+/* fix mode */
+.lines{display:grid;gap:4px}
+.lines button{display:grid;grid-template-columns:34px 1fr;text-align:left;border:2px solid transparent;background:var(--code-bg);border-radius:8px;padding:3px 8px 3px 0;font-family:var(--f-mono);font-size:clamp(13px,1.9vw,15.5px);white-space:pre;overflow:auto}
+.lines button .n{color:var(--muted);text-align:right;padding-right:10px;user-select:none;font-size:.85em}
+.lines button:hover:not([disabled]){border-color:var(--blue)}
+.lines button.nope{background:var(--bad-l);border-color:var(--bad);animation:shake .3s}
+.lines button.flag{background:var(--bad-l);border-color:var(--bad)}
+.lines button.fixed{background:var(--ok-l);border-color:var(--ok)}
+.lines button[disabled]{cursor:default}
+.lines .eof{font-style:italic;color:var(--muted)}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* build */
+.buildgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.buildgrid>*,.pg>*{min-width:0}
+.zone{border:2px dashed var(--line);border-radius:12px;padding:10px;min-height:150px;display:flex;flex-direction:column;gap:6px;background:#fff}
+.zone h3{font-size:15px;color:var(--muted);font-family:var(--f-body);font-weight:600;margin-bottom:2px}
+.piece{min-width:0;display:flex;align-items:center;gap:6px;background:var(--code-bg);border:1px solid var(--line);border-radius:8px;padding:0}
+.piece>button.txt{flex:1;min-width:0;text-align:left;border:0;background:transparent;font-family:var(--f-mono);font-size:14.5px;padding:8px 10px;white-space:pre;overflow:auto;border-radius:8px}
+.piece>button.txt:hover{background:var(--blue-l)}
+.piece .mv{display:flex;flex-direction:column}
+.piece .mv button{border:0;background:transparent;padding:0 8px;line-height:1.1;color:var(--muted);font-size:13px}
+.piece .mv button:hover{color:var(--blue)}
+.empty{color:var(--muted);font-size:14px;padding:6px}
+
+/* match */
+.pairs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 18px;margin-top:16px}
+.pairs .col{display:grid;gap:8px;align-content:start}
+.tile{border:2px solid var(--line);background:#fff;border-radius:10px;padding:10px 12px;text-align:left;font-size:15.5px;min-height:48px}
+.tile.mono{font-family:var(--f-mono);font-weight:700}
+.tile:hover:not([disabled]){border-color:var(--blue)}
+.tile.sel{border-color:var(--blue);background:var(--blue-l)}
+.tile.done{border-color:var(--ok);background:var(--ok-l);color:var(--ok);opacity:.75;cursor:default}
+.tile.miss{border-color:var(--bad);background:var(--bad-l);animation:shake .3s}
+
+/* playground */
+.pg{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px;align-items:start}
+.editor{display:grid;grid-template-columns:38px 1fr;border:2px solid var(--line);border-radius:10px;background:#fff;overflow:hidden;height:360px}
+.editor:focus-within{border-color:var(--blue)}
+.gut{background:var(--code-bg);border-right:1px solid var(--line);color:var(--muted);font-family:var(--f-mono);font-size:14px;line-height:22px;padding:10px 6px 10px 0;text-align:right;overflow:hidden;user-select:none;white-space:pre}
+.gut .bad{color:#fff;background:var(--bad);display:block;border-radius:3px 0 0 3px}
+.editor textarea{border:0;outline:0;resize:none;font-family:var(--f-mono);font-size:14px;line-height:22px;padding:10px 12px;white-space:pre;overflow:auto;color:var(--ink);background:#fff;tab-size:2;width:100%;height:100%}
+.tracev{font-family:var(--f-mono);font-size:14px;line-height:22px;overflow:auto;padding:10px 0;background:#fff}
+.tracev>div{white-space:pre;padding:0 12px}
+.tracev>div.cur{background:#FFF1B8}
+.goalbox{background:var(--sun-l);border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.goalbox select{font:inherit;padding:6px 8px;border-radius:8px;border:1px solid var(--line);max-width:100%}
+.vars{font-family:var(--f-mono);font-size:14px;margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+.vars span{background:#fff;border:1px solid var(--line);border-radius:8px;padding:2px 10px}
+.exrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center;font-size:14px;color:var(--muted)}
+.exrow button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:3px 12px;font-size:14px}
+.exrow button:hover{border-color:var(--blue);color:var(--blue-d)}
+
+/* hero + home */
+.hero{margin-top:20px}
+.hero .console .body{min-height:130px}
+.starts{display:grid;gap:0;margin-top:22px;border-top:1px solid var(--line)}
+.starts .r{display:flex;align-items:center;gap:16px;justify-content:space-between;padding:16px 4px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.starts .r b{font-family:var(--f-head);font-size:19px;display:block}
+.starts .r span{color:var(--muted)}
+details{margin-top:24px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+summary{font-weight:700;cursor:pointer}
+details ol{margin:10px 0 0;padding-left:20px;color:var(--ink)}
+details li{margin:6px 0}
+
+/* progress screen */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:14px}
+.stat{background:var(--code-bg);border:1px solid var(--line);border-radius:12px;padding:12px}
+.stat b{font-family:var(--f-head);font-size:26px;display:block}
+.stat span{color:var(--muted);font-size:14px}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:14px}
+.badge{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}
+.badge .medal{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--line);color:#fff;font-weight:700}
+.badge.on .medal{background:var(--sun)}
+.badge:not(.on){opacity:.6}
+.badge b{display:block;font-family:var(--f-head)}
+.badge small{color:var(--muted)}
+.namein{font:inherit;padding:9px 12px;border:2px solid var(--line);border-radius:10px;min-width:220px}
+.namein:focus{border-color:var(--blue);outline:none}
+
+/* toasts */
+#toasts{position:fixed;right:16px;bottom:16px;display:flex;flex-direction:column;gap:8px;z-index:50;pointer-events:none}
+.toast{background:var(--ink);color:#fff;padding:9px 14px;border-radius:10px;font-weight:600;box-shadow:0 6px 20px rgba(0,0,0,.25);animation:tin .25s}
+.toast.badge-t{background:var(--sun);color:#3A2600}
+@keyframes tin{from{transform:translateY(8px);opacity:0}}
+.result{text-align:center;padding:10px 0}
+.result .big{font-family:var(--f-head);font-size:64px;line-height:1;margin:10px 0}
+.stars{font-size:32px;letter-spacing:6px;color:var(--sun)}
+
+/* class mode */
+.classmode .qtext{font-size:clamp(24px,4vw,40px)}
+.classmode .opt{font-size:clamp(20px,3vw,30px);padding:16px 18px}
+
+
+/* direct questions + instructor */
+.blank{display:inline-block;min-width:3.2ch;text-align:center;background:var(--sun-l);border:2px dashed var(--sun);border-radius:6px;color:#8A5A00;font-weight:700;padding:0 6px}
+.inp{font-family:var(--f-mono);font-size:18px;padding:10px 12px;border:2px solid var(--line);border-radius:10px;width:min(100%,360px);background:#fff;color:var(--ink)}
+.inp:focus{border-color:var(--blue);outline:none}
+.tags{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chip.cat{background:#EDE7FB;color:#4B2C99}
+.kwline{margin:-6px 0 14px;color:var(--muted);font-size:15px}
+.kwchips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+code.kwc{margin-right:2px;font-family:var(--f-mono);background:var(--sun-l);color:#7A4E00;border-radius:6px;padding:1px 8px;font-weight:700;font-size:.92em}
+code.kwc.small{font-size:12.5px;padding:0 6px}
+.qrow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;margin-top:8px;cursor:pointer;align-items:start}
+.qrow.on{border-color:var(--blue);background:var(--blue-l)}
+.qrow.static{cursor:default;display:flex;gap:12px;flex-wrap:wrap}
+.qrow input[type=checkbox]{width:20px;height:20px;margin-top:2px}
+.qrow .qq{margin-top:6px;font-weight:600}
+.qrow .ans{margin-top:6px;color:var(--muted);font-size:14.5px}
+.qrow .ans code{font-family:var(--f-mono);color:var(--ink);white-space:pre-wrap;overflow-wrap:anywhere}
+.qrow>div{min-width:0}
+.qrow .qq,.qtext,.opt span,.fb,.tile{overflow-wrap:anywhere}
+.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.filters select{font:inherit;padding:9px 10px;border-radius:10px;border:2px solid var(--line);background:#fff}
+.stickybar{position:sticky;bottom:64px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 14px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:14px;box-shadow:0 8px 26px rgba(15,31,61,.16);z-index:5}
+
+@media (max-width:860px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{position:static;height:auto;flex-direction:column;padding:12px;gap:12px}
+  .side .me{display:none}
+  .nav{flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:4px}
+  .nav button{flex:none;flex-direction:column;gap:2px;padding:8px 12px;font-size:13px}
+  .nav .sub{display:none}
+  .buildgrid,.pg,.pairs{grid-template-columns:minmax(0,1fr)}
+  .pairs{gap:8px}
+  main{padding-top:18px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<noscript>This practice page needs JavaScript.</noscript>
+<div class="app">
+  <aside class="side" aria-label="Menu">
+    <div class="brand"><span class="logo">{ }</span><span>Java Lab</span></div>
+    <div class="me" id="me" aria-live="polite"></div>
+    <div>
+      <p class="seglabel">Practice material from</p>
+      <div class="seg" id="lecSeg" role="group" aria-label="Choose lecture"></div>
+    </div>
+    <nav class="nav" id="nav" aria-label="Activities"></nav>
+  </aside>
+  <main id="main" tabindex="-1"></main>
+</div>
+<div id="toasts" aria-live="polite"></div>
+
+<script id="pinned" type="application/json">{"title":"","ids":["m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11","m12","m15","m16","m17","m20","m21","m23","m24","m27","m35","k1","k2","k3","k4","k5","k6","k7","k8","k9","k11","k12","k17","k18","k19","k20","k22","k23","k24","k33","k35","k36","k37","k42","k43","k44","k45","k46","k47","k48","k49","k50","k51","k54","k55"],"shuffleQ":false,"shuffleO":true,"showKw":true,"lock":true}</script>
+<script>
+"use strict";
+/* =====================================================================
+   1. Tiny Java simulator (print / println / comments / classes / blocks /
+      variables / JOptionPane.showMessageDialog) with friendly errors
+   ===================================================================== */
+const KEYWORDS=new Set(['abstract','boolean','break','byte','case','catch','char','class','continue','default','do','double','else','enum','extends','final','finally','float','for','if','implements','import','instanceof','int','interface','long','new','package','private','protected','public','return','short','static','super','switch','this','throw','throws','try','void','volatile','while','null','true','false']);
+class JErr{constructor(line,msg,hint){this.line=line;this.msg=msg;this.hint=hint||'';}}
+
+function tokenize(src){
+  const toks=[];let i=0,line=1;const n=src.length;
+  while(i<n){
+    const c=src[i];
+    if(c==='\n'){line++;i++;continue;}
+    if(/\s/.test(c)){i++;continue;}
+    if(c==='/'&&src[i+1]==='/'){while(i<n&&src[i]!=='\n')i++;continue;}
+    if(c==='/'&&src[i+1]==='*'){
+      const start=line;i+=2;let closed=false;
+      while(i<n){if(src[i]==='*'&&src[i+1]==='/'){i+=2;closed=true;break;}if(src[i]==='\n')line++;i++;}
+      if(!closed)throw new JErr(start,'unclosed comment','A paragraph comment starts with /* and must end with */. Add */ where the comment should stop.');
+      continue;
+    }
+    if(c==='"'){
+      let s='',j=i+1,ok=false;
+      while(j<n){
+        const d=src[j];
+        if(d==='"'){ok=true;break;}
+        if(d==='\n')break;
+        if(d==='\\'){
+          const e=src[j+1],map={n:'\n',t:'\t','"':'"','\\':'\\'};
+          if(e in map){s+=map[e];j+=2;continue;}
+          throw new JErr(line,'illegal escape character','Use \\n for a new line, \\t for a tab, \\" for a quote mark.');
+        }
+        s+=d;j++;
+      }
+      if(!ok)throw new JErr(line,'unclosed string literal','Text in quotes must be closed on the same line. Add the missing " at the end of the text.');
+      toks.push({t:'str',v:s,line});i=j+1;continue;
+    }
+    if(c==="'")throw new JErr(line,'unclosed character literal','Use double quotes "..." for text. Single quotes are only for one character.');
+    if(/[0-9]/.test(c)){
+      let j=i;while(/[0-9]/.test(src[j]||''))j++;
+      let dec=false;
+      if(src[j]==='.'&&/[0-9]/.test(src[j+1]||'')){dec=true;j++;while(/[0-9]/.test(src[j]||''))j++;}
+      toks.push({t:'num',v:src.slice(i,j),dec,line});i=j;continue;
+    }
+    if(/[A-Za-z_$]/.test(c)){
+      let j=i;while(/[A-Za-z0-9_$]/.test(src[j]||''))j++;
+      toks.push({t:'id',v:src.slice(i,j),line});i=j;continue;
+    }
+    if('{}()[];.,+-*/%='.includes(c)){toks.push({t:'sym',v:c,line});i++;continue;}
+    throw new JErr(line,"illegal character: '"+c+"'",'This character is not allowed here. Check for a typing mistake.');
+  }
+  toks.push({t:'eof',v:'<end of file>',line});
+  return toks;
+}
+
+function fmtD(x){
+  if(Number.isInteger(x)&&Math.abs(x)<1e7)return x.toFixed(1);
+  return String(x);
+}
+function toS(v,ty){return ty==='double'?fmtD(v):String(v);}
+
+function compile(src){
+  const toks=tokenize(src);
+  let p=0;const imports=new Set(),decl={},inited=new Set();
+  const cur=()=>toks[Math.min(p,toks.length-1)];
+  const peek=(k=0)=>toks[Math.min(p+k,toks.length-1)];
+  const next=()=>{const t=cur();if(t.t!=='eof')p++;return t;};
+  const lastLine=()=>p>0?toks[Math.min(p-1,toks.length-1)].line:1;
+  const isSym=(v,k=0)=>{const t=peek(k);return t.t==='sym'&&t.v===v;};
+  const isId=(v,k=0)=>{const t=peek(k);return t.t==='id'&&t.v===v;};
+  const eofErr=()=>new JErr(cur().line,'reached end of file while parsing','A closing brace } is missing. Every { needs its own }.');
+  const caseOf=(tok,word)=>tok.t==='id'&&tok.v!==word&&tok.v.toLowerCase()===word;
+  function expectSym(v,hint){
+    if(isSym(v))return next();
+    if(v===';')throw new JErr(lastLine(),"';' expected",hint||'Every statement ends with a semicolon ( ; ).');
+    if(cur().t==='eof')throw eofErr();
+    throw new JErr(cur().line,"'"+v+"' expected",hint||'');
+  }
+  function mkBin(op,l,r){
+    if(l.ty==='String'||r.ty==='String'){
+      if(op.v!=='+')throw new JErr(op.line,"bad operand types for binary operator '"+op.v+"'",'Only + can be used with text (it joins the pieces together).');
+      return {k:'bin',op:'+',l,r,ty:'String',line:op.line};
+    }
+    return {k:'bin',op:op.v,l,r,ty:(l.ty==='double'||r.ty==='double')?'double':'int',line:op.line};
+  }
+  function parseExpr(){return parseAdd();}
+  function parseAdd(){let l=parseMul();while(isSym('+')||isSym('-')){const op=next();const r=parseMul();l=mkBin(op,l,r);}return l;}
+  function parseMul(){let l=parseUnary();while(isSym('*')||isSym('/')||isSym('%')){const op=next();const r=parseUnary();l=mkBin(op,l,r);}return l;}
+  function parseUnary(){
+    if(isSym('-')){const op=next();const e=parseUnary();if(e.ty==='String')throw new JErr(op.line,'bad operand type String for unary operator -','');return {k:'neg',e,ty:e.ty};}
+    return parsePrimary();
+  }
+  function parsePrimary(){
+    const t=next();
+    if(t.t==='str')return {k:'lit',v:t.v,ty:'String'};
+    if(t.t==='num')return t.dec?{k:'lit',v:parseFloat(t.v),ty:'double'}:{k:'lit',v:parseInt(t.v,10),ty:'int'};
+    if(t.t==='id'){
+      if(Object.prototype.hasOwnProperty.call(decl,t.v)){
+        if(!inited.has(t.v))throw new JErr(t.line,'variable '+t.v+' might not have been initialized','Give the variable a value first, for example: '+t.v+' = 5;');
+        return {k:'var',name:t.v,ty:decl[t.v],line:t.line};
+      }
+      throw new JErr(t.line,'cannot find symbol: variable '+t.v,'Java does not know the word '+t.v+'. If you meant text, put it in double quotes: "'+t.v+'". If it is a variable, declare it first.');
+    }
+    if(t.t==='sym'&&t.v==='('){const e=parseExpr();expectSym(')','Close the parentheses with ).');return e;}
+    if(t.t==='eof')throw new JErr(lastLine(),'illegal start of expression','The code stops too early. Something is missing here.');
+    throw new JErr(t.line,'illegal start of expression','Unexpected "'+t.v+'". Check your typing.');
+  }
+  function checkAssign(ty,e,line){
+    if(ty===e.ty)return;
+    if(ty==='double'&&e.ty==='int')return;
+    if(ty==='int'&&e.ty==='double')throw new JErr(line,'incompatible types: possible lossy conversion from double to int','An int holds whole numbers only. Use double for numbers with decimals.');
+    throw new JErr(line,'incompatible types: '+e.ty+' cannot be converted to '+ty,ty==='String'?'Text needs double quotes: "..."':'An '+ty+' variable holds a number, not text.');
+  }
+  function parsePrint(){
+    const first=next();
+    expectSym('.','Use System.out.println(...)');
+    const o=cur();
+    if(!(o.t==='id'&&o.v==='out')){
+      const low=(o.v||'').toLowerCase();
+      throw new JErr(o.line,'cannot find symbol: '+o.v,(low==='print'||low==='println')?'The word out is missing. Write System.out.'+low+'(...).':(caseOf(o,'out')?'Java is case-sensitive: write out in lowercase.':'Print with System.out.println(...) or System.out.print(...).'));
+    }
+    next();expectSym('.','Use System.out.println(...)');
+    const m=next();
+    const low=(m.v||'').toLowerCase();
+    if(!(m.t==='id'&&(m.v==='print'||m.v==='println'))){
+      if(low==='print'||low==='println')throw new JErr(m.line,'cannot find symbol: method '+m.v,'Java is case-sensitive: write '+low+' in lowercase.');
+      throw new JErr(m.line,'cannot find symbol: method '+m.v,'Use print or println to show text on the console.');
+    }
+    expectSym('(','Put the text to print inside parentheses: '+m.v+'("...")');
+    let arg=null;
+    if(!isSym(')'))arg=parseExpr();
+    expectSym(')','Close the parentheses with ). Every ( needs a matching ).');
+    expectSym(';','Every statement ends with a semicolon ( ; ).');
+    if(m.v==='print'&&!arg)throw new JErr(m.line,'no suitable method found for print()','print needs something to show. Use println() to print an empty line.');
+    return {k:'print',nl:m.v==='println',arg,line:first.line};
+  }
+  function parseDialog(){
+    const j=next();
+    if(!(imports.has('javax.swing.JOptionPane')||imports.has('javax.swing.*')))
+      throw new JErr(j.line,'cannot find symbol: class JOptionPane','Add this line at the very top of the file:  import javax.swing.JOptionPane;');
+    expectSym('.','Use JOptionPane.showMessageDialog(...)');
+    const m=next();
+    if(!(m.t==='id'&&m.v==='showMessageDialog'))throw new JErr(m.line,'cannot find symbol: method '+m.v,(m.v||'').toLowerCase()==='showmessagedialog'?'Java is case-sensitive: write showMessageDialog exactly like that.':'Use showMessageDialog to show a message box.');
+    expectSym('(','Open the parentheses with (');
+    const a1=next();
+    if(!(a1.t==='id'&&a1.v==='null'))throw new JErr(a1.line,'first argument should be null','Start with null:  showMessageDialog(null, "message")');
+    expectSym(',','Separate the arguments with commas.');
+    const msg=parseExpr();let title=null,type=null;
+    if(isSym(',')){
+      next();title=parseExpr();
+      if(isSym(',')){
+        next();const c=next();
+        if(!(c.t==='id'&&c.v==='JOptionPane'))throw new JErr(c.line,'message type expected','Use a type such as JOptionPane.INFORMATION_MESSAGE');
+        expectSym('.');const k=next();
+        if(!['INFORMATION_MESSAGE','ERROR_MESSAGE','WARNING_MESSAGE','QUESTION_MESSAGE','PLAIN_MESSAGE'].includes(k.v))throw new JErr(k.line,'cannot find symbol: '+k.v,'Try JOptionPane.INFORMATION_MESSAGE');
+        type=k.v;
+      }
+    }
+    expectSym(')','Close the parentheses with ).');
+    expectSym(';','Every statement ends with a semicolon ( ; ).');
+    return {k:'dialog',msg,title,type,line:j.line};
+  }
+  function parseDecl(){
+    const ty=next();const nm=next();
+    if(nm.t!=='id'||KEYWORDS.has(nm.v)){
+      throw new JErr(nm.line,'<identifier> expected',nm.t==='id'?nm.v+' is a reserved word: it already has a special meaning, so it cannot be used as a name. Try a name like count.':'A variable needs a name, for example: int count = 5;');
+    }
+    if(Object.prototype.hasOwnProperty.call(decl,nm.v))throw new JErr(nm.line,'variable '+nm.v+' is already defined','Use a new name, or remove the type to give the old variable a new value.');
+    let init=null;
+    if(isSym('=')){next();init=parseExpr();checkAssign(ty.v,init,nm.line);}
+    expectSym(';','Every statement ends with a semicolon ( ; ).');
+    decl[nm.v]=ty.v;if(init)inited.add(nm.v);
+    return {k:'decl',name:nm.v,ty:ty.v,init,line:ty.line};
+  }
+  function parseStatement(){
+    const t=peek();
+    if(isSym('{')){next();return {k:'block',body:parseBlock(),line:t.line};}
+    if(isSym(';')){next();return null;}
+    if(t.t==='id'){
+      if(t.v==='System')return parsePrint();
+      if(t.v.toLowerCase()==='system')throw new JErr(t.line,'cannot find symbol: '+t.v,'Java is case-sensitive: System starts with a capital S.');
+      if(t.v==='JOptionPane')return parseDialog();
+      if(t.v==='int'||t.v==='String'||t.v==='double')return parseDecl();
+      if(['int','string','double'].includes(t.v.toLowerCase()))throw new JErr(t.line,'cannot find symbol: class '+t.v,'Java is case-sensitive: write '+(t.v.toLowerCase()==='string'?'String':t.v.toLowerCase())+' exactly like that.');
+      if(KEYWORDS.has(t.v))throw new JErr(t.line,'illegal start of expression','The word '+t.v+' cannot be used inside the main method like this. Is a closing } missing above?');
+      if(isSym('=',1)){
+        next();next();const e=parseExpr();
+        if(!Object.prototype.hasOwnProperty.call(decl,t.v))throw new JErr(t.line,'cannot find symbol: variable '+t.v,'Declare the variable first, for example: int '+t.v+' = 5;');
+        checkAssign(decl[t.v],e,t.line);expectSym(';','Every statement ends with a semicolon ( ; ).');inited.add(t.v);
+        return {k:'assign',name:t.v,e,line:t.line};
+      }
+      const low=t.v.toLowerCase();
+      if((low==='println'||low==='print')&&isSym('(',1))throw new JErr(t.line,'cannot find symbol: method '+t.v,'Did you mean System.out.'+low+'(...)?');
+      if(isSym('.',1)||isSym('(',1))throw new JErr(t.line,'cannot find symbol: '+t.v,'This simulator understands System.out.print/println, JOptionPane.showMessageDialog and simple variables.');
+    }
+    throw new JErr(t.line,'not a statement','A statement is an action such as System.out.println("Hi"); Check this line for a typing mistake.');
+  }
+  function parseBlock(){
+    const out=[];
+    while(!isSym('}')){
+      if(cur().t==='eof')throw eofErr();
+      const s=parseStatement();if(s)out.push(s);
+    }
+    next();return out;
+  }
+  /* ---- program ---- */
+  while(isId('import')){
+    const impLine=next().line;let name='';
+    while(!isSym(';')){if(cur().t==='eof'||cur().line!==impLine)throw new JErr(impLine,"';' expected",'End the import line with a semicolon ( ; ).');name+=next().v;}
+    next();imports.add(name);
+  }
+  let t=cur();
+  if(caseOf(t,'public'))throw new JErr(t.line,'class, interface, enum, or record expected','Java is case-sensitive: write public in lowercase, not '+t.v+'.');
+  if(isId('public')||isId('final')||isId('abstract'))next();
+  t=cur();
+  if(caseOf(t,'class'))throw new JErr(t.line,'class, interface, enum, or record expected','Java is case-sensitive: write class in lowercase, not '+t.v+'.');
+  if(!isId('class'))throw new JErr(t.line,'class, interface, enum, or record expected','Every program lives inside a class:  public class Name { ... }');
+  next();
+  const nameTok=next();
+  if(nameTok.t!=='id'||KEYWORDS.has(nameTok.v))throw new JErr(nameTok.line,'<identifier> expected','Give the class a name, for example: public class Welcome {');
+  expectSym('{','A class body starts with { right after the class name.');
+  let mainBody=null;
+  while(!isSym('}')){
+    if(cur().t==='eof')throw eofErr();
+    const mm=[];
+    while(cur().t==='id'&&['public','private','protected','static','final','abstract'].includes(cur().v))mm.push(next().v);
+    const tt=cur();
+    for(const w of ['public','static','void']){if(caseOf(tt,w))throw new JErr(tt.line,'<identifier> expected','Java is case-sensitive: write '+w+' in lowercase.');}
+    if(!isId('void'))throw new JErr(tt.line,'<identifier> expected','Inside the class, put the main method:  public static void main(String[] args) { ... }  Statements cannot sit directly inside the class.');
+    next();const mn=next();
+    if(!(mn.t==='id'&&mn.v==='main'))throw new JErr(mn.line,'unsupported method: '+mn.v,(mn.v||'').toLowerCase()==='main'?'Java is case-sensitive: write main in lowercase.':'In this simulator, only the main method is supported.');
+    expectSym('(','Write it as:  public static void main(String[] args)');
+    let ps='';while(!isSym(')')){if(cur().t==='eof')throw eofErr();ps+=next().v;}
+    next();
+    if(ps!=='String[]args')throw new JErr(mn.line,'main method has the wrong parameters','The main method must look like:  public static void main(String[] args)');
+    if(!(mm.includes('public')&&mm.includes('static')))throw new JErr(mn.line,'main method must be public static','Write it as:  public static void main(String[] args)');
+    expectSym('{','The body of main starts with {');
+    mainBody=parseBlock();
+  }
+  next();
+  if(cur().t!=='eof')throw new JErr(cur().line,'class, interface, enum, or record expected','There is extra code after the class ends. Everything must be inside the class braces { }.');
+  if(!mainBody)throw new JErr(nameTok.line,'no main method found','Add  public static void main(String[] args) { ... }  so Java knows where to start.');
+  return {body:mainBody};
+}
+
+function evalExpr(e,env){
+  switch(e.k){
+    case 'lit':return e.v;
+    case 'var':return env[e.name];
+    case 'neg':return -evalExpr(e.e,env);
+    case 'bin':{
+      const a=evalExpr(e.l,env),b=evalExpr(e.r,env);
+      if(e.op==='+')return e.ty==='String'?toS(a,e.l.ty)+toS(b,e.r.ty):a+b;
+      if(e.op==='-')return a-b;
+      if(e.op==='*')return a*b;
+      if(e.op==='/'){if(e.ty==='int'){if(b===0)throw {rt:true,line:e.line,msg:'Exception in thread "main" java.lang.ArithmeticException: / by zero'};return Math.trunc(a/b);}return a/b;}
+      if(e.op==='%'){if(e.ty==='int'&&b===0)throw {rt:true,line:e.line,msg:'Exception in thread "main" java.lang.ArithmeticException: / by zero'};return a%b;}
+    }
+  }
+}
+function execute(prog){
+  const env={},events=[],dialogs=[];let out='',error=null;
+  const snap=(line,kind)=>events.push({line,kind,out,env:{...env},dialogs:dialogs.slice()});
+  function exec(list){
+    for(const s of list){
+      if(s.k==='block')exec(s.body);
+      else if(s.k==='print'){out+=(s.arg?toS(evalExpr(s.arg,env),s.arg.ty):'')+(s.nl?'\n':'');snap(s.line,'print');}
+      else if(s.k==='decl'){if(s.init)env[s.name]=evalExpr(s.init,env);snap(s.line,'decl');}
+      else if(s.k==='assign'){env[s.name]=evalExpr(s.e,env);snap(s.line,'assign');}
+      else if(s.k==='dialog'){dialogs.push({msg:toS(evalExpr(s.msg,env),s.msg.ty),title:s.title?toS(evalExpr(s.title,env),s.title.ty):'Message',type:s.type||'INFORMATION_MESSAGE'});snap(s.line,'dialog');}
+    }
+  }
+  try{exec(prog.body);}catch(e){if(e&&e.rt)error=e;else throw e;}
+  return {out,events,dialogs,error};
+}
+function javaRun(src){
+  try{const prog=compile(src);return {ok:true,...execute(prog)};}
+  catch(e){if(e instanceof JErr)return {ok:false,err:e};throw e;}
+}
+const wrapSnippet=(lines)=>'public class Main {\n  public static void main(String[] args) {\n'+lines.map(l=>'    '+l).join('\n')+'\n  }\n}\n';
+
+/* =====================================================================
+   2. Content
+   ===================================================================== */
+const MCQ=[
+ {lec:1,q:'A computer is made up of two main parts:',o:['CPU & RAM','Hardware & Software','Input & Output','Disk & Memory'],a:1,why:'Hardware is the physical, touchable part. Software is the programs that tell the hardware what to do.'},
+ {lec:1,q:'Computers store all data internally using:',o:['Decimal digits','Hexadecimal','Bits (0s and 1s)','Letters'],a:2,why:'A computer has two stable states, so it stores everything as bits: 0 and 1.'},
+ {lec:1,q:'Which tool translates assembly language (like ADD) into machine code?',o:['Assembler','Compiler','Kernel','JVM'],a:0,why:'An assembler converts assembly language into machine code.'},
+ {lec:1,q:'Which tool translates high-level Java source code into bytecode?',o:['Assembler','Compiler','Kernel','JVM'],a:1,why:'The Java compiler turns your .java file into bytecode.'},
+ {lec:1,q:'Which one executes (runs) Java bytecode?',o:['Assembler','Compiler','Kernel','JVM'],a:3,why:'The Java Virtual Machine (JVM) interprets bytecode, so it runs on any computer that has a JVM.'},
+ {lec:1,q:'Which type of memory loses its data when the power is off?',o:['Hard Disk','CD','Tape Drive','Memory (RAM)'],a:3,why:'RAM is volatile: fast, but temporary. Disks, CDs and tapes keep data permanently.'},
+ {lec:1,q:'Which method prints text and then moves the cursor to a new line?',o:['print()','println()','main()','class()'],a:1,why:'println = print + line. The next output starts on a fresh line.'},
+ {lec:1,q:'Memory (RAM) is:',o:['Permanent','Volatile','A storage device','A CD drive'],a:1,why:'Volatile means the data disappears when power is off.'},
+ {lec:1,q:'Machine language instructions are written as:',o:['Mnemonics','Binary code','English','Bytecode'],a:1,why:'Machine language is binary (0s and 1s), which makes it tedious to write and hard to read.'},
+ {lec:1,q:'Computer programs are also known as:',o:['Hardware','Software','Bytecode','The kernel'],a:1,why:'Programs = software = instructions for the computer.'},
+ {lec:1,q:'Which of these is an assembly language instruction?',o:['ADD R1, R2, R3','1101101010011010','area = 5 * 5 * 3.1415;','System.out.println("Hi");'],a:0,why:'Assembly uses readable commands like ADD and MOV. The binary line is machine language and the other two are high-level code.'},
+ {lec:1,q:'Which one is a permanent storage device?',o:['RAM','Hard disk','CPU','NIC card'],a:1,why:'A hard disk keeps data even when the power is off.'},
+ {lec:1,q:'Why can Java bytecode run on any computer?',o:['Every computer has a Java compiler','Any computer with a JVM can run it','Bytecode is the same as machine code','Java only runs on Windows'],a:1,why:'Write once, compile into bytecode, and run it on any machine with a JVM.'},
+ {lec:1,q:'Which of these is a Java IDE?',o:['Eclipse','Linux','COBOL','Assembler'],a:0,why:'NetBeans and Eclipse are IDEs. Linux is an operating system and COBOL is a language.'},
+ {lec:1,q:'Which one is a high-level language?',o:['Machine language','Assembly language','Java','Binary code'],a:2,why:'High-level languages are English-like and easy to learn. Java, C++ and Pascal are examples.'},
+ {lec:1,q:'How many bits are in one byte?',o:['4','8','16','2'],a:1,why:'1 byte = 8 bits. For example, the letter J is stored as 01001010.'},
+ {lec:1,q:'Which one is an operating system?',o:['Linux','Eclipse','COBOL','JVM'],a:0,why:'Linux, Windows, Mac OS, Android and iOS are operating systems.'},
+ {lec:1,q:'In the lecture analogy, hardware is the body and software is the:',o:['Mind','Heart','Skin','Battery'],a:0,why:'Hardware is the body; software (programs) is the mind that tells it what to do.'},
+ {lec:1,q:'Programming in machine language is:',o:['Quick and easy','Tedious and hard to read','English-like','Independent of the computer'],a:1,why:'Long strings of 0s and 1s are slow to write, hard to read and hard to modify.'},
+ {lec:1,q:'Which line prints Hi and then moves to the next line?',o:['System.out.print("Hi");','System.out.println("Hi");','System.out.next("Hi");','println.System("Hi");'],a:1,why:'System.out.println prints the text and then moves to a new line.'},
+ {lec:2,q:'Which symbol starts a single-line comment in Java?',o:['/* */','#','//','--'],a:2,why:'// comments out the rest of the line. /* */ is for several lines.'},
+ {lec:2,q:'Which of these is a Java reserved word?',o:['Hello','Program','main','class'],a:3,why:'class is reserved. main is only the name of a method, so it is not a reserved word.'},
+ {lec:2,q:'Every Java statement must end with a:',o:['Colon (:)','Semicolon (;)','Period (.)','Comma (,)'],a:1,why:'A missing semicolon is one of the most common beginner errors.'},
+ {lec:2,q:'Which pair of symbols forms a block?',o:['( )','{ }','[ ]','< >'],a:1,why:'A pair of braces { } groups parts of a program into a block.'},
+ {lec:2,q:'Which modifier means other programs cannot access an item?',o:['public','static','private','void'],a:2,why:'private hides the item. public lets other programs use it.'},
+ {lec:2,q:'The Java interpreter runs an application by invoking the … method.',o:['show','main','println','class'],a:1,why:'Execution starts in main: public static void main(String[] args).'},
+ {lec:2,q:'What is System.out.println?',o:['A comment','A block','A method','A modifier'],a:2,why:'It is a method: a collection of statements that displays a message on the console.'},
+ {lec:2,q:'A class is a template (blueprint) for:',o:['Objects','Comments','Semicolons','Messages'],a:0,why:'Think recipe and dishes: one class, many objects.'},
+ {lec:2,q:'How many types of comments does Java have?',o:['1','2','3','4'],a:2,why:'Line comments (//), paragraph comments (/* */) and Javadoc comments (/** */).'},
+ {lec:2,q:'Which comment style is used to write documentation?',o:['//','/* */','/** */','<!-- -->'],a:2,why:'Javadoc comments start with /** and end with */.'},
+ {lec:2,q:'Java is case-sensitive. Which line is correct?',o:['Public class Test { }','public Class Test { }','public class Test { }','PUBLIC class Test { }'],a:2,why:'Reserved words must be written in lowercase: public, class.'},
+ {lec:2,q:'Which statement displays a message in a dialog box?',o:['System.out.println("Hi");','JOptionPane.showMessageDialog(null, "Hi");','print("Hi");','dialog("Hi");'],a:1,why:'JOptionPane.showMessageDialog shows a small window. Remember: import javax.swing.JOptionPane; at the top.'},
+ {lec:2,q:'A public item can be accessed by:',o:['Only its own class','Other programs','Nobody','Only the compiler'],a:1,why:'public = open to other programs. private = closed.'},
+ {lec:2,q:'Which of these is NOT a modifier?',o:['public','private','final','println'],a:3,why:'println is a method name. public, private and final are modifiers.'},
+ {lec:2,q:'The compiler treats a paragraph comment /* ... */ as:',o:['Code to run','Text to ignore','An error','A method'],a:1,why:'Comments are notes for people. The compiler skips them.'},
+ {lec:2,q:'When the compiler sees the word class, it knows the next word is:',o:['A comment','The name of the class','A semicolon','The output'],a:1,why:'class is a reserved word: it tells the compiler that a class name follows.'},
+];
+
+const PRED=[
+ {lec:1,code:['System.out.print("Hi");','System.out.print("Java");'],out:'HiJava',hint:'print does not start a new line.',why:'print keeps the cursor on the same line, so the words stick together.'},
+ {lec:1,code:['System.out.println("A");','System.out.println("B");'],out:'A\nB',hint:'println moves to a new line after printing.',why:'Each println ends the line, so B starts on its own line.'},
+ {lec:1,code:['System.out.print("Hello");','System.out.print(" ");','System.out.println("World");'],out:'Hello World',hint:'Look at the space inside the quotes of the second line.',why:'The three statements share one line. The space in " " separates the words.'},
+ {lec:1,code:['System.out.println("Hello");','System.out.print("World");'],out:'Hello\nWorld',hint:'Only the first statement moves to a new line.',why:'println ends the first line, then print writes World on the next line.'},
+ {lec:1,code:['System.out.print("A");','System.out.println("B");','System.out.println("C");'],out:'AB\nC',hint:'Count where the line breaks happen.',why:'A and B share a line because A used print. B ends the line, so C is on line 2.'},
+ {lec:1,code:['System.out.println("A");','System.out.println();','System.out.println("B");'],out:'A\n\nB',hint:'println() with nothing inside prints an empty line.',why:'The empty println() creates a blank line between A and B.'},
+ {lec:2,code:['// This prints a greeting','System.out.println("Learning Java!");'],out:'Learning Java!',hint:'What does the compiler do with a comment?',why:'The comment is ignored. Only the println runs.'},
+ {lec:2,code:['System.out.print("Result: ");','System.out.println(5);'],out:'Result: 5',hint:'Both statements print on the same line.',why:'print writes Result: (with a space) and println adds 5 right after it.'},
+ {lec:2,code:['//System.out.print("Result: ");','System.out.println(5);'],out:'5',hint:'Check the first line carefully.',why:'The first line is commented out, so only 5 is printed.'},
+ {lec:2,code:['/* System.out.println("A"); */','System.out.println("B");'],out:'B',hint:'Everything between /* and */ is ignored.',why:'The paragraph comment hides the first println.'},
+ {lec:2,code:['{','  System.out.print("Java ");','  System.out.println("Rocks");','}'],out:'Java Rocks',hint:'A block only groups statements; it does not change the output.',why:'The braces group two statements. They run in order: Java + Rocks on one line.'},
+ {lec:2,code:['System.out.print("1");','System.out.print("2");','System.out.println("3");'],out:'123',hint:'Only the last statement ends the line.',why:'All three digits are on one line: 123.'},
+ {lec:2,code:['System.out.println("Line 1");','//System.out.println("Line 2");','System.out.println("Line 3");'],out:'Line 1\nLine 3',hint:'Which line is a comment?',why:'Line 2 is commented out, so it never runs.'},
+];
+
+const FIX=[
+ {lec:1,lines:['public class Test {','  public static void main(String[] args) {','    System.out.println("Hello);','  }','}'],bad:2,q:'What is wrong with this line?',o:['The string is missing its closing quote','println needs a capital P','main must be private'],a:0,fix:'    System.out.println("Hello");',why:'Text inside quotes must start and end with ". Close the string.'},
+ {lec:1,lines:['public class Test {','  public static void main(String[] args) {','    System.println("Hello");','  }','}'],bad:2,q:'What is wrong with this line?',o:['out is missing: it must be System.out.println','The semicolon is extra','Hello must not be in quotes'],a:0,fix:'    System.out.println("Hello");',why:'The full path is System.out.println. System alone has no println.'},
+ {lec:1,lines:['class test {','  public static void main(String[] args) {','    System.out.println("Hi")','  }','}'],bad:2,q:'What is wrong with this line?',o:['The semicolon is missing','The quotes are wrong','println should be print'],a:0,fix:'    System.out.println("Hi");',why:'Every statement ends with a semicolon.'},
+ {lec:2,lines:['Public class Test {','  public static void main(String[] args) {','    System.out.println("Hi");','  }','}'],bad:0,q:'What is wrong with this line?',o:['Java is case-sensitive: public must be lowercase','The class needs a semicolon','Test must be lowercase'],a:0,fix:'public class Test {',why:'Reserved words are lowercase. Public is not the same as public.'},
+ {lec:2,lines:['public class Test {','  public static void main(String[] args) {','    System.out.Println("Hi");','  }','}'],bad:2,q:'What is wrong with this line?',o:['println must be written in lowercase','Hi needs no quotes','The line needs two semicolons'],a:0,fix:'    System.out.println("Hi");',why:'Java is case-sensitive: Println and println are different names.'},
+ {lec:2,lines:['/* This is a comment','public class Test {','  public static void main(String[] args) {','    System.out.println("Test");','  }','}'],bad:0,q:'What is wrong here?',o:['The paragraph comment is never closed: add */','The class name is wrong','main needs a semicolon'],a:0,fix:'/* This is a comment */',why:'A paragraph comment starts with /* and must end with */. Without it, everything below is swallowed by the comment.'},
+ {lec:2,lines:['public class Test {','  public static void main(String[] args) {','    int class = 5;','  }','}'],bad:2,q:'What is wrong with this line?',o:['class is a reserved word and cannot be a name','5 must be in quotes','int must be uppercase'],a:0,fix:'    int count = 5;',why:'Reserved words have a special meaning for the compiler, so choose another name.'},
+ {lec:2,lines:['public class Test {','  public static void main(String[] args) {','    System.out.println("Hi");','  }'],bad:4,eof:true,q:'What is missing?',o:['The closing brace } of the class block','A semicolon after main','The word void'],a:0,fix:'}',why:'Every { needs its own }. The class block was never closed.'},
+];
+
+const BUILD=[
+ {lec:1,title:'Welcome program',goal:'Build a program that prints Welcome to Java!',check:{out:'Welcome to Java!'},
+  lines:['// This program prints Welcome to Java!','public class Welcome {','public static void main(String[] args) {','System.out.println("Welcome to Java!");','}','}'],
+  extra:['System.out.printn("Welcome to Java!");','Public class Welcome {']},
+ {lec:1,title:'Name and a message',goal:'Print the name Ahmed, then I love Java! on a NEW line.',check:{out:'Ahmed\nI love Java!'},
+  lines:['public class Hello {','public static void main(String[] args) {','System.out.println("Ahmed");','System.out.println("I love Java!");','}','}'],
+  extra:['System.out.println("Ahmed")','System.out.print("Welcome");']},
+ {lec:1,title:'Same line',goal:'Print Welcome and I love Java! on the SAME line.',check:{out:'Welcome I love Java!'},
+  lines:['public class SameLine {','public static void main(String[] args) {','System.out.print("Welcome ");','System.out.println("I love Java!");','}','}'],
+  extra:['System.out.println("Welcome ");']},
+ {lec:2,title:'Block party',goal:'Use a block { } with two print statements that together print Java Rocks.',check:{out:'Java Rocks'},
+  lines:['public class Rocks {','public static void main(String[] args) {','{','System.out.print("Java ");','System.out.println("Rocks");','}','}','}'],
+  extra:['System.out.println("Java ");']},
+ {lec:2,title:'Comment first',goal:'Add a line comment above the print statement. The program prints Learning Java is fun!',check:{out:'Learning Java is fun!'},
+  lines:['public class Greeting {','public static void main(String[] args) {','// Prints a message','System.out.println("Learning Java is fun!");','}','}'],
+  extra:['/* Prints a message','System.out.println("Learning Java is fun!")']},
+ {lec:2,title:'Pop-up message',goal:'Show Welcome to Java! in a dialog box.',check:{dialog:'Welcome to Java!'},
+  lines:['import javax.swing.JOptionPane;','public class Popup {','public static void main(String[] args) {','JOptionPane.showMessageDialog(null, "Welcome to Java!");','}','}'],
+  extra:['System.out.showMessageDialog(null, "Welcome to Java!");']},
+];
+
+const PAIRS=[
+ {lec:1,a:'Hardware',b:'The physical parts you can touch'},
+ {lec:1,a:'Software',b:'Programs that tell the hardware what to do'},
+ {lec:1,a:'RAM',b:'Fast but temporary (volatile) memory'},
+ {lec:1,a:'Hard disk',b:'Slower but permanent storage'},
+ {lec:1,a:'Bit',b:'A single 0 or 1'},
+ {lec:1,a:'Byte',b:'8 bits'},
+ {lec:1,a:'Assembler',b:'Converts assembly language into machine code'},
+ {lec:1,a:'Compiler',b:'Translates high-level code so the computer can run it'},
+ {lec:1,a:'JVM',b:'Runs (interprets) Java bytecode'},
+ {lec:1,a:'Bytecode',b:'Runs on any computer that has a JVM'},
+ {lec:1,a:'Machine language',b:'Instructions written in 0s and 1s'},
+ {lec:1,a:'print()',b:'Prints text and stays on the same line',mono:1},
+ {lec:1,a:'println()',b:'Prints text and moves to a new line',mono:1},
+ {lec:1,a:'IDE',b:'A tool for writing programs, like NetBeans or Eclipse'},
+ {lec:1,a:'Operating system',b:'Windows, Linux and Android are examples'},
+ {lec:2,a:'//',b:'Line comment',mono:1},
+ {lec:2,a:'/* */',b:'Paragraph comment',mono:1},
+ {lec:2,a:'/** */',b:'Javadoc (documentation) comment',mono:1},
+ {lec:2,a:'Reserved word',b:'A word with a special meaning to the compiler'},
+ {lec:2,a:'public',b:'Modifier: other programs CAN access it',mono:1},
+ {lec:2,a:'private',b:'Modifier: other programs CANNOT access it',mono:1},
+ {lec:2,a:';',b:'Ends every statement',mono:1},
+ {lec:2,a:'{ }',b:'A block: groups parts of a program',mono:1},
+ {lec:2,a:'class',b:'A blueprint (template) for objects',mono:1},
+ {lec:2,a:'main',b:'The method where the program starts',mono:1},
+ {lec:2,a:'Method',b:'A collection of statements that performs an action'},
+ {lec:2,a:'showMessageDialog',b:'Shows a message in a dialog box',mono:1},
+ {lec:2,a:'Statement',b:'Represents an action or a sequence of actions'},
+];
+
+const EX={
+ 'Welcome':'// My first program\npublic class Welcome {\n  public static void main(String[] args) {\n    System.out.println("Welcome to Java!");\n  }\n}\n',
+ 'print vs println':'public class Demo {\n  public static void main(String[] args) {\n    System.out.print("Hello");\n    System.out.print("World");\n    System.out.println();\n    System.out.println("Hello");\n    System.out.println("World");\n  }\n}\n',
+ 'Comments':'public class Notes {\n  public static void main(String[] args) {\n    // a line comment\n    /* a paragraph comment\n       on two lines */\n    System.out.println("Comments are ignored!");\n  }\n}\n',
+ 'Dialog box':'import javax.swing.JOptionPane;\n\npublic class Popup {\n  public static void main(String[] args) {\n    JOptionPane.showMessageDialog(null,\n      "Welcome to Java!",\n      "Display Message",\n      JOptionPane.INFORMATION_MESSAGE);\n  }\n}\n',
+ 'Variables & math':'public class Shop {\n  public static void main(String[] args) {\n    int apples = 7;\n    int eaten = 3;\n    System.out.println("Apples left: " + (apples - eaten));\n    double price = 2.5;\n    System.out.println("Total price: " + price * 4);\n  }\n}\n',
+};
+const HEAD='public class Main {\n  public static void main(String[] args) {\n';
+const TAIL='  }\n}\n';
+const CHAL=[
+ {id:'free',lec:0,title:'Free play',goal:'Write anything you like and press Run.',start:EX['Welcome'],check:null},
+ {id:'c1',lec:1,title:'Print Welcome to Java!',goal:'Make the program print exactly: Welcome to Java!',start:HEAD+'    \n'+TAIL,check:r=>r.out.trimEnd()==='Welcome to Java!'},
+ {id:'c2',lec:1,title:'Two lines',goal:'Print your name, then I love Java! on a new line.',start:HEAD+'    \n'+TAIL,check:r=>{const l=r.out.trimEnd().split('\n');return l.length===2&&l[0].trim()!==''&&l[1]==='I love Java!';}},
+ {id:'c3',lec:1,title:'One line, two prints',goal:'Print Hello World on ONE line using two print statements.',start:HEAD+'    \n'+TAIL,check:r=>r.out.trimEnd()==='Hello World'&&r.events.filter(e=>e.kind==='print').length>=2},
+ {id:'c4',lec:1,title:'Fix the bug',goal:'This program should print Hi. Find the error and fix it.',start:'public class Bug {\n  public static void main(String[] args) {\n    System.out.println("Hi")\n  }\n}\n',check:r=>r.out.trimEnd()==='Hi'},
+ {id:'c5',lec:2,title:'Two bugs',goal:'This program should print Hello. It has two mistakes.',start:'public class Bugs {\n  public static void main(String[] args) {\n    System.out.Println("Hello);\n  }\n}\n',check:r=>r.out.trimEnd()==='Hello'},
+ {id:'c6',lec:2,title:'Dialog box',goal:'Show Welcome to Java! in a dialog box.',start:'public class Popup {\n  public static void main(String[] args) {\n    \n  }\n}\n',check:r=>r.dialogs.some(d=>d.msg==='Welcome to Java!')},
+ {id:'c7',lec:2,title:'Both comment styles',goal:'Print Java Rocks. Use a line comment AND a paragraph comment in your code.',start:HEAD+'    \n'+TAIL,check:(r,s)=>r.out.trimEnd()==='Java Rocks'&&/\/\//.test(s)&&/\/\*/.test(s)},
+ {id:'c8',lec:1,title:'Area of a circle',goal:'Print the area of a circle with radius 5: 5 * 5 * 3.1415 (a long decimal is normal in Java).',start:HEAD+'    \n'+TAIL,check:r=>Math.abs(parseFloat(r.out)-78.5375)<1e-6},
+];
+
+/* =====================================================================
+   3. Utilities, state, gamification
+   ===================================================================== */
+const $=(s,r=document)=>r.querySelector(s);
+function h(tag,attrs,...kids){
+  const el=document.createElement(tag);
+  for(const [k,v] of Object.entries(attrs||{})){
+    if(k==='class')el.className=v;
+    else if(k==='html')el.innerHTML=v;
+    else if(k.startsWith('on'))el.addEventListener(k.slice(2),v);
+    else if(v===true)el.setAttribute(k,'');
+    else if(v!==false&&v!=null)el.setAttribute(k,v);
+  }
+  for(const c of kids.flat(Infinity)){if(c==null||c===false)continue;el.append(c.nodeType?c:document.createTextNode(c));}
+  return el;
+}
+const shuffle=a=>{const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;};
+const STORE_KEY='javalab.v1';
+const fresh=()=>({name:'',xp:0,streak:0,bestStreak:0,lec:'both',stats:{quizBest:0,quizRounds:0,quizPerfect:0,predict:0,fix:0,build:0,match:0,runs:0,goals:[],keyOk:0},badges:{},visited:{},pin:null,teacher:null});
+let S=fresh();
+try{const raw=localStorage.getItem(STORE_KEY);if(raw){const o=JSON.parse(raw);S={...fresh(),...o,stats:{...fresh().stats,...(o.stats||{})}};}}catch(e){}
+function save(){try{localStorage.setItem(STORE_KEY,JSON.stringify(S));}catch(e){}}
+const inLec=x=>S.lec==='both'||x.lec===0||String(x.lec)===S.lec;
+const pool=arr=>{const p=arr.filter(inLec);return p.length?p:arr;};
+const LEVELS=['Beginner','Coder','Debugger','Compiler','Architect','Java Master'];
+const lvl=()=>1+Math.floor(S.xp/100);
+const lvlName=()=>LEVELS[Math.min(lvl()-1,LEVELS.length-1)];
+const BADGES=[
+ {id:'run',name:'First Run',desc:'Run a program in the Playground',test:s=>s.stats.runs>=1},
+ {id:'hunt',name:'Bug Hunter',desc:'Find 5 bugs',test:s=>s.stats.fix>=5},
+ {id:'oracle',name:'Output Oracle',desc:'Predict 5 outputs correctly',test:s=>s.stats.predict>=5},
+ {id:'whiz',name:'Quiz Whiz',desc:'Score 10 out of 10 in a quiz',test:s=>s.stats.quizPerfect>=1},
+ {id:'builder',name:'Code Builder',desc:'Build 3 programs',test:s=>s.stats.build>=3},
+ {id:'match',name:'Memory Master',desc:'Finish a matching round',test:s=>s.stats.match>=1},
+ {id:'streak',name:'On Fire',desc:'Answer 5 in a row correctly',test:s=>s.bestStreak>=5},
+ {id:'goals',name:'Goal Getter',desc:'Complete 3 Playground challenges',test:s=>s.stats.goals.length>=3},
+ {id:'kw',name:'Keyword Pro',desc:'Answer 10 keyword or command questions correctly',test:s=>(s.stats.keyOk||0)>=10},
+ {id:'explorer',name:'Explorer',desc:'Try every activity',test:s=>['quiz','predict','fix','build','match','play'].every(k=>s.visited[k])},
+];
+function toast(msg,cls){const box=$('#toasts');while(box.children.length>=3)box.firstChild.remove();const t=h('div',{class:'toast '+(cls||'')},msg);box.append(t);setTimeout(()=>t.remove(),2200);}
+function checkBadges(){
+  for(const b of BADGES){if(!S.badges[b.id]&&b.test(S)){S.badges[b.id]=true;toast('Badge unlocked: '+b.name,'badge-t');}}
+}
+function award(ok,pts){
+  if(ok){S.streak++;S.bestStreak=Math.max(S.bestStreak,S.streak);const bonus=Math.min(S.streak-1,5);S.xp+=pts+bonus;toast('+'+(pts+bonus)+' XP'+(S.streak>=3?'  ·  streak '+S.streak:''));}
+  else S.streak=0;
+  checkBadges();save();renderMe();
+}
+function renderMe(){
+  const pct=S.xp%100;
+  $('#me').replaceChildren(
+    h('div',{class:'row'},h('span',{class:'lv'},'Level '+lvl()+' · '+lvlName()),h('span',{},S.xp+' XP')),
+    h('div',{class:'bar',role:'progressbar','aria-valuenow':pct,'aria-valuemin':0,'aria-valuemax':100},h('i',{style:'width:'+pct+'%'})),
+    h('small',{},'Streak: '+S.streak+'  ·  Best: '+S.bestStreak)
+  );
+}
+function svg(p){return '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+p+'</svg>';}
+const IC={
+ home:'<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+ quiz:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/>',
+ predict:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12 15h5"/>',
+ fix:'<path d="M9 9a3 3 0 0 1 6 0v6a3 3 0 0 1-6 0zM4 13h5M15 13h5M5 7l3 2M19 7l-3 2M5 19l3-2M19 19l-3-2"/>',
+ build:'<rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><path d="M17 13v8M13 17h8"/>',
+ match:'<circle cx="6" cy="12" r="3"/><circle cx="18" cy="12" r="3"/><path d="M9 12h6"/>',
+ play:'<path d="M7 4l13 8-13 8z"/>',
+ keys:'<path d="M8 6l-5 6 5 6M16 6l5 6-5 6M14 4l-4 16"/>',
+ pinned:'<path d="M12 17v5M8 3h8l-1 6 3 4H6l3-4z"/>',
+ teacher:'<path d="M4 6h16M4 12h10M4 18h7"/><path d="M17 15l2 2 3-4"/>',
+ badge:'<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
+};
+function modes(){
+  const arr=[
+   {id:'home',name:'Home',sub:''},
+   {id:'quiz',name:'Quick Quiz',sub:'Multiple choice'},
+   {id:'keys',name:'Keywords & Commands',sub:'Direct questions'},
+   {id:'predict',name:'Predict the Output',sub:'What will print?'},
+   {id:'fix',name:'Find the Bug',sub:'Spot and fix errors'},
+   {id:'build',name:'Build the Program',sub:'Put lines in order'},
+   {id:'match',name:'Match Up',sub:'Terms and meanings'},
+   {id:'play',name:'Playground',sub:'Write and run Java'},
+   {id:'progress',name:'My Progress',sub:'Badges and report'},
+  ];
+  const pin=getPin();
+  if(pin)arr.splice(1,0,{id:'pinned',name:"Instructor's Set",sub:pin.title||'Pinned questions'});
+  if(!(EMBED&&EMBED.lock))arr.push({id:'teacher',name:'Instructor',sub:'Pick and pin questions'});
+  return arr;
+}
+let mode='home',timers=[];
+function clearTimers(){timers.forEach(t=>{clearInterval(t);clearTimeout(t);});timers=[];}
+function go(id){
+  clearTimers();document.onkeydown=null;mode=id;
+  if(id!=='home'&&id!=='progress'){S.visited[id]=true;checkBadges();save();}
+  document.querySelectorAll('#nav button').forEach(b=>{if(b.dataset.id===id)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
+  const m=$('#main');m.replaceChildren();m.classList.remove('classmode');
+  ({home:viewHome,quiz:viewQuiz,keys:viewKeys,pinned:viewPinned,teacher:viewTeacher,predict:viewPredict,fix:viewFix,build:viewBuild,match:viewMatch,play:viewPlay,progress:viewProgress})[id](m);
+  window.scrollTo(0,0);
+}
+function buildChrome(){
+  $('#nav').replaceChildren(...modes().map(m=>h('button',{'data-id':m.id,onclick:()=>go(m.id)},
+    h('span',{class:'ico',html:svg(IC[m.id==='progress'?'badge':m.id])}),
+    h('span',{},m.name,m.sub?h('span',{class:'sub'},m.sub):null))));
+  const seg=$('#lecSeg');
+  seg.replaceChildren(...[['1','Lec 1'],['2','Lec 2'],['both','Both']].map(([v,t])=>h('button',{'aria-pressed':S.lec===v?'true':'false',onclick:()=>{S.lec=v;save();buildChrome();go(mode);}},t)));
+  renderMe();
+  document.querySelectorAll('#nav button').forEach(b=>{if(b.dataset.id===mode)b.setAttribute('aria-current','page');});
+}
+const lecChip=l=>h('span',{class:'chip'+(l===2?' l2':'')},'Lecture '+l);
+
+/* code highlighting */
+function hl(line){
+  const t=line.trim();
+  if(t.startsWith('/*')||t.startsWith('*')||t.startsWith('//'))return [h('span',{class:'cm'},line)];
+  const out=[];const re=/(\/\/.*$)|("(?:[^"\\]|\\.)*")|(\b(?:public|class|static|void|int|double|String|import|private|protected|final|abstract)\b)|(\b\d+(?:\.\d+)?\b)/g;
+  let last=0,m;
+  while((m=re.exec(line))){
+    if(m.index>last)out.push(line.slice(last,m.index));
+    const cls=m[1]?'cm':m[2]?'st':m[3]?'kw':'num';
+    out.push(h('span',{class:cls},m[0]));last=re.lastIndex;
+  }
+  if(last<line.length)out.push(line.slice(last));
+  return out;
+}
+function codeBlock(lines){
+  const pre=h('pre',{class:'code'});
+  lines.forEach((l,i)=>{pre.append(...hl(l));if(i<lines.length-1)pre.append('\n');});
+  return pre;
+}
+
+/* console rendering */
+function renderConsole(el,{out='',dialogs=[],err=null,src='',rt=null,caret=true,idle=false}){
+  el.replaceChildren();
+  const body=h('div',{class:'body'});
+  if(idle){body.append(h('span',{class:'dim'},'Press Run to see the output here.'));}
+  else if(err){
+    const lines=src.split('\n');
+    body.append(h('div',{class:'errhead'},'Main.java:'+err.line+': error: '+err.msg));
+    if(lines[err.line-1]!==undefined)body.append(h('div',{class:'err'},lines[err.line-1]));
+    if(err.hint)body.append(h('div',{class:'hint'},'Hint: '+err.hint));
+  }else{
+    body.append(out);
+    if(rt)body.append(h('div',{class:'err'},rt.msg));
+    else if(caret)body.append(h('span',{class:'caret'}));
+  }
+  el.append(h('div',{class:'ctitle'},h('span',{},'Console'),h('span',{},err?'compile error':idle?'ready':'output')),body);
+  if(dialogs.length){
+    const d=h('div',{class:'dlgs'});
+    dialogs.forEach(x=>d.append(h('div',{class:'dlg'},h('div',{class:'t'},h('span',{},x.title),h('span',{},'×')),h('div',{class:'m'},x.type==='PLAIN_MESSAGE'?null:h('div',{class:'ic '+x.type},{INFORMATION_MESSAGE:'i',ERROR_MESSAGE:'✖',WARNING_MESSAGE:'!',QUESTION_MESSAGE:'?'}[x.type]||'i'),h('div',{},x.msg)),h('button',{class:'ok',tabindex:'-1'},'OK'))));
+    el.append(d);
+  }
+}
+
+/* =====================================================================
+   4. Views
+   ===================================================================== */
+function viewHome(m){
+  m.append(h('h1',{},'Practice Java. See it run.'),
+    h('p',{class:'lead'},'Short activities based on Lecture 1 (computers, programs, Java) and Lecture 2 (anatomy of a Java program). Every right answer earns XP, so try to keep your streak going.'));
+  const con=h('div',{class:'console'});
+  m.append(h('div',{class:'hero',role:'img','aria-label':'A Java program printing Ready to learn Java?'},con));
+  const code='System.out.println("Ready to learn Java?");';
+  const draw=(typed,out)=>{
+    con.replaceChildren(h('div',{class:'ctitle'},h('span',{},'Welcome.java'),h('span',{},out?'output':'typing…')),
+      h('div',{class:'body'},h('span',{class:'dim'},'> '),typed,out?[h('br'),h('span',{class:'dim'},'Output:'),h('br'),'Ready to learn Java?']:h('span',{class:'caret'})));
+  };
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){draw(code,true);}
+  else{
+    let i=0;draw('',false);
+    const iv=setInterval(()=>{i++;draw(code.slice(0,i),false);if(i>=code.length){clearInterval(iv);timers.push(setTimeout(()=>draw(code,true),500));}},45);
+    timers.push(iv);
+  }
+  const pin=getPin();
+  const rows=[];
+  if(pin)rows.push(["Instructor's set: "+(pin.title||'pinned questions'),pin.ids.length+' questions on the keywords and commands your instructor chose.','pinned','Start the set']);
+  rows.push(
+   ['Take a 10-question quiz','Mixed questions from the lectures, with an explanation after every answer.','quiz','Start quiz'],
+   ['Practise keywords and commands','Direct questions: what a keyword does, fill in the blank, or type the command.','keys','Practise'],
+   ['Run your first program','Type Java, press Run, and watch it execute line by line.','play','Open playground'],
+   ['Squash a bug','Find the line with the error, then say what is wrong.','fix','Hunt bugs']);
+  m.append(h('div',{class:'starts'},rows.map(([t,d,id,b])=>h('div',{class:'r'},h('div',{},h('b',{},t),h('span',{},d)),h('button',{class:'btn sec',onclick:()=>go(id)},b)))));
+  m.append(h('details',{},h('summary',{},'For the instructor'),h('ol',{},
+    h('li',{},'Upload this single file to Blackboard (Content, then Upload a file) or link to it. It works on phones, needs no login, and works offline.'),
+    h('li',{},'In class, open Quick Quiz and switch on Class mode. Read the question aloud, let students answer in the chat, then press Reveal answer.'),
+    h('li',{},'Students can copy a short progress report from My Progress and paste it into a Blackboard assignment or discussion post.'),
+    h('li',{},'Use the lecture switch at the top left to limit all activities to Lecture 1 or Lecture 2.'),
+    h('li',{},'To pin your own questions, open Instructor in the menu. Tick the questions, then share a code or download a student copy.'))));
+  if(!EMBED)m.append(codeEntry());
+}
+
+/* ---------- QUIZ ---------- */
+let Q=null,classMode=false;
+function viewQuiz(m){
+  const qs=shuffle(pool(MCQ)).slice(0,10).map(q=>{const idx=shuffle([0,1,2,3]);return {...q,opts:idx.map(i=>q.o[i]),ans:idx.indexOf(q.a)};});
+  Q={qs,i:0,score:0,locked:false};drawQuiz(m);
+}
+function drawQuiz(m){
+  m=m||$('#main');m.replaceChildren();m.classList.toggle('classmode',classMode);
+  document.onkeydown=null;
+  if(Q.i>=Q.qs.length)return quizResult(m);
+  const q=Q.qs[Q.i];Q.locked=false;
+  const fbBox=h('div',{'aria-live':'polite'});
+  const nextBtn=h('button',{class:'btn',style:'display:none',onclick:()=>{Q.i++;drawQuiz();}},Q.i===Q.qs.length-1?'See my score':'Next question');
+  const optEls=q.opts.map((t,i)=>h('button',{class:'opt',onclick:()=>choose(i)},h('span',{class:'k'},'ABCD'[i]),h('span',{},t)));
+  const reveal=h('button',{class:'btn',onclick:()=>{show(-1);reveal.style.display='none';}},'Reveal answer');
+  function show(pick){
+    Q.locked=true;
+    optEls.forEach((o,i)=>{o.disabled=true;if(i===q.ans)o.classList.add('right');else if(i===pick)o.classList.add('wrong');});
+    const ok=pick===q.ans;
+    fbBox.replaceChildren(h('div',{class:'fb '+(pick===-1?'info':ok?'ok':'no')},h('b',{},pick===-1?'Answer: '+'ABCD'[q.ans]:ok?'Correct!':'Not quite. The answer is '+'ABCD'[q.ans]+'.'),q.why));
+    nextBtn.style.display='';nextBtn.focus();
+    if(pick!==-1){if(ok)Q.score++;award(ok,10);}
+  }
+  function choose(i){if(Q.locked||classMode)return;show(i);}
+  m.append(h('div',{class:'topline'},h('h1',{},classMode?'Class quiz':'Quick Quiz'),
+    h('label',{class:'switch'},h('input',{type:'checkbox',checked:classMode,onchange:e=>{classMode=e.target.checked;drawQuiz();}}),'Class mode (teacher reveals the answer)')));
+  m.append(h('div',{class:'panel'},
+    h('div',{class:'topline'},h('span',{},'Question '+(Q.i+1)+' of '+Q.qs.length),lecChip(q.lec)),
+    h('div',{class:'progress'},h('i',{style:'width:'+(Q.i/Q.qs.length*100)+'%'})),
+    h('p',{class:'qtext'},q.q),h('div',{class:'opts',role:'group','aria-label':'Answers'},optEls),fbBox,
+    h('div',{class:'btnrow'},classMode?reveal:null,nextBtn)));
+  document.onkeydown=e=>{
+    if(classMode)return;
+    const k=e.key.toLowerCase();
+    if('abcd'.includes(k)&&k.length===1)choose('abcd'.indexOf(k));
+    else if('1234'.includes(k)&&k.length===1)choose(+k-1);
+    else if((e.key==='Enter')&&Q.locked&&document.activeElement.tagName!=='BUTTON')nextBtn.click();
+  };
+}
+function quizResult(m){
+  const n=Q.qs.length,sc=Q.score;
+  S.stats.quizRounds++;S.stats.quizBest=Math.max(S.stats.quizBest,sc);if(sc===n)S.stats.quizPerfect++;
+  checkBadges();save();
+  const stars=sc>=9?3:sc>=7?2:sc>=5?1:0;
+  const msg=sc>=9?'Excellent work!':sc>=7?'Good job. A few more rounds and you will have it.':sc>=5?'Getting there. Read the explanations and try again.':'Keep practising. Try the Match Up activity to learn the terms first.';
+  m.append(h('div',{class:'panel result'},h('h1',{},'Round complete'),h('div',{class:'big'},sc+' / '+n),
+    h('div',{class:'stars','aria-label':stars+' stars'},'★'.repeat(stars)+'☆'.repeat(3-stars)),h('p',{class:'lead',style:'margin:12px auto'},msg),
+    h('div',{class:'btnrow',style:'justify-content:center'},h('button',{class:'btn',onclick:()=>go('quiz')},'Play again'),h('button',{class:'btn sec',onclick:()=>go('predict')},'Try Predict the Output'))));
+}
+
+/* ---------- PREDICT ---------- */
+let PR=null;
+function viewPredict(m){PR={list:shuffle(pool(PRED)),i:0};drawPredict(m);}
+function drawPredict(m){
+  m=m||$('#main');m.replaceChildren();
+  const p=PR.list[PR.i%PR.list.length];let tries=0,done=false,hinted=false;
+  const ta=h('textarea',{class:'ta',rows:Math.max(2,p.out.split('\n').length),spellcheck:'false',autocapitalize:'off','aria-label':'Your predicted output'});
+  const fb=h('div',{'aria-live':'polite'});
+  const conBox=h('div',{class:'console',style:'display:none;margin-top:14px'});
+  const norm=s=>s.replace(/\r/g,'').split('\n').map(x=>x.replace(/\s+$/,'')).join('\n').replace(/^\n+|\n+$/g,'');
+  const nextBtn=h('button',{class:'btn',style:'display:none',onclick:()=>{PR.i++;drawPredict();}},'Next program');
+  const chk=h('button',{class:'btn',onclick:check},'Check');
+  function finish(ok){
+    done=true;ta.disabled=true;chk.style.display='none';hintBtn.style.display='none';skip.style.display='none';nextBtn.style.display='';nextBtn.focus();
+    const res=javaRun(wrapSnippet(p.code));
+    conBox.style.display='';renderConsole(conBox,{out:res.out,caret:false});
+    if(ok){S.stats.predict++;award(true,tries===0&&!hinted?15:8);}else award(false,0);
+  }
+  function check(){
+    if(done)return;
+    if(!ta.value.trim()){fb.replaceChildren(h('div',{class:'fb info'},'Type what the console will show first.'));return;}
+    if(norm(ta.value)===norm(p.out)){tries++;fb.replaceChildren(h('div',{class:'fb ok'},h('b',{},'Correct!'),p.why));finish(true);}
+    else{
+      tries++;
+      if(tries>=2){fb.replaceChildren(h('div',{class:'fb no'},h('b',{},'Not this time. Here is the real output.'),p.why));finish(false);}
+      else fb.replaceChildren(h('div',{class:'fb no'},h('b',{},'Not quite.'),'Check the spaces and where the new lines are. You have one more try.'));
+    }
+  }
+  const hintBtn=h('button',{class:'btn ghost',onclick:()=>{hinted=true;fb.replaceChildren(h('div',{class:'fb info'},h('b',{},'Hint'),p.hint));}},'Hint');
+  const skip=h('button',{class:'btn ghost',onclick:()=>{PR.i++;drawPredict();}},'Skip');
+  ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();check();}});
+  m.append(h('div',{class:'topline'},h('h1',{},'Predict the Output')),
+    h('p',{class:'lead'},'Read the code, then type exactly what the console will show. Every space and new line counts.'),
+    h('div',{class:'panel'},h('div',{class:'topline'},h('span',{},'Program '+(PR.i+1)),lecChip(p.lec)),
+      h('div',{style:'margin-top:12px'},codeBlock(p.code)),
+      h('label',{class:'lab',for:'predIn'},'The console shows:'),(ta.id='predIn',ta),
+      h('div',{class:'btnrow'},chk,hintBtn,skip,nextBtn),fb,conBox));
+  ta.focus();
+}
+
+/* ---------- FIX ---------- */
+let FX=null;
+function viewFix(m){FX={list:shuffle(pool(FIX)),i:0};drawFix(m);}
+function drawFix(m){
+  m=m||$('#main');m.replaceChildren();
+  const f=FX.list[FX.i%FX.list.length];
+  let phase=1,missLine=0,missOpt=0;
+  const fb=h('div',{'aria-live':'polite'});const opts=h('div',{class:'opts',style:'margin-top:14px'});
+  const nextBtn=h('button',{class:'btn',style:'display:none',onclick:()=>{FX.i++;drawFix();}},'Next bug');
+  const rows=[];
+  const all=f.eof?[...f.lines,null]:f.lines;
+  all.forEach((l,i)=>{
+    const isEof=l===null;
+    const b=h('button',{onclick:()=>pickLine(i,b)},h('span',{class:'n'},String(i+1)),isEof?h('span',{class:'eof'},'‹ end of file ›'):h('span',{},...hl(l||' ')));
+    rows.push(b);
+  });
+  function pickLine(i,b){
+    if(phase!==1)return;
+    if(i===f.bad){
+      phase=2;b.classList.add('flag');rows.forEach(r=>r.disabled=true);
+      fb.replaceChildren(h('div',{class:'fb info'},h('b',{},'You found it!'),f.q));
+      opts.replaceChildren(...f.o.map((t,k)=>h('button',{class:'opt',onclick:()=>pickOpt(k)},h('span',{class:'k'},'ABC'[k]),h('span',{},t))));
+    }else{
+      if(missLine===0)award(false,0);
+      missLine++;b.classList.remove('nope');void b.offsetWidth;b.classList.add('nope');setTimeout(()=>b.classList.remove('nope'),700);
+      fb.replaceChildren(h('div',{class:'fb no'},'That line is fine. Look again.'));
+    }
+  }
+  function pickOpt(k){
+    if(phase!==2)return;
+    const btns=[...opts.children];
+    if(k===f.a){
+      phase=3;btns.forEach((o,i)=>{o.disabled=true;if(i===f.a)o.classList.add('right');});
+      const rb=rows[f.bad];
+      rb.replaceChildren(h('span',{class:'n'},String(f.bad+1)),h('span',{},...hl(f.fix)));
+      rb.classList.remove('flag');rb.classList.add('fixed');
+      fb.replaceChildren(h('div',{class:'fb ok'},h('b',{},'Fixed!'),f.why));
+      S.stats.fix++;award(true,missLine===0&&missOpt===0?15:8);
+      nextBtn.style.display='';nextBtn.focus();
+    }else{
+      if(missOpt===0)award(false,0);
+      missOpt++;btns[k].classList.add('wrong');btns[k].disabled=true;
+      fb.replaceChildren(h('div',{class:'fb no'},'Not that one. Try another option.'));
+    }
+  }
+  m.append(h('h1',{},'Find the Bug'),
+    h('p',{class:'lead'},'Click the line that contains the error. Then choose what is wrong with it.'),
+    h('div',{class:'panel'},h('div',{class:'topline'},h('span',{},'Bug '+(FX.i+1)),lecChip(f.lec)),
+      h('div',{class:'lines',style:'margin-top:12px'},rows),opts,fb,h('div',{class:'btnrow'},nextBtn)));
+}
+
+/* ---------- BUILD ---------- */
+let BD=null;
+function viewBuild(m){BD={list:shuffle(pool(BUILD)),i:0};drawBuild(m);}
+function autoIndent(texts){
+  let lv=0;
+  return texts.map(t=>{const s=t.trim();if(s.startsWith('}'))lv=Math.max(0,lv-1);const out='  '.repeat(lv)+s;if(s.endsWith('{'))lv++;return out;});
+}
+function drawBuild(m){
+  m=m||$('#main');m.replaceChildren();
+  const b=BD.list[BD.i%BD.list.length];
+  const items=shuffle([...b.lines.map((t,i)=>({id:'c'+i,t})),...b.extra.map((t,i)=>({id:'x'+i,t}))]);
+  let asm=[],used=false,hinted=false;
+  const bank=h('div',{class:'zone'}),tray=h('div',{class:'zone'}),cons=h('div',{class:'console',style:'margin-top:14px'});
+  const fb=h('div',{'aria-live':'polite'});
+  const nextBtn=h('button',{class:'btn',style:'display:none',onclick:()=>{BD.i++;drawBuild();}},'Next program');
+  function paint(){
+    bank.replaceChildren(h('h3',{},'Code lines (tap to add)'));
+    const free=items.filter(x=>!asm.includes(x.id));
+    if(!free.length)bank.append(h('div',{class:'empty'},'All lines are used.'));
+    free.forEach(x=>bank.append(h('div',{class:'piece'},h('button',{class:'txt',onclick:()=>{asm.push(x.id);paint();}},x.t))));
+    tray.replaceChildren(h('h3',{},'Your program (auto-indented)'));
+    if(!asm.length)tray.append(h('div',{class:'empty'},'Tap lines on the left to build the program.'));
+    const ind=autoIndent(asm.map(id=>items.find(x=>x.id===id).t));
+    asm.forEach((id,i)=>{
+      tray.append(h('div',{class:'piece'},
+        h('button',{class:'txt',title:'Tap to remove',onclick:()=>{asm.splice(i,1);paint();}},...hl(ind[i])),
+        h('span',{class:'mv'},h('button',{'aria-label':'Move up',onclick:()=>{if(i>0){[asm[i-1],asm[i]]=[asm[i],asm[i-1]];paint();}}},'▲'),h('button',{'aria-label':'Move down',onclick:()=>{if(i<asm.length-1){[asm[i+1],asm[i]]=[asm[i],asm[i+1]];paint();}}},'▼'))));
+    });
+  }
+  function run(){
+    if(!asm.length){fb.replaceChildren(h('div',{class:'fb info'},'Add some lines first.'));return;}
+    const src=autoIndent(asm.map(id=>items.find(x=>x.id===id).t)).join('\n')+'\n';
+    const r=javaRun(src);
+    if(!r.ok){renderConsole(cons,{err:r.err,src});fb.replaceChildren(h('div',{class:'fb no'},h('b',{},'The program does not compile.'),'Read the message in the console, then change your lines.'));if(!used)award(false,0);used=true;return;}
+    renderConsole(cons,{out:r.out,dialogs:r.dialogs,caret:false,rt:r.error});
+    const ok=b.check.dialog!==undefined?r.dialogs.some(d=>d.msg===b.check.dialog):r.out.trimEnd()===b.check.out;
+    if(ok){
+      fb.replaceChildren(h('div',{class:'fb ok'},h('b',{},'It works!'),'Your program compiles and does exactly what the goal asks.'));
+      S.stats.build++;award(true,hinted||used?10:20);nextBtn.style.display='';nextBtn.focus();
+    }else{
+      if(!used)award(false,0);used=true;
+      fb.replaceChildren(h('div',{class:'fb no'},h('b',{},'It runs, but the output is not what the goal asks for.'),'Check the order of the lines, and whether you need print or println.'));
+    }
+  }
+  function hint(){
+    hinted=true;
+    const exp=b.lines;let k=0;
+    while(k<asm.length&&k<exp.length&&items.find(x=>x.id===asm[k]).t===exp[k])k++;
+    fb.replaceChildren(h('div',{class:'fb info'},h('b',{},k===0&&!asm.length?'Start with:':'Next correct line:'),h('code',{style:'font-family:var(--f-mono)'},exp[Math.min(k,exp.length-1)])));
+  }
+  paint();renderConsole(cons,{idle:true});
+  m.append(h('h1',{},'Build the Program'),
+    h('p',{class:'lead'},'Put the lines in the right order to reach the goal. Some lines are traps: they contain mistakes, so leave them out.'),
+    h('div',{class:'panel'},h('div',{class:'topline'},h('h2',{},b.title),lecChip(b.lec)),
+      h('div',{class:'fb info',style:'margin:12px 0'},h('b',{},'Goal'),b.goal),
+      h('div',{class:'buildgrid'},bank,tray),
+      h('div',{class:'btnrow'},h('button',{class:'btn go',onclick:run},'Run program'),h('button',{class:'btn ghost',onclick:()=>{asm=[];paint();}},'Clear'),h('button',{class:'btn ghost',onclick:hint},'Hint'),nextBtn),
+      fb,cons));
+}
+
+/* ---------- MATCH ---------- */
+let MT=null;
+function viewMatch(m){
+  const chosen=shuffle(pool(PAIRS)).slice(0,6).map((p,i)=>({...p,id:i}));
+  MT={chosen,left:shuffle(chosen),right:shuffle(chosen),sel:null,done:new Set(),miss:0,t0:Date.now()};
+  drawMatch(m);
+}
+function drawMatch(m){
+  m=m||$('#main');m.replaceChildren();
+  const lc=h('div',{class:'col'}),rc=h('div',{class:'col'});
+  const tiles={};
+  function mk(p,side){
+    const t=h('button',{class:'tile'+(side==='L'&&p.mono?' mono':''),onclick:()=>tap(p,side,t)},side==='L'?p.a:p.b);
+    tiles[side+p.id]=t;return t;
+  }
+  MT.left.forEach(p=>lc.append(mk(p,'L')));MT.right.forEach(p=>rc.append(mk(p,'R')));
+  const status=h('div',{class:'fb info','aria-live':'polite'},'Pick a term on the left, then its meaning on the right.');
+  function tap(p,side,t){
+    if(MT.done.has(p.id))return;
+    if(MT.sel&&MT.sel.side===side){tiles[MT.sel.side+MT.sel.p.id].classList.remove('sel');}
+    if(!MT.sel||MT.sel.side===side){MT.sel={p,side};t.classList.add('sel');return;}
+    const other=MT.sel;const a=tiles[other.side+other.p.id];
+    a.classList.remove('sel');
+    if(other.p.id===p.id){
+      MT.done.add(p.id);a.classList.add('done');t.classList.add('done');a.disabled=t.disabled=true;
+      award(true,5);MT.sel=null;
+      status.textContent=MT.done.size+' of 6 matched.';
+      if(MT.done.size===6)finish();
+    }else{
+      MT.miss++;award(false,0);MT.sel=null;
+      [a,t].forEach(x=>{x.classList.remove('miss');void x.offsetWidth;x.classList.add('miss');});
+      status.textContent='Not a match. Try again.';
+    }
+  }
+  function finish(){
+    S.stats.match++;const secs=Math.round((Date.now()-MT.t0)/1000);
+    const bonus=Math.max(5,30-MT.miss*5);S.xp+=bonus;checkBadges();save();renderMe();
+    m.append(h('div',{class:'panel result'},h('h2',{},'All matched!'),h('p',{class:'lead',style:'margin:8px auto'},'Time: '+secs+' s  ·  Mistakes: '+MT.miss+'  ·  Bonus: +'+bonus+' XP'),
+      h('div',{class:'btnrow',style:'justify-content:center'},h('button',{class:'btn',onclick:()=>go('match')},'New round'),h('button',{class:'btn sec',onclick:()=>go('quiz')},'Take a quiz'))));
+  }
+  m.append(h('h1',{},'Match Up'),h('p',{class:'lead'},'Connect each term with its meaning. Six pairs per round.'),
+    h('div',{class:'panel'},status,h('div',{class:'pairs'},lc,rc)));
+}
+
+/* ---------- PLAYGROUND ---------- */
+let PL=null;
+function viewPlay(m){
+  const list=CHAL.filter(c=>c.lec===0||S.lec==='both'||String(c.lec)===S.lec);
+  PL={ch:list[0],trace:null};
+  m.append(h('h1',{},'Playground'),h('p',{class:'lead'},'A mini Java simulator. It understands classes, main, comments, print, println, simple variables and message dialogs. Errors come with hints.'));
+  const goalBox=h('div',{class:'goalbox'});
+  const gsel=h('select',{'aria-label':'Choose a challenge',onchange:e=>{PL.ch=CHAL.find(c=>c.id===e.target.value);loadStart();}},
+    list.map(c=>h('option',{value:c.id},(c.id==='free'?'':(S.stats.goals.includes(c.id)?'✓ ':'')+'')+c.title)));
+  const gtext=h('div',{});
+  goalBox.append(gtext,gsel);
+  const ta=h('textarea',{spellcheck:'false',autocapitalize:'off',autocomplete:'off','aria-label':'Java code editor',wrap:'off'});
+  const gut=h('div',{class:'gut','aria-hidden':'true'});
+  const ed=h('div',{class:'editor'},gut,ta);
+  const cons=h('div',{class:'console'});
+  const fb=h('div',{'aria-live':'polite'});
+  const vars=h('div',{class:'vars'});
+  const ctrl=h('div',{class:'btnrow'});
+  let errLine=0;
+  function paintGut(){
+    const n=ta.value.split('\n').length;gut.replaceChildren();
+    for(let i=1;i<=n;i++)gut.append(h('span',{class:i===errLine?'bad':'',style:'display:block'},String(i)));
+    gut.scrollTop=ta.scrollTop;
+  }
+  ta.addEventListener('input',()=>{errLine=0;paintGut();});
+  ta.addEventListener('scroll',()=>{gut.scrollTop=ta.scrollTop;});
+  ta.addEventListener('keydown',e=>{
+    if(e.key==='Tab'){e.preventDefault();const s=ta.selectionStart;ta.setRangeText('  ',s,ta.selectionEnd,'end');ta.dispatchEvent(new Event('input'));}
+    if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();doRun();}
+  });
+  function setGoal(){
+    const c=PL.ch;
+    gtext.replaceChildren(h('b',{},c.id==='free'?'Free play':'Challenge: '+c.title),h('div',{},c.goal));
+  }
+  function loadStart(){exitTrace();ta.value=PL.ch.start;errLine=0;paintGut();setGoal();fb.replaceChildren();vars.replaceChildren();renderConsole(cons,{idle:true});}
+  function doRun(){
+    exitTrace();
+    const src=ta.value;const r=javaRun(src);
+    S.stats.runs++;fb.replaceChildren();vars.replaceChildren();
+    if(!r.ok){errLine=r.err.line;paintGut();renderConsole(cons,{err:r.err,src});checkBadges();save();return;}
+    errLine=0;paintGut();
+    renderConsole(cons,{out:r.out,dialogs:r.dialogs,caret:false,rt:r.error});
+    const c=PL.ch;
+    if(c.check&&!r.error&&c.check(r,src)){
+      fb.replaceChildren(h('div',{class:'fb ok'},h('b',{},'Challenge complete!'),'Your output matches the goal.'));
+      if(!S.stats.goals.includes(c.id)){S.stats.goals.push(c.id);award(true,25);[...gsel.options].forEach(o=>{if(o.value===c.id&&!o.textContent.startsWith('✓'))o.textContent='✓ '+o.textContent;});}
+    }else if(c.check){
+      fb.replaceChildren(h('div',{class:'fb info'},'Runs fine, but it does not match the goal yet.'));
+    }
+    checkBadges();save();
+  }
+  function exitTrace(){
+    if(!PL.trace)return;
+    clearInterval(PL.trace.iv);PL.trace=null;
+    ed.replaceChildren(gut,ta);drawCtrl();
+  }
+  function startTrace(){
+    const src=ta.value;const r=javaRun(src);
+    if(!r.ok){doRun();return;}
+    S.stats.runs++;checkBadges();save();
+    if(!r.events.length){renderConsole(cons,{out:r.out,dialogs:r.dialogs,caret:false});return;}
+    const lines=src.split('\n');
+    const tv=h('div',{class:'tracev'},lines.map((l,i)=>h('div',{'data-l':i+1},...hl(l||' '))));
+    ed.replaceChildren(gut,tv);
+    PL.trace={r,i:-1,iv:null,tv};
+    renderConsole(cons,{out:'',caret:true});vars.replaceChildren();
+    fb.replaceChildren(h('div',{class:'fb info'},'Step through the program. The yellow line is the one that just ran.'));
+    drawCtrl();
+  }
+  function step(){
+    const t=PL.trace;if(!t)return;
+    if(t.i>=t.r.events.length-1){clearInterval(t.iv);t.iv=null;drawCtrl();return;}
+    t.i++;const ev=t.r.events[t.i];
+    t.tv.querySelectorAll('.cur').forEach(x=>x.classList.remove('cur'));
+    const row=t.tv.querySelector('[data-l="'+ev.line+'"]');if(row){row.classList.add('cur');row.scrollIntoView({block:'nearest'});}
+    const last=t.i===t.r.events.length-1;
+    renderConsole(cons,{out:ev.out,dialogs:ev.dialogs,caret:!last,rt:last?t.r.error:null});
+    vars.replaceChildren(...Object.entries(ev.env).map(([k,v])=>h('span',{},k+' = '+(typeof v==='number'&&!Number.isInteger(v)?v:typeof v==='string'?'"'+v+'"':v))));
+    if(last){clearInterval(t.iv);t.iv=null;}
+    drawCtrl();
+  }
+  function play(){
+    const t=PL.trace;if(!t)return;
+    if(t.iv){clearInterval(t.iv);t.iv=null;drawCtrl();return;}
+    t.iv=setInterval(step,900);timers.push(t.iv);drawCtrl();
+  }
+  function drawCtrl(){
+    ctrl.replaceChildren();
+    if(PL&&PL.trace){
+      const t=PL.trace,fin=t.i>=t.r.events.length-1;
+      ctrl.append(h('button',{class:'btn',disabled:fin,onclick:step},'Next step'),
+        h('button',{class:'btn sec',disabled:fin,onclick:play},t.iv?'Pause':'Auto-play'),
+        h('button',{class:'btn ghost',onclick:()=>{exitTrace();renderConsole(cons,{idle:true});vars.replaceChildren();}},'Back to editing'));
+    }else{
+      ctrl.append(h('button',{class:'btn go',onclick:doRun},'Run'),h('button',{class:'btn sec',onclick:startTrace},'Step through'),h('button',{class:'btn ghost',onclick:loadStart},'Reset'));
+    }
+  }
+  const exrow=h('div',{class:'exrow'},h('span',{},'Load an example:'),Object.keys(EX).map(k=>h('button',{onclick:()=>{exitTrace();PL.ch=CHAL[0];gsel.value='free';setGoal();ta.value=EX[k];errLine=0;paintGut();fb.replaceChildren();vars.replaceChildren();renderConsole(cons,{idle:true});}},k)));
+  m.append(h('div',{class:'panel'},goalBox,h('div',{class:'pg'},h('div',{},ed,ctrl,exrow),h('div',{},cons,vars,fb))));
+  loadStart();drawCtrl();
+}
+
+/* ---------- PROGRESS ---------- */
+function viewProgress(m){
+  const nameIn=h('input',{class:'namein',type:'text',placeholder:'Your name',value:S.name,'aria-label':'Your name',oninput:e=>{S.name=e.target.value;save();rep.value=report();}});
+  const earned=BADGES.filter(b=>S.badges[b.id]);
+  function report(){
+    return ['Java Lab report','Name: '+(S.name||'(not entered)'),'Level '+lvl()+' ('+lvlName()+')  ·  '+S.xp+' XP',
+      'Quiz best: '+S.stats.quizBest+'/10  ·  Rounds: '+S.stats.quizRounds,
+      'Outputs predicted: '+S.stats.predict+'  ·  Bugs fixed: '+S.stats.fix+'  ·  Programs built: '+S.stats.build+'  ·  Match rounds: '+S.stats.match,
+      'Keyword and command answers correct: '+(S.stats.keyOk||0),
+      'Playground challenges: '+S.stats.goals.length+'/'+(CHAL.length-1),
+      'Badges: '+(earned.length?earned.map(b=>b.name).join(', '):'none yet'),
+      'Date: '+new Date().toISOString().slice(0,10)].join('\n');
+  }
+  const rep=h('textarea',{class:'ta',rows:8,readonly:true,'aria-label':'Progress report'});rep.value=report();
+  const copyMsg=h('span',{class:'switch','aria-live':'polite'});
+  const copy=()=>{
+    rep.select();
+    let ok=false;try{ok=document.execCommand('copy');}catch(e){}
+    if(!ok&&navigator.clipboard)navigator.clipboard.writeText(rep.value).then(()=>copyMsg.textContent='Copied!',()=>copyMsg.textContent='Select the text and copy it manually.');
+    else copyMsg.textContent=ok?'Copied!':'Select the text and copy it manually.';
+  };
+  let sure=false;
+  const resetBtn=h('button',{class:'btn ghost',onclick:()=>{if(!sure){sure=true;resetBtn.textContent='Press again to erase all progress';return;}S=fresh();save();buildChrome();go('progress');}},'Reset progress');
+  m.append(h('h1',{},'My Progress'),h('p',{class:'lead'},'Your progress is saved on this device.'),
+    h('div',{class:'stats'},
+      [[lvl(),'Level ('+lvlName()+')'],[S.xp,'XP'],[S.stats.quizBest+'/10','Best quiz'],[S.bestStreak,'Best streak'],[S.stats.goals.length,'Playground goals']].map(([a,b])=>h('div',{class:'stat'},h('b',{},String(a)),h('span',{},b)))),
+    h('h2',{style:'margin-top:26px'},'Badges'),
+    h('div',{class:'badges'},BADGES.map(b=>h('div',{class:'badge'+(S.badges[b.id]?' on':'')},h('span',{class:'medal','aria-hidden':'true'},S.badges[b.id]?'★':'?'),h('div',{},h('b',{},b.name),h('small',{},b.desc,S.badges[b.id]?' (earned)':''))))),
+    h('div',{class:'panel'},h('h2',{},'Share with your instructor'),
+      h('p',{class:'lead',style:'font-size:15px'},'Enter your name, copy the report, and paste it where your instructor asks (for example, a Blackboard assignment).'),
+      h('div',{class:'btnrow'},nameIn),h('div',{style:'margin-top:12px'},rep),
+      h('div',{class:'btnrow'},h('button',{class:'btn',onclick:copy},'Copy report'),copyMsg,resetBtn)));
+}
+
+/* =====================================================================
+   5. Direct questions on keywords & commands + instructor pinning
+   ===================================================================== */
+let _kmc=0;
+/* km: correct answer is written FIRST; it is moved to a rotating position so that A/B/C/D all occur */
+const km=(lec,kw,q,o,why)=>{const pos=(_kmc++*3+1)%4;const opts=o.slice(1);opts.splice(pos,0,o[0]);return {t:'mcq',lec,kw,q,o:opts,a:pos,why};};
+const kf=(lec,kw,q,code,ans,why)=>({t:'fill',lec,kw,q,code,ans,why});
+const kc=(lec,kw,q,o)=>({t:'cmd',lec,kw,q,...o});
+const S1='System.out.println(';
+
+const KEY=[
+ /* ---- Lecture 1: terms ---- */
+ km(1,['compiler','bytecode'],'What does the Java compiler turn your source code into?',['Bytecode','Assembly code','Binary text','English'],'The compiler translates your .java file into bytecode. The JVM then runs it.'),
+ km(1,['JVM'],'What does JVM stand for?',['Java Virtual Machine','Java Variable Method','Just Verified Machine','Java Visual Model'],'JVM = Java Virtual Machine.'),
+ km(1,['JVM','bytecode'],'What does the JVM do?',['Runs (interprets) Java bytecode','Writes source code','Stores files permanently','Draws the screen'],'The JVM interprets bytecode, so the same bytecode runs on any computer that has a JVM.'),
+ km(1,['assembler'],'What does an assembler do?',['Converts assembly language into machine code','Runs Java bytecode','Stores data permanently','Prints text on the console'],'Computers cannot run assembly directly, so an assembler converts it into machine code.'),
+ km(1,['RAM','volatile'],'RAM is called volatile. What does volatile mean?',['Data is lost when the power is off','Data is kept forever','It is very slow','It is a storage device'],'Volatile memory is fast but temporary.'),
+ km(1,['bit'],'What is a bit?',['A single 0 or 1','8 bytes','A letter','A program'],'Data is stored as bits: 0s and 1s. 8 bits make 1 byte.'),
+ km(1,['assembly'],'ADD R1, R2, R3 is written in which language?',['Assembly language','Machine language','High-level language','Bytecode'],'Human-readable commands like ADD and MOV are assembly language.'),
+ km(1,['machine language'],'1101101010011010 is written in which language?',['Machine language','Assembly language','High-level language','Java'],'Machine language is binary code: 0s and 1s.'),
+ km(1,['high-level language'],'area = 5 * 5 * 3.1415; is written in which kind of language?',['High-level language','Machine language','Assembly language','Bytecode'],'High-level languages are English-like and easy to learn.'),
+ km(1,['kernel'],'Which part of an operating system holds its core components?',['The kernel','The compiler','The assembler','The bytecode'],'The kernel contains the core components of the operating system.'),
+ km(1,['print'],'Which command prints text and stays on the SAME line?',['System.out.print()','System.out.println()','System.out.next()','System.out.line()'],'print does not move to a new line.'),
+ km(1,['println'],'Which command prints text and then moves to a NEW line?',['System.out.println()','System.out.print()','System.out.next()','System.out.line()'],'println = print + line.'),
+ /* ---- Lecture 2: keywords ---- */
+ km(2,['class'],'What does the keyword class tell the compiler?',['The next word is the name of a class','The program ends here','Print a message','Start a comment'],'When the compiler sees class, the word after it is the class name.'),
+ km(2,['public'],'What does the modifier public mean?',['Other programs can access it','Nobody can access it','It never changes','It prints text'],'public = open to other programs.'),
+ km(2,['private'],'What does the modifier private mean?',['Other programs cannot access it','Everyone can access it','It is a comment','It is a method'],'private = hidden from other programs.'),
+ km(2,['modifier','public','static'],'public and static are examples of:',['Modifiers','Comments','Blocks','Statements'],'Modifiers are reserved words that say how data, methods and classes can be used.'),
+ km(2,['reserved word'],'Which of these is NOT a reserved word?',['Welcome','public','class','static'],'Welcome is only the name we gave to our class.'),
+ km(2,['main'],'What is main?',['The method where a Java program starts','A comment','A modifier','A block'],'The Java interpreter starts the application by invoking main.'),
+ km(2,['//'],'What does // do?',['Turns the rest of the line into a comment','Ends a statement','Starts a block','Prints a new line'],'// is a line comment. The compiler ignores it.'),
+ km(2,['/*','*/'],'Which pair of symbols encloses a paragraph comment?',['/* and */','// and //','{ and }','( and )'],'A paragraph comment starts with /* and ends with */.'),
+ km(2,['/**'],'What is a /** ... */ comment used for?',['Documentation (Javadoc)','Printing','Starting the program','Ending a statement'],'Javadoc comments describe classes and methods.'),
+ km(2,[';'],'What does the semicolon ( ; ) do?',['Ends a statement','Starts a block','Starts a comment','Prints a line'],'Every Java statement ends with a semicolon.'),
+ km(2,['{ }','block'],'What does a pair of braces { } create?',['A block','A comment','A statement','A string'],'A pair of braces forms a block that groups parts of a program.'),
+ km(2,['println','method'],'System.out.println is a method. What does it do?',['Displays a message on the console','Starts the program','Creates a class','Ends a block'],'It is a collection of statements that displays a message.'),
+ km(2,['argument','println'],'In System.out.println("Hi"); what is "Hi" called?',['An argument (a string)','A modifier','A block','A comment'],'The value inside the parentheses is the argument.'),
+ km(2,['import'],'What does import javax.swing.JOptionPane; do?',['Lets you use JOptionPane (dialog boxes)','Prints a message','Starts main','Closes the class'],'Without the import line, Java cannot find JOptionPane.'),
+ km(2,['showMessageDialog'],'Which command shows a message in a dialog box?',['JOptionPane.showMessageDialog()','System.out.println()','main()','import()'],'showMessageDialog opens a small window with your message.'),
+ km(2,['INFORMATION_MESSAGE'],'What does JOptionPane.INFORMATION_MESSAGE give the dialog?',['The information icon','A sound','A new line','A second window'],'It sets the message type, which chooses the icon.'),
+ km(2,['null','showMessageDialog'],'In showMessageDialog(null, "Hi"); what does null mean?',['The dialog has no parent window','The message is empty','The program stops','A new line'],'null means there is no parent window for the dialog.'),
+ /* ---- fill in the keyword / command ---- */
+ kf(2,['public'],'Fill in the missing reserved word.',['____ class Welcome {'],['public'],'public is a modifier: the class can be used by other programs.'),
+ kf(2,['static'],'Fill in the missing reserved word.',['public ____ void main(String[] args) {'],['static'],'main is public static void.'),
+ kf(2,['void'],'Fill in the missing reserved word.',['public static ____ main(String[] args) {'],['void'],'main is public static void.'),
+ kf(2,['main'],'Fill in the name of the method where the program starts.',['public static void ____(String[] args) {'],['main'],'The Java interpreter starts by invoking main.'),
+ kf(2,['class'],'Fill in the missing reserved word.',['public ____ Welcome {'],['class'],'class tells the compiler that Welcome is a class name.'),
+ kf(2,['//'],'Fill in the symbol that starts a line comment.',['____ This is a line comment'],['//'],'// comments out the rest of the line.'),
+ kf(2,['*/'],'Fill in the symbol that ends a paragraph comment.',['/* This is a paragraph comment ____'],['*/'],'A paragraph comment must be closed with */.'),
+ kf(2,[';'],'Fill in the missing symbol at the end of the statement.',['System.out.println("Hi")____'],[';'],'Every statement ends with a semicolon.'),
+ kf(2,['import'],'Fill in the missing reserved word.',['____ javax.swing.JOptionPane;'],['import'],'import makes JOptionPane available in your program.'),
+ kf(2,['showMessageDialog'],'Fill in the method name.',['JOptionPane.____(null, "Hi");'],['showMessageDialog'],'showMessageDialog shows a message in a dialog box.'),
+ kf(2,['private'],'Fill in the modifier.',['____ int pin = 1234;   // other programs cannot access it'],['private'],'private hides the item from other programs.'),
+ kf(2,['public'],'Fill in the modifier.',['____ int score = 90;   // other programs can access it'],['public'],'public lets other programs access the item.'),
+ kf(1,['out'],'Fill in the missing word.',['System.____.println("Hi");'],['out'],'The full command is System.out.println.'),
+ kf(1,['println'],'Fill in the command name.',['System.out.____("Hello");   // prints, then moves to a new line'],['println'],'println = print + line.'),
+ kf(1,['print'],'Fill in the command name.',['System.out.____("Hello");   // prints and stays on the same line'],['print'],'print keeps the cursor on the same line.'),
+ /* ---- type the command (graded by running it) ---- */
+ kc(1,['println'],'Write the command that prints Welcome to Java! and then moves to a new line.',{out:'Welcome to Java!\n',sample:S1+'"Welcome to Java!");',why:'println prints the text and moves to a new line.'}),
+ kc(1,['print'],'Write the command that prints Hi and stays on the same line.',{out:'Hi',sample:'System.out.print("Hi");',why:'print does not move to a new line.'}),
+ kc(1,['println'],'Write two commands that print Hello and World on separate lines.',{out:'Hello\nWorld\n',sample:S1+'"Hello");\n'+S1+'"World");',why:'Each println ends its line.'}),
+ kc(1,['print'],'Write commands that print HelloWorld on ONE line (use two print statements).',{out:'HelloWorld',loose:true,sample:'System.out.print("Hello");\nSystem.out.print("World");',why:'print keeps the cursor on the same line, so the words join.'}),
+ kc(1,['println'],'Write the command that prints an empty line.',{out:'\n',sample:'System.out.println();',why:'println() with nothing inside prints just a new line.'}),
+ kc(2,['//'],'Write a line comment that says: Prints a greeting',{out:'',srcRe:/\/\/\s*Prints a greeting/,tip:'Start the line with // and then write: Prints a greeting',sample:'// Prints a greeting',why:'A line comment starts with // and the compiler ignores it.'}),
+ kc(2,['/*','*/'],'Write a paragraph comment (with /* and */) that says: My first program',{out:'',srcRe:/\/\*[\s\S]*My first program[\s\S]*\*\//,tip:'Open with /* and close with */ around the words My first program.',sample:'/* My first program */',why:'A paragraph comment starts with /* and ends with */.'}),
+ kc(2,['showMessageDialog'],'Write the command that shows Welcome to Java! in a dialog box. (The import line is added for you.)',{dialog:'Welcome to Java!',imp:true,sample:'JOptionPane.showMessageDialog(null, "Welcome to Java!");',why:'showMessageDialog opens a dialog box. null means no parent window.'}),
+ kc(2,['{ }','block','print'],'Write a block { } that contains two print statements which together print: Java Rocks',{out:'Java Rocks',loose:true,srcRe:/\{[\s\S]*\}/,tip:'Put both print statements between { and }.',sample:'{\n  System.out.print("Java ");\n  System.out.println("Rocks");\n}',why:'A block groups statements. The two prints share one line.'}),
+ kc(2,['println'],'Write the command that prints the number 5 and moves to a new line.',{out:'5\n',sample:'System.out.println(5);',why:'Numbers do not need quotes.'}),
+ kc(2,['print','println'],'Write two commands that print Result: and 5 on the same line.',{out:'Result: 5',loose:true,sample:'System.out.print("Result: ");\nSystem.out.println(5);',why:'print keeps the same line, so 5 appears right after Result: .'}),
+];
+MCQ.forEach((q,i)=>{q.id='m'+(i+1);q.t='mcq';q.cat='concept';});
+KEY.forEach((q,i)=>{q.id='k'+(i+1);q.cat=q.t==='mcq'?'keyword':q.t;});
+const ALLQ=[...MCQ,...KEY];
+const QBYID=Object.fromEntries(ALLQ.map(q=>[q.id,q]));
+const CATNAME={concept:'Concept question',keyword:'Keyword question',fill:'Fill in the keyword',cmd:'Type the command'};
+const ansText=q=>q.t==='mcq'?q.o[q.a]:q.t==='fill'?q.ans[0]:q.sample;
+
+/* ---- pin codes ---- */
+const EMBED=(()=>{try{return JSON.parse($('#pinned').textContent);}catch(e){return null;}})();
+const getPin=()=>EMBED||S.pin;
+function encodeCode(pin){
+  const json=JSON.stringify({t:pin.title||'',i:pin.ids,q:pin.shuffleQ?1:0,o:pin.shuffleO===false?0:1,k:pin.showKw===false?0:1});
+  return 'JL1.'+btoa(unescape(encodeURIComponent(json))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+function decodeCode(code){
+  try{
+    code=String(code||'').trim();
+    if(!code.startsWith('JL1.'))return null;
+    let b=code.slice(4).replace(/-/g,'+').replace(/_/g,'/');while(b.length%4)b+='=';
+    const o=JSON.parse(decodeURIComponent(escape(atob(b))));
+    const ids=(o.i||[]).filter(id=>QBYID[id]);
+    if(!ids.length)return null;
+    return {title:o.t||'',ids,shuffleQ:!!o.q,shuffleO:o.o!==0,showKw:o.k!==0};
+  }catch(e){return null;}
+}
+const pinQs=pin=>{const qs=pin.ids.map(id=>QBYID[id]).filter(Boolean);return pin.shuffleQ?shuffle(qs):qs;};
+
+/* ---- grading a typed command by running it ---- */
+function gradeCmd(q,code){
+  let src=code,off=0;
+  if(!/\bclass\b/.test(code)){src=wrapSnippet(code.split('\n'));off=2;}
+  if(q.imp&&!/import\s+javax\.swing/.test(src)){src='import javax.swing.JOptionPane;\n'+src;off+=1;}
+  const r=javaRun(src);
+  if(!r.ok)return {ok:false,kind:'compile',err:{...r.err,line:Math.max(1,r.err.line-off)}};
+  let ok=true;
+  if(q.dialog!==undefined)ok=r.dialogs.some(d=>d.msg===q.dialog);
+  else if(q.out!==undefined)ok=q.loose?r.out.trimEnd()===q.out.trimEnd():r.out===q.out;
+  if(!ok)return {ok:false,kind:'output',out:r.out,dialogs:r.dialogs};
+  if(q.srcRe&&!q.srcRe.test(code))return {ok:false,kind:'shape',out:r.out,dialogs:r.dialogs};
+  return {ok:true,out:r.out,dialogs:r.dialogs};
+}
+function fillCode(lines){
+  const pre=h('pre',{class:'code'});
+  lines.forEach((l,li)=>{
+    l.split('____').forEach((part,pi,arr)=>{pre.append(...hl(part));if(pi<arr.length-1)pre.append(h('span',{class:'blank'},'?'));});
+    if(li<lines.length-1)pre.append('\n');
+  });
+  return pre;
+}
+const kwChips=list=>h('div',{class:'kwchips'},list.map(k=>h('code',{class:'kwc'},k)));
+
+/* ---- the set player (used by Keywords & Commands, and by the instructor's pinned set) ---- */
+let SP=null;
+function startSet(m,qs,opts){SP={qs,i:0,score:0,missed:[],opts:opts||{},cls:false};drawSet(m);}
+function drawSet(m){
+  m=m||$('#main');m.replaceChildren();m.classList.toggle('classmode',!!SP.cls);document.onkeydown=null;
+  if(SP.i>=SP.qs.length)return setResult(m);
+  const q=SP.qs[SP.i],shuffleO=SP.opts.shuffleO!==false;
+  let locked=false,tries=0,revealFn=null;
+  const body=h('div'),fb=h('div',{'aria-live':'polite'});
+  const nextBtn=h('button',{class:'btn',style:'display:none',onclick:()=>{SP.i++;drawSet();}},SP.i===SP.qs.length-1?'See my result':'Next question');
+  const info=(t,why)=>h('div',{class:'fb info'},h('b',{},t),why);
+  function done(ok,xp){
+    locked=true;nextBtn.style.display='';nextBtn.focus();
+    if(ok)SP.score++;else SP.missed.push(q);
+    if(ok&&q.cat!=='concept')S.stats.keyOk=(S.stats.keyOk||0)+1;
+    award(ok,xp);
+  }
+  if(q.t==='mcq'){
+    const idx=shuffleO?shuffle([0,1,2,3]):[0,1,2,3];
+    const opts=idx.map(i=>q.o[i]),ans=idx.indexOf(q.a);
+    const els=opts.map((t,i)=>h('button',{class:'opt',onclick:()=>pick(i)},h('span',{class:'k'},'ABCD'[i]),h('span',{},t)));
+    const mark=p=>els.forEach((o,i)=>{o.disabled=true;if(i===ans)o.classList.add('right');else if(i===p)o.classList.add('wrong');});
+    function pick(i){
+      if(locked||SP.cls)return;mark(i);const ok=i===ans;
+      fb.replaceChildren(h('div',{class:'fb '+(ok?'ok':'no')},h('b',{},ok?'Correct!':'Not quite. The answer is '+'ABCD'[ans]+'.'),q.why));
+      done(ok,10);
+    }
+    revealFn=()=>{mark(-1);fb.replaceChildren(info('Answer: '+'ABCD'[ans],q.why));};
+    body.append(h('div',{class:'opts',role:'group','aria-label':'Answers'},els));
+    document.onkeydown=e=>{if(SP.cls)return;const k=e.key.toLowerCase();if(k.length===1&&'abcd'.includes(k))pick('abcd'.indexOf(k));};
+  }else if(q.t==='fill'){
+    const inp=h('input',{class:'inp',type:'text',autocomplete:'off',autocapitalize:'off',spellcheck:'false','aria-label':'Your answer'});
+    const chk=h('button',{class:'btn',onclick:check},'Check');
+    function check(){
+      if(locked||SP.cls)return;
+      const v=inp.value.trim();
+      if(!v){fb.replaceChildren(info('Type your answer first.',''));return;}
+      tries++;
+      if(q.ans.includes(v)){fb.replaceChildren(h('div',{class:'fb ok'},h('b',{},'Correct!'),q.why));inp.disabled=true;chk.style.display='none';done(true,tries===1?12:6);}
+      else if(tries>=2){fb.replaceChildren(h('div',{class:'fb no'},h('b',{},'The answer is: '+q.ans[0]),q.why));inp.disabled=true;chk.style.display='none';done(false,0);}
+      else{const near=q.ans.some(a=>a.toLowerCase()===v.toLowerCase());fb.replaceChildren(h('div',{class:'fb no'},h('b',{},'Not quite.'),near?'Careful: Java is case-sensitive. Check the capital letters.':'Try once more.'));}
+    }
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+    revealFn=()=>fb.replaceChildren(info('Answer: '+q.ans[0],q.why));
+    body.append(fillCode(q.code));
+    if(!SP.cls)body.append(h('label',{class:'lab',for:'fillIn'},'Type the missing keyword or symbol:'),(inp.id='fillIn',inp),h('div',{class:'btnrow'},chk));
+    if(!SP.cls)setTimeout(()=>inp.focus(),0);
+  }else{
+    const ta=h('textarea',{class:'ta',rows:3,spellcheck:'false',autocapitalize:'off','aria-label':'Your command'});
+    const con=h('div',{class:'console',style:'display:none;margin-top:14px'});
+    const chk=h('button',{class:'btn',onclick:check},'Run and check');
+    const wantText=q.dialog!==undefined?'a dialog box that shows "'+q.dialog+'"':'the output shown in the console';
+    function check(){
+      if(locked||SP.cls)return;
+      if(!ta.value.trim()){fb.replaceChildren(info('Type your command first.',''));return;}
+      tries++;const r=gradeCmd(q,ta.value);
+      if(r.ok){con.style.display='';renderConsole(con,{out:r.out,dialogs:r.dialogs,caret:false});fb.replaceChildren(h('div',{class:'fb ok'},h('b',{},'Correct!'),q.why));ta.disabled=true;chk.style.display='none';done(true,tries===1?15:8);return;}
+      con.style.display='';
+      let msg;
+      if(r.kind==='compile'){renderConsole(con,{err:r.err,src:ta.value});msg=h('div',{class:'fb no'},h('b',{},'Java found an error on line '+r.err.line+' of your code.'),'Read the message and hint in the console, fix your command, and run it again.');}
+      else{renderConsole(con,{out:r.out,dialogs:r.dialogs,caret:false});msg=h('div',{class:'fb no'},h('b',{},r.kind==='shape'?'The output is right, but the code is missing something.':'Your code runs, but it does not match the goal.'),r.kind==='shape'?(q.tip||''):'Goal: '+wantText+'. Check print or println, spaces, and quotes.');}
+      if(tries>=2){msg.append(h('div',{style:'margin-top:8px'},'One correct answer:'),codeBlock(q.sample.split('\n')));ta.disabled=true;chk.style.display='none';done(false,0);}
+      fb.replaceChildren(msg);
+    }
+    ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();check();}});
+    revealFn=()=>fb.replaceChildren(info('One correct answer:',h('div',{style:'margin-top:6px'},codeBlock(q.sample.split('\n')))));
+    if(!SP.cls)body.append(h('label',{class:'lab',for:'cmdIn'},'Your code (Ctrl+Enter to run):'),(ta.id='cmdIn',ta),h('div',{class:'btnrow'},chk),con);
+    if(!SP.cls)setTimeout(()=>ta.focus(),0);
+  }
+  const reveal=h('button',{class:'btn',onclick:()=>{revealFn();reveal.style.display='none';nextBtn.style.display='';}},'Reveal answer');
+  m.append(
+    h('div',{class:'topline'},h('h1',{},SP.opts.title||'Keywords & Commands'),
+      h('label',{class:'switch'},h('input',{type:'checkbox',checked:!!SP.cls,onchange:e=>{SP.cls=e.target.checked;drawSet();}}),'Class mode (teacher reveals the answer)')),
+    h('div',{class:'panel'},
+      h('div',{class:'topline'},h('span',{},'Question '+(SP.i+1)+' of '+SP.qs.length),h('span',{class:'tags'},h('span',{class:'chip cat'},CATNAME[q.cat]),lecChip(q.lec))),
+      h('div',{class:'progress'},h('i',{style:'width:'+(SP.i/SP.qs.length*100)+'%'})),
+      h('p',{class:'qtext'},q.q),
+      body,fb,h('div',{class:'btnrow'},SP.cls?reveal:null,nextBtn)));
+}
+function setResult(m){
+  const n=SP.qs.length,sc=SP.score;
+  const kws=[...new Set(SP.missed.flatMap(q=>q.kw||[]))];
+  const rep=['Java Lab: '+(SP.opts.title||'Keywords & Commands'),'Name: '+(S.name||'(not entered)'),'Score: '+sc+'/'+n,'Keywords to review: '+(kws.length?kws.join('  '):'none'),'Date: '+new Date().toISOString().slice(0,10)].join('\n');
+  const ta=h('textarea',{class:'ta',rows:5,readonly:true,'aria-label':'Result to copy'});ta.value=rep;
+  const cm=h('span',{class:'switch','aria-live':'polite'});
+  const copy=()=>{ta.select();let ok=false;try{ok=document.execCommand('copy');}catch(e){}cm.textContent=ok?'Copied!':'Select the text and copy it.';};
+  const nameIn=h('input',{class:'namein',type:'text',placeholder:'Your name',value:S.name,'aria-label':'Your name',oninput:e=>{S.name=e.target.value;save();ta.value=ta.value.replace(/^Name: .*$/m,'Name: '+(S.name||'(not entered)'));}});
+  m.append(h('div',{class:'panel result'},h('h1',{},'Set complete'),h('div',{class:'big'},sc+' / '+n),
+    h('p',{class:'lead',style:'margin:10px auto'},sc===n?'Perfect. You know these keywords and commands.':kws.length?'Review these keywords and commands, then retry the ones you missed.':'Retry the questions you missed.'),
+    kws.length?h('div',{},h('b',{},'Keywords to review'),kwChips(kws)):null));
+  if(SP.missed.length){
+    m.append(h('div',{class:'panel'},h('h2',{},'Questions to review'),
+      SP.missed.map(q=>h('div',{class:'qrow static'},h('span',{class:'chip cat'},CATNAME[q.cat]),h('div',{},h('div',{},q.t==='fill'?q.q+'  '+q.code.join(' '):q.q),h('div',{class:'ans'},'Answer: ',h('code',{},ansText(q))))))));
+  }
+  m.append(h('div',{class:'panel'},h('h2',{},'Share your result'),h('div',{class:'btnrow'},nameIn),h('div',{style:'margin-top:10px'},ta),
+    h('div',{class:'btnrow'},h('button',{class:'btn',onclick:copy},'Copy result'),cm)));
+  m.append(h('div',{class:'btnrow'},
+    SP.missed.length?h('button',{class:'btn',onclick:()=>{const again=SP.missed.slice();startSet(m,again,SP.opts);}},'Retry missed ('+SP.missed.length+')'):null,
+    SP.opts.back==='teacher'?h('button',{class:'btn sec',onclick:()=>go('teacher')},'Back to instructor tools'):h('button',{class:'btn sec',onclick:()=>go(SP.opts.back||'keys')},SP.opts.back==='pinned'?'Back to the set':'New set'),
+    h('button',{class:'btn ghost',onclick:()=>go('home')},'Home')));
+}
+
+/* ---- Keywords & Commands (practice) ---- */
+function viewKeys(m){
+  const qs=shuffle(pool(KEY)).slice(0,10);
+  startSet(m,qs,{title:'Keywords & Commands',shuffleO:true,back:'keys'});
+}
+
+/* ---- Instructor's pinned set (student side) ---- */
+function viewPinned(m){
+  const pin=getPin();
+  if(!pin){m.append(h('h1',{},"Instructor's set"),h('p',{class:'lead'},'No set has been pinned yet. Enter the code from your instructor on the Home page.'));return;}
+  const qs=pinQs(pin);
+  const counts={};qs.forEach(q=>counts[q.cat]=(counts[q.cat]||0)+1);
+  const kws=[...new Set(qs.flatMap(q=>q.kw||[]))];
+  m.append(h('h1',{},pin.title||"Instructor's set"),
+    h('p',{class:'lead'},qs.length+' questions chosen by your instructor, on the keywords and commands of the lectures.'),
+    h('div',{class:'panel'},
+      h('div',{class:'tags'},Object.entries(counts).map(([c,k])=>h('span',{class:'chip cat'},k+' × '+CATNAME[c]))),
+      kws.length&&pin.showKw!==false?h('div',{style:'margin-top:14px'},h('b',{},'Keywords and commands in this set'),kwChips(kws.slice(0,40))):null,
+      h('div',{class:'btnrow'},h('button',{class:'btn',onclick:()=>startSet(m,pinQs(pin),{title:pin.title||"Instructor's set",shuffleO:pin.shuffleO!==false,back:'pinned'})},'Start the set'))));
+}
+
+/* ---- Instructor tools ---- */
+function viewTeacher(m){
+  const T=S.teacher||(S.teacher={title:'',ids:[],shuffleQ:false,shuffleO:true,showKw:true});
+  const sel=new Set(T.ids);
+  const F={lec:'all',cat:'all',text:''};
+  const codeBox=h('textarea',{class:'ta',rows:4,readonly:true,'aria-label':'Share code'});
+  const countEl=h('b',{},'0 questions selected');
+  const list=h('div',{});
+  const rows=[];
+  function persist(){T.ids=ALLQ.filter(q=>sel.has(q.id)).map(q=>q.id);save();}
+  function refresh(){
+    persist();
+    countEl.textContent=sel.size+(sel.size===1?' question selected':' questions selected');
+    codeBox.value=sel.size?encodeCode({title:T.title,ids:T.ids,shuffleQ:T.shuffleQ,shuffleO:T.shuffleO,showKw:T.showKw}):'Tick at least one question to get a code.';
+    rows.forEach(r=>{r.el.classList.toggle('on',sel.has(r.q.id));r.cb.checked=sel.has(r.q.id);});
+    [pv,cp,dl].forEach(b=>b.disabled=!sel.size);
+  }
+  function matches(q){
+    if(F.lec!=='all'&&String(q.lec)!==F.lec)return false;
+    if(F.cat!=='all'&&q.cat!==F.cat)return false;
+    if(F.text){const t=F.text.toLowerCase();const hay=(q.q+' '+(q.kw||[]).join(' ')+' '+(q.code||[]).join(' ')+' '+(q.o||[]).join(' ')+' '+ansText(q)).toLowerCase();if(!hay.includes(t))return false;}
+    return true;
+  }
+  ALLQ.forEach(q=>{
+    const cb=h('input',{type:'checkbox','aria-label':'Pin question',onchange:()=>{cb.checked?sel.add(q.id):sel.delete(q.id);refresh();}});
+    const el=h('label',{class:'qrow'},cb,h('div',{},
+      h('div',{class:'tags'},h('span',{class:'chip cat'},CATNAME[q.cat]),lecChip(q.lec),(q.kw||[]).slice(0,3).map(k=>h('code',{class:'kwc small'},k))),
+      h('div',{class:'qq'},q.q),
+      q.t==='fill'?h('div',{style:'margin-top:6px'},fillCode(q.code)):null,
+      h('div',{class:'ans'},'Answer: ',h('code',{},ansText(q)))));
+    rows.push({q,el,cb});list.append(el);
+  });
+  function applyFilter(){let n=0;rows.forEach(r=>{const ok=matches(r.q);r.el.style.display=ok?'':'none';if(ok)n++;});shown.textContent=n+' shown';}
+  const shown=h('span',{class:'switch'},'');
+  const pv=h('button',{class:'btn sec',onclick:()=>{const qs=pinQs({ids:T.ids,shuffleQ:T.shuffleQ});startSet(m,qs,{title:T.title||'Preview',shuffleO:T.shuffleO,back:'teacher'});}},'Preview as student');
+  const cp=h('button',{class:'btn',onclick:()=>{codeBox.select();let ok=false;try{ok=document.execCommand('copy');}catch(e){}cpMsg.textContent=ok?'Code copied!':'Select the code and copy it.';}},'Copy code');
+  const dl=h('button',{class:'btn go',onclick:download},'Download student copy');
+  const cpMsg=h('span',{class:'switch','aria-live':'polite'});
+  function buildCopy(pin){
+    const c=document.documentElement.cloneNode(true);
+    ['#nav','#main','#me','#lecSeg','#toasts'].forEach(s=>{const e=c.querySelector(s);if(e)e.replaceChildren();});
+    const mn=c.querySelector('#main');if(mn)mn.removeAttribute('class');
+    c.querySelector('#pinned').textContent=JSON.stringify(pin).replace(/</g,'\\u003c');
+    return '<!DOCTYPE html>\n'+c.outerHTML;
+  }
+  function download(){
+    const pin={title:T.title,ids:T.ids,shuffleQ:T.shuffleQ,shuffleO:T.shuffleO,showKw:T.showKw,lock:true};
+    const name='Java_Lab_'+((T.title||'set').replace(/[^A-Za-z0-9]+/g,'_').replace(/^_|_$/g,'')||'set')+'.html';
+    try{
+      const url=URL.createObjectURL(new Blob([buildCopy(pin)],{type:'text/html'}));
+      const a=h('a',{href:url,download:name});document.body.append(a);a.click();a.remove();
+      cpMsg.textContent='Downloaded '+name;
+    }catch(e){cpMsg.textContent='Download is blocked here. Use the code instead.';}
+  }
+  window.__buildCopy=buildCopy;
+  const cats=[['all','All types'],['concept','Concept questions'],['keyword','Keyword questions'],['fill','Fill in the keyword'],['cmd','Type the command']];
+  m.append(h('h1',{},'Instructor tools'),
+    h('p',{class:'lead'},'Choose exactly which questions your students see. Then share a code, or download a copy of this page with your questions pinned.'),
+    h('div',{class:'panel'},h('h2',{},'1. Name the set'),
+      h('div',{class:'btnrow'},h('input',{class:'namein',type:'text',placeholder:'For example: Week 2 check',value:T.title,'aria-label':'Set title',style:'min-width:min(100%,320px)',oninput:e=>{T.title=e.target.value;refresh();}})),
+      h('div',{class:'btnrow'},
+        h('label',{class:'switch'},h('input',{type:'checkbox',checked:T.shuffleQ,onchange:e=>{T.shuffleQ=e.target.checked;refresh();}}),'Shuffle the question order for each student'),
+        h('label',{class:'switch'},h('input',{type:'checkbox',checked:T.shuffleO!==false,onchange:e=>{T.shuffleO=e.target.checked;refresh();}}),'Shuffle the answer choices'),
+        h('label',{class:'switch'},h('input',{type:'checkbox',checked:T.showKw!==false,onchange:e=>{T.showKw=e.target.checked;refresh();}}),'Show the list of keywords before the set starts (turn off for a test)'))),
+    h('div',{class:'panel'},h('h2',{},'2. Pick the questions'),
+      h('div',{class:'filters'},
+        h('select',{'aria-label':'Lecture',onchange:e=>{F.lec=e.target.value;applyFilter();}},h('option',{value:'all'},'Both lectures'),h('option',{value:'1'},'Lecture 1'),h('option',{value:'2'},'Lecture 2')),
+        h('select',{'aria-label':'Question type',onchange:e=>{F.cat=e.target.value;applyFilter();}},cats.map(([v,t])=>h('option',{value:v},t))),
+        h('input',{class:'namein',type:'search',placeholder:'Search a keyword, e.g. println',style:'min-width:0;flex:1 1 200px','aria-label':'Search',oninput:e=>{F.text=e.target.value.trim();applyFilter();}}),
+        shown),
+      h('div',{class:'btnrow'},
+        h('button',{class:'btn ghost',onclick:()=>{rows.forEach(r=>{if(r.el.style.display!=='none')sel.add(r.q.id);});refresh();}},'Select all shown'),
+        h('button',{class:'btn ghost',onclick:()=>{rows.forEach(r=>{if(r.el.style.display!=='none')sel.delete(r.q.id);});refresh();}},'Clear shown')),
+      list),
+    h('div',{class:'stickybar'},countEl,h('div',{class:'btnrow',style:'margin:0'},pv,cp,dl)),
+    h('div',{class:'panel'},h('h2',{},'3. Share with students'),
+      h('p',{class:'lead',style:'font-size:15px'},'Option A: post this code. Students paste it in the box on the Home page. Option B: download the student copy and upload that file to Blackboard instead. It opens with your questions already pinned, and the instructor tools are hidden.'),
+      codeBox,h('div',{class:'btnrow'},cpMsg),
+      h('p',{class:'lead',style:'font-size:14px'},'Tip: if you host this page at a web address, add #pin= and the code to the end of the link, and students land directly on your set. These tools are not password protected.')));
+  applyFilter();refresh();
+}
+
+/* ---- Code entry on Home ---- */
+function codeEntry(){
+  const inp=h('input',{class:'inp',type:'text',placeholder:'JL1.…','aria-label':'Instructor code',style:'width:min(100%,420px);font-size:15px'});
+  const msg=h('div',{'aria-live':'polite',style:'margin-top:8px'});
+  const load=()=>{
+    const pin=decodeCode(inp.value);
+    if(!pin){msg.replaceChildren(h('div',{class:'fb no'},'That code was not recognized. Copy it again from your instructor.'));return;}
+    S.pin=pin;save();buildChrome();go('pinned');
+  };
+  return h('details',{},h('summary',{},'Have a code from your instructor?'),h('div',{class:'btnrow'},inp,h('button',{class:'btn',onclick:load},'Load set')),msg);
+}
+
+/* boot */
+buildChrome();
+{const hm=(location.hash||'').match(/pin=([A-Za-z0-9_.\-]+)/);const pin=hm&&!EMBED?decodeCode(hm[1]):null;if(pin){S.pin=pin;save();buildChrome();go('pinned');}else go(EMBED?'pinned':'home');}
+</script>
+
+
+</body></html>
