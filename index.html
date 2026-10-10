@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Java Lab – Lectures 1 &amp; 2</title>
+<title>Java Lab – Lectures 1–4</title>
 <style>
 :root{
   --bg:#EEF2F9; --panel:#FFFFFF; --ink:#0F1F3D; --muted:#586A8E; --line:#D5DEEE;
@@ -15,13 +16,25 @@
   --f-head:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
   --f-mono:"Cascadia Mono",Consolas,"SFMono-Regular",Menlo,"Courier New",monospace;
 }
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1626; --panel:#161F35; --ink:#EAF0FF; --muted:#93A2C6; --line:#28345A; --code-bg:#101A30;
+    --blue-l:#22335E; --blue-d:#9CC0FF;
+    --ok-l:#123526; --ok:#3ECF8E;
+    --bad-l:#3B141B; --bad:#FF7A86;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1626; --panel:#161F35; --ink:#EAF0FF; --muted:#93A2C6; --line:#28345A; --code-bg:#101A30;
+  --blue-l:#22335E; --blue-d:#9CC0FF;
+  --ok-l:#123526; --ok:#3ECF8E;
+  --bad-l:#3B141B; --bad:#FF7A86;
+}
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1626;--panel:#161F35;--ink:#EAF0FF;--muted:#93A2C6;--line:#28345A;--code-bg:#101A30;}}
-:root[data-theme="dark"]{--bg:#0F1626;--panel:#161F35;--ink:#EAF0FF;--muted:#93A2C6;--line:#28345A;--code-bg:#101A30;}
 button{font:inherit;color:inherit;cursor:pointer}
 :focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 .app{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100vh}
@@ -61,7 +74,7 @@ h2{font-size:22px}
 .progress>i{display:block;height:100%;background:var(--blue);transition:width .3s}
 .qtext{font-size:clamp(18px,2.6vw,24px);font-family:var(--f-head);margin:14px 0 18px}
 .opts{display:grid;gap:10px}
-.opt{display:flex;gap:14px;align-items:center;text-align:left;width:100%;background:#fff;border:2px solid var(--line);border-radius:12px;padding:12px 14px;font-size:17px}
+.opt{display:flex;gap:14px;align-items:center;text-align:left;width:100%;background:var(--panel);border:2px solid var(--line);border-radius:12px;padding:12px 14px;font-size:17px}
 .opt:hover:not([disabled]){border-color:var(--blue)}
 .opt .k{flex:none;width:30px;height:30px;border-radius:8px;background:var(--code-bg);border:1px solid var(--line);display:grid;place-items:center;font-weight:700;font-size:14px}
 .opt.right{background:var(--ok-l);border-color:var(--ok)}
@@ -73,12 +86,12 @@ h2{font-size:22px}
 .fb{margin-top:16px;padding:12px 14px;border-radius:12px;font-size:16px}
 .fb.ok{background:var(--ok-l);border-left:5px solid var(--ok)}
 .fb.no{background:var(--bad-l);border-left:5px solid var(--bad)}
-.fb.info{background:var(--sun-l);border-left:5px solid var(--sun)}
+.fb.info{background:var(--sun-l);border-left:5px solid var(--sun);color:#5B4300}
 .fb b:first-child{display:block;margin-bottom:2px}
 .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center}
 .btn{border:0;background:var(--blue);color:#fff;font-weight:700;padding:11px 20px;border-radius:10px;font-size:16px}
-.btn:hover{background:var(--blue-d)}
-.btn.sec{background:#fff;color:var(--blue-d);border:2px solid var(--blue)}
+.btn:hover{background:#1638A3}
+.btn.sec{background:var(--panel);color:var(--blue-d);border:2px solid var(--blue)}
 .btn.sec:hover{background:var(--blue-l)}
 .btn.ghost{background:transparent;color:var(--muted);border:2px solid var(--line)}
 .btn.ghost:hover{border-color:var(--muted);color:var(--ink)}
@@ -114,7 +127,7 @@ h2{font-size:22px}
 .dlg .ic{width:32px;height:32px;border-radius:50%;background:#8F8FD0;color:#fff;font-weight:700;display:grid;place-items:center;font-size:18px;font-family:Georgia,serif}
 .dlg .ic.ERROR_MESSAGE{background:#C33}.dlg .ic.WARNING_MESSAGE{background:#E0A800}.dlg .ic.QUESTION_MESSAGE{background:#4A8}
 .dlg .ok{display:block;margin:0 auto 12px;padding:3px 26px;background:#D4D0C8;border:2px solid #fff;border-right-color:#404040;border-bottom-color:#404040;font:inherit}
-textarea.ta{width:100%;font-family:var(--f-mono);font-size:16px;line-height:1.55;border:2px solid var(--line);border-radius:10px;padding:10px 12px;resize:vertical;background:#fff;color:var(--ink)}
+textarea.ta{width:100%;font-family:var(--f-mono);font-size:16px;line-height:1.55;border:2px solid var(--line);border-radius:10px;padding:10px 12px;resize:vertical;background:var(--panel);color:var(--ink)}
 textarea.ta:focus{border-color:var(--blue);outline:none}
 .lab{font-weight:700;margin:16px 0 6px;display:block}
 
@@ -133,7 +146,7 @@ textarea.ta:focus{border-color:var(--blue);outline:none}
 /* build */
 .buildgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
 .buildgrid>*,.pg>*{min-width:0}
-.zone{border:2px dashed var(--line);border-radius:12px;padding:10px;min-height:150px;display:flex;flex-direction:column;gap:6px;background:#fff}
+.zone{border:2px dashed var(--line);border-radius:12px;padding:10px;min-height:150px;display:flex;flex-direction:column;gap:6px;background:var(--panel)}
 .zone h3{font-size:15px;color:var(--muted);font-family:var(--f-body);font-weight:600;margin-bottom:2px}
 .piece{min-width:0;display:flex;align-items:center;gap:6px;background:var(--code-bg);border:1px solid var(--line);border-radius:8px;padding:0}
 .piece>button.txt{flex:1;min-width:0;text-align:left;border:0;background:transparent;font-family:var(--f-mono);font-size:14.5px;padding:8px 10px;white-space:pre;overflow:auto;border-radius:8px}
@@ -146,7 +159,7 @@ textarea.ta:focus{border-color:var(--blue);outline:none}
 /* match */
 .pairs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 18px;margin-top:16px}
 .pairs .col{display:grid;gap:8px;align-content:start}
-.tile{border:2px solid var(--line);background:#fff;border-radius:10px;padding:10px 12px;text-align:left;font-size:15.5px;min-height:48px}
+.tile{border:2px solid var(--line);background:var(--panel);border-radius:10px;padding:10px 12px;text-align:left;font-size:15.5px;min-height:48px}
 .tile.mono{font-family:var(--f-mono);font-weight:700}
 .tile:hover:not([disabled]){border-color:var(--blue)}
 .tile.sel{border-color:var(--blue);background:var(--blue-l)}
@@ -155,20 +168,21 @@ textarea.ta:focus{border-color:var(--blue);outline:none}
 
 /* playground */
 .pg{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px;align-items:start}
-.editor{display:grid;grid-template-columns:38px 1fr;border:2px solid var(--line);border-radius:10px;background:#fff;overflow:hidden;height:360px}
+.editor{display:grid;grid-template-columns:38px 1fr;border:2px solid var(--line);border-radius:10px;background:var(--panel);overflow:hidden;height:360px}
 .editor:focus-within{border-color:var(--blue)}
 .gut{background:var(--code-bg);border-right:1px solid var(--line);color:var(--muted);font-family:var(--f-mono);font-size:14px;line-height:22px;padding:10px 6px 10px 0;text-align:right;overflow:hidden;user-select:none;white-space:pre}
 .gut .bad{color:#fff;background:var(--bad);display:block;border-radius:3px 0 0 3px}
-.editor textarea{border:0;outline:0;resize:none;font-family:var(--f-mono);font-size:14px;line-height:22px;padding:10px 12px;white-space:pre;overflow:auto;color:var(--ink);background:#fff;tab-size:2;width:100%;height:100%}
-.tracev{font-family:var(--f-mono);font-size:14px;line-height:22px;overflow:auto;padding:10px 0;background:#fff}
+.editor textarea{border:0;outline:0;resize:none;font-family:var(--f-mono);font-size:14px;line-height:22px;padding:10px 12px;white-space:pre;overflow:auto;color:var(--ink);background:var(--panel);tab-size:2;width:100%;height:100%}
+.tracev{font-family:var(--f-mono);font-size:14px;line-height:22px;overflow:auto;padding:10px 0;background:var(--panel)}
 .tracev>div{white-space:pre;padding:0 12px}
 .tracev>div.cur{background:#FFF1B8}
-.goalbox{background:var(--sun-l);border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.goalbox{background:var(--sun-l);border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;color:#5B4300}
+.goalbox b{color:#5B4300}
 .goalbox select{font:inherit;padding:6px 8px;border-radius:8px;border:1px solid var(--line);max-width:100%}
 .vars{font-family:var(--f-mono);font-size:14px;margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
-.vars span{background:#fff;border:1px solid var(--line);border-radius:8px;padding:2px 10px}
+.vars span{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:2px 10px}
 .exrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center;font-size:14px;color:var(--muted)}
-.exrow button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:3px 12px;font-size:14px}
+.exrow button{border:1px solid var(--line);background:var(--panel);border-radius:99px;padding:3px 12px;font-size:14px}
 .exrow button:hover{border-color:var(--blue);color:var(--blue-d)}
 
 /* hero + home */
@@ -189,7 +203,7 @@ details li{margin:6px 0}
 .stat b{font-family:var(--f-head);font-size:26px;display:block}
 .stat span{color:var(--muted);font-size:14px}
 .badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:14px}
-.badge{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}
+.badge{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--panel)}
 .badge .medal{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--line);color:#fff;font-weight:700}
 .badge.on .medal{background:var(--sun)}
 .badge:not(.on){opacity:.6}
@@ -212,9 +226,19 @@ details li{margin:6px 0}
 .classmode .opt{font-size:clamp(20px,3vw,30px);padding:16px 18px}
 
 
+/* lecture notes */
+.notecard{margin-top:20px}
+.notelabel{font-family:var(--f-head);font-weight:700;font-size:15px;color:var(--muted);margin:16px 0 8px}
+.notecard>.notelabel:first-of-type{margin-top:18px}
+.keypoints{margin:0;padding-left:22px;display:grid;gap:10px;min-width:0}
+.keypoints li{font-size:16px;line-height:1.55;overflow-wrap:anywhere}
+.keypoints .term{color:var(--blue-d);background:var(--blue-l);border-radius:5px;padding:0 4px}
+.summarybox{background:var(--sun-l);border-radius:12px;padding:4px 16px 14px}
+.summarybox p{margin:0;font-size:15.5px;line-height:1.6;color:#5B4300}
+
 /* direct questions + instructor */
 .blank{display:inline-block;min-width:3.2ch;text-align:center;background:var(--sun-l);border:2px dashed var(--sun);border-radius:6px;color:#8A5A00;font-weight:700;padding:0 6px}
-.inp{font-family:var(--f-mono);font-size:18px;padding:10px 12px;border:2px solid var(--line);border-radius:10px;width:min(100%,360px);background:#fff;color:var(--ink)}
+.inp{font-family:var(--f-mono);font-size:18px;padding:10px 12px;border:2px solid var(--line);border-radius:10px;width:min(100%,360px);background:var(--panel);color:var(--ink)}
 .inp:focus{border-color:var(--blue);outline:none}
 .tags{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 .chip.cat{background:#EDE7FB;color:#4B2C99}
@@ -222,7 +246,7 @@ details li{margin:6px 0}
 .kwchips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
 code.kwc{margin-right:2px;font-family:var(--f-mono);background:var(--sun-l);color:#7A4E00;border-radius:6px;padding:1px 8px;font-weight:700;font-size:.92em}
 code.kwc.small{font-size:12.5px;padding:0 6px}
-.qrow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;margin-top:8px;cursor:pointer;align-items:start}
+.qrow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--panel);margin-top:8px;cursor:pointer;align-items:start}
 .qrow.on{border-color:var(--blue);background:var(--blue-l)}
 .qrow.static{cursor:default;display:flex;gap:12px;flex-wrap:wrap}
 .qrow input[type=checkbox]{width:20px;height:20px;margin-top:2px}
@@ -232,8 +256,40 @@ code.kwc.small{font-size:12.5px;padding:0 6px}
 .qrow>div{min-width:0}
 .qrow .qq,.qtext,.opt span,.fb,.tile{overflow-wrap:anywhere}
 .filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
-.filters select{font:inherit;padding:9px 10px;border-radius:10px;border:2px solid var(--line);background:#fff}
+.filters select{font:inherit;padding:9px 10px;border-radius:10px;border:2px solid var(--line);background:var(--panel)}
 .stickybar{position:sticky;bottom:64px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 14px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:14px;box-shadow:0 8px 26px rgba(15,31,61,.16);z-index:5}
+
+/* lecture hub + instructor entry + modal */
+.leccards{display:grid;gap:14px;margin-top:18px}
+.leccard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.leccard .teaser{color:var(--muted);font-size:14.5px;margin-top:4px;max-width:56ch}
+.leccard .stat{font-size:13px;color:var(--muted);margin-top:6px}
+.instrbtn{margin-top:auto;align-self:flex-start;width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--code-bg);opacity:.55;flex:none}
+.instrbtn:hover{opacity:1;border-color:var(--muted)}
+.instrbtn::before{content:'⚙';font-size:16px}
+#modalHost:empty{display:none}
+.modalbg{position:fixed;inset:0;background:rgba(10,16,32,.5);display:flex;align-items:center;justify-content:center;z-index:100;padding:16px}
+.modalbox{background:var(--panel);border-radius:16px;padding:24px;max-width:380px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.modalbox h3{font-family:var(--f-head);margin:0 0 6px}
+.modalbox p{color:var(--muted);font-size:14.5px;margin:0 0 14px}
+.modalbox .inp{width:100%;text-align:center;letter-spacing:4px;font-size:22px}
+.modalbox .err{color:var(--bad);font-size:13.5px;margin-top:8px;min-height:18px}
+.tabbar{display:flex;gap:4px;flex-wrap:wrap;border-bottom:2px solid var(--line);margin-bottom:18px}
+.tabbar button{border:0;background:transparent;padding:10px 14px;font-weight:700;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px}
+.tabbar button[aria-current="page"]{color:var(--blue-d);border-color:var(--blue)}
+.formgrid{display:grid;gap:12px;max-width:640px}
+.formgrid label{font-weight:600;font-size:14.5px;display:block;margin-bottom:4px}
+.formgrid input[type=text],.formgrid textarea,.formgrid select{width:100%;font:inherit;padding:9px 11px;border-radius:10px;border:2px solid var(--line);background:var(--panel);color:var(--ink)}
+.formgrid textarea{font-family:var(--f-mono);font-size:14px;min-height:90px}
+.formrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:14px 0}
+.dashtable{width:100%;border-collapse:collapse;font-size:14.5px}
+.dashtable th,.dashtable td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+.dashtable th{color:var(--muted);font-size:12.5px;text-transform:none}
+.dashtable tr.hard td{background:var(--bad-l)}
+.pct{font-weight:700}
+.pill{display:inline-block;font-size:11.5px;font-weight:700;padding:1px 8px;border-radius:99px;background:var(--sun-l);color:#7A4E00;margin-left:6px}
+.pill.new{background:var(--ok-l);color:var(--ok)}
 
 @media (max-width:860px){
   .app{grid-template-columns:minmax(0,1fr)}
@@ -260,12 +316,14 @@ code.kwc.small{font-size:12.5px;padding:0 6px}
       <div class="seg" id="lecSeg" role="group" aria-label="Choose lecture"></div>
     </div>
     <nav class="nav" id="nav" aria-label="Activities"></nav>
+    <button id="instrBtn" class="instrbtn" aria-label="Instructor" title="Instructor"></button>
   </aside>
   <main id="main" tabindex="-1"></main>
 </div>
 <div id="toasts" aria-live="polite"></div>
+<div id="modalHost"></div>
 
-<script id="pinned" type="application/json">{"title":"","ids":["m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11","m12","m15","m16","m17","m20","m21","m23","m24","m27","m35","k1","k2","k3","k4","k5","k6","k7","k8","k9","k11","k12","k17","k18","k19","k20","k22","k23","k24","k33","k35","k36","k37","k42","k43","k44","k45","k46","k47","k48","k49","k50","k51","k54","k55"],"shuffleQ":false,"shuffleO":true,"showKw":true,"lock":true}</script>
+<script id="sitedata" type="application/json">null</script>
 <script>
 "use strict";
 /* =====================================================================
@@ -315,6 +373,8 @@ function tokenize(src){
       let j=i;while(/[A-Za-z0-9_$]/.test(src[j]||''))j++;
       toks.push({t:'id',v:src.slice(i,j),line});i=j;continue;
     }
+    if(c==='+'&&src[i+1]==='+'){toks.push({t:'sym',v:'++',line});i+=2;continue;}
+    if(c==='-'&&src[i+1]==='-'){toks.push({t:'sym',v:'--',line});i+=2;continue;}
     if('{}()[];.,+-*/%='.includes(c)){toks.push({t:'sym',v:c,line});i++;continue;}
     throw new JErr(line,"illegal character: '"+c+"'",'This character is not allowed here. Check for a typing mistake.');
   }
@@ -355,9 +415,29 @@ function compile(src){
   function parseExpr(){return parseAdd();}
   function parseAdd(){let l=parseMul();while(isSym('+')||isSym('-')){const op=next();const r=parseMul();l=mkBin(op,l,r);}return l;}
   function parseMul(){let l=parseUnary();while(isSym('*')||isSym('/')||isSym('%')){const op=next();const r=parseUnary();l=mkBin(op,l,r);}return l;}
+  function requireNumVar(t,opv){
+    if(!Object.prototype.hasOwnProperty.call(decl,t.v))throw new JErr(t.line,'cannot find symbol: variable '+t.v,'Declare the variable first, for example: int '+t.v+' = 5;');
+    if(decl[t.v]==='String')throw new JErr(t.line,"bad operand type String for unary operator '"+opv+"'",opv+' only works on numbers (int or double), not text.');
+    if(!inited.has(t.v))throw new JErr(t.line,'variable '+t.v+' might not have been initialized','Give the variable a value first, for example: '+t.v+' = 5;');
+  }
   function parseUnary(){
     if(isSym('-')){const op=next();const e=parseUnary();if(e.ty==='String')throw new JErr(op.line,'bad operand type String for unary operator -','');return {k:'neg',e,ty:e.ty};}
-    return parsePrimary();
+    if(isSym('++')||isSym('--')){
+      const op=next();const t=cur();
+      if(t.t!=='id')throw new JErr(op.line,'unexpected type',op.v+' must be followed by a variable, for example: '+op.v+'count;');
+      requireNumVar(t,op.v);next();
+      return {k:'preinc',name:t.v,op:op.v,ty:decl[t.v],line:op.line};
+    }
+    return parsePostfix();
+  }
+  function parsePostfix(){
+    const e=parsePrimary();
+    if(e.k==='var'&&(isSym('++')||isSym('--'))){
+      const op=next();
+      if(e.ty==='String')throw new JErr(op.line,"bad operand type String for unary operator '"+op.v+"'",op.v+' only works on numbers (int or double), not text.');
+      return {k:'postinc',name:e.name,op:op.v,ty:e.ty,line:op.line};
+    }
+    return e;
   }
   function parsePrimary(){
     const t=next();
@@ -445,6 +525,7 @@ function compile(src){
     const t=peek();
     if(isSym('{')){next();return {k:'block',body:parseBlock(),line:t.line};}
     if(isSym(';')){next();return null;}
+    if(isSym('++')||isSym('--')){const e=parseExpr();expectSym(';','Every statement ends with a semicolon ( ; ).');return {k:'exprstmt',e,line:t.line};}
     if(t.t==='id'){
       if(t.v==='System')return parsePrint();
       if(t.v.toLowerCase()==='system')throw new JErr(t.line,'cannot find symbol: '+t.v,'Java is case-sensitive: System starts with a capital S.');
@@ -452,6 +533,7 @@ function compile(src){
       if(t.v==='int'||t.v==='String'||t.v==='double')return parseDecl();
       if(['int','string','double'].includes(t.v.toLowerCase()))throw new JErr(t.line,'cannot find symbol: class '+t.v,'Java is case-sensitive: write '+(t.v.toLowerCase()==='string'?'String':t.v.toLowerCase())+' exactly like that.');
       if(KEYWORDS.has(t.v))throw new JErr(t.line,'illegal start of expression','The word '+t.v+' cannot be used inside the main method like this. Is a closing } missing above?');
+      if((isSym('++',1)||isSym('--',1))&&Object.prototype.hasOwnProperty.call(decl,t.v)){const e=parseExpr();expectSym(';','Every statement ends with a semicolon ( ; ).');return {k:'exprstmt',e,line:t.line};}
       if(isSym('=',1)){
         next();next();const e=parseExpr();
         if(!Object.prototype.hasOwnProperty.call(decl,t.v))throw new JErr(t.line,'cannot find symbol: variable '+t.v,'Declare the variable first, for example: int '+t.v+' = 5;');
@@ -525,6 +607,8 @@ function evalExpr(e,env){
       if(e.op==='/'){if(e.ty==='int'){if(b===0)throw {rt:true,line:e.line,msg:'Exception in thread "main" java.lang.ArithmeticException: / by zero'};return Math.trunc(a/b);}return a/b;}
       if(e.op==='%'){if(e.ty==='int'&&b===0)throw {rt:true,line:e.line,msg:'Exception in thread "main" java.lang.ArithmeticException: / by zero'};return a%b;}
     }
+    case 'preinc':{env[e.name]+=e.op==='++'?1:-1;return env[e.name];}
+    case 'postinc':{const v=env[e.name];env[e.name]+=e.op==='++'?1:-1;return v;}
   }
 }
 function execute(prog){
@@ -537,6 +621,7 @@ function execute(prog){
       else if(s.k==='decl'){if(s.init)env[s.name]=evalExpr(s.init,env);snap(s.line,'decl');}
       else if(s.k==='assign'){env[s.name]=evalExpr(s.e,env);snap(s.line,'assign');}
       else if(s.k==='dialog'){dialogs.push({msg:toS(evalExpr(s.msg,env),s.msg.ty),title:s.title?toS(evalExpr(s.title,env),s.title.ty):'Message',type:s.type||'INFORMATION_MESSAGE'});snap(s.line,'dialog');}
+      else if(s.k==='exprstmt'){evalExpr(s.e,env);snap(s.line,'expr');}
     }
   }
   try{exec(prog.body);}catch(e){if(e&&e.rt)error=e;else throw e;}
@@ -588,6 +673,36 @@ const MCQ=[
  {lec:2,q:'Which of these is NOT a modifier?',o:['public','private','final','println'],a:3,why:'println is a method name. public, private and final are modifiers.'},
  {lec:2,q:'The compiler treats a paragraph comment /* ... */ as:',o:['Code to run','Text to ignore','An error','A method'],a:1,why:'Comments are notes for people. The compiler skips them.'},
  {lec:2,q:'When the compiler sees the word class, it knows the next word is:',o:['A comment','The name of the class','A semicolon','The output'],a:1,why:'class is a reserved word: it tells the compiler that a class name follows.'},
+ {lec:3,q:'Before you can use a variable, you must first:',o:['Print it','Declare it with a type','Delete it','Import it'],a:1,why:'A variable needs a type and a name before Java will let you use it, e.g. int age;'},
+ {lec:3,q:'Which of these is a valid variable name?',o:['2total','total2','total 2','int'],a:1,why:'A name cannot start with a digit, cannot contain a space, and cannot be a reserved word like int.'},
+ {lec:3,q:'Which type would you use to store the price 19.99?',o:['int','double','boolean','char'],a:1,why:'double stores numbers with a decimal point.'},
+ {lec:3,q:'Which type stores only true or false?',o:['int','boolean','char','double'],a:1,why:'boolean has exactly two possible values: true and false.'},
+ {lec:3,q:'Which type stores a single character like ‘A’?',o:['String','char','int','boolean'],a:1,why:'char stores exactly one character, written in single quotes.'},
+ {lec:3,q:'How many primitive types does Java have?',o:['6','7','8','9'],a:2,why:'byte, short, int, long, float, double, char and boolean: 8 primitive types. String is not primitive.'},
+ {lec:3,q:'int x = 5; double y = x; — is this allowed?',o:['No, it needs a cast','Yes, int widens to double automatically','No, int and double can never mix','Yes, but y becomes 0'],a:1,why:'Putting a smaller type (int) into a bigger type (double) happens automatically.'},
+ {lec:3,q:'double d = 9.7; int n = d; — what happens?',o:['It compiles and n becomes 9.7','It does not compile without a cast, like int n = (int) d;','It compiles and n becomes 10','It is a runtime error'],a:1,why:'Going from double to int can lose the decimal part, so Java forces you to cast explicitly.'},
+ {lec:3,q:'int x = 5; System.out.println(++x);  — what prints?',o:['5','6','4','Error'],a:1,why:'++x adds 1 FIRST, then gives the new value: 6.'},
+ {lec:3,q:'int x = 5; System.out.println(x++);  — what prints?',o:['5','6','4','Error'],a:0,why:'x++ gives the CURRENT value first (5), and only afterwards adds 1.'},
+ {lec:3,q:'Which keyword can never be used as a variable name?',o:['value','class','total','price'],a:1,why:'class is a reserved word: it already has a special meaning to the compiler.'},
+ {lec:3,q:'Java variable names are:',o:['Case-sensitive (age and Age are different)','Not case-sensitive','Always capitalized','Always written in quotes'],a:0,why:'Java is case-sensitive everywhere, including variable names.'},
+ {lec:3,q:'int total;  System.out.println(total);  — what happens?',o:['Prints 0','Prints nothing','Does not compile: variable might not have been initialized','Prints null'],a:2,why:'A variable must be given a value before it is read.'},
+ {lec:3,q:'Which literal is treated as a double, not an int?',o:['5','5.0','"5"','5;'],a:1,why:'A number written with a decimal point, like 5.0, is a double literal.'},
+ {lec:3,q:'String name = "Ali";  — what kind of value does name hold?',o:['A single character','A whole number','Text','true or false'],a:2,why:'String stores text (a sequence of characters) inside double quotes.'},
+ {lec:4,q:'What does the computer calculate first in 2 + 3 * 4?',o:['2 + 3','3 * 4','2 + 4','It goes strictly left to right'],a:1,why:'Multiplication has higher precedence than addition, so 3 * 4 is done first, giving 2 + 12 = 14.'},
+ {lec:4,q:'What is the value of (2 + 3) * 4?',o:['14','20','9','11'],a:1,why:'Parentheses are calculated first: 2 + 3 = 5, then 5 * 4 = 20.'},
+ {lec:4,q:'What is 7 / 2 in Java when both 7 and 2 are int?',o:['3.5','3','4','2'],a:1,why:'Integer division drops the decimal part, so 7 / 2 is 3, not 3.5.'},
+ {lec:4,q:'What is 7 % 2 in Java?',o:['3','1','3.5','0'],a:1,why:'% gives the remainder after division: 7 divided by 2 leaves a remainder of 1.'},
+ {lec:4,q:'What is 7.0 / 2 in Java?',o:['3','3.5','4','Error'],a:1,why:'If at least one side is a double, the division keeps the decimal part.'},
+ {lec:4,q:'A missing semicolon is an example of a:',o:['Syntax error','Runtime error','Logic error','Not an error'],a:0,why:'The compiler catches broken grammar like a missing semicolon: a syntax error.'},
+ {lec:4,q:'A program compiles and runs, but crashes because of dividing an int by zero. This is a:',o:['Syntax error','Runtime error','Logic error','Not an error'],a:1,why:'The program is valid Java, but it fails while running: a runtime error.'},
+ {lec:4,q:'A program runs without crashing, but prints the wrong total because + was used instead of *. This is a:',o:['Syntax error','Runtime error','Logic error','Not an error'],a:2,why:'The program runs fine but gives a wrong answer: a logic error.'},
+ {lec:4,q:'Which import is needed to use the Scanner class?',o:['import java.util.Scanner;','import java.io.Scanner;','import javax.swing.Scanner;','No import is needed'],a:0,why:'Scanner lives in the java.util package.'},
+ {lec:4,q:'Which line correctly creates a Scanner that reads the keyboard?',o:['Scanner input = new Scanner(System.in);','Scanner input = Scanner(System.in);','new Scanner input = System.in;','Scanner input = System.in();'],a:0,why:'You create a Scanner object with new Scanner(System.in).'},
+ {lec:4,q:'Which method reads one whole number typed by the user?',o:['nextInt()','nextDouble()','nextLine()','next()'],a:0,why:'nextInt() reads one int value.'},
+ {lec:4,q:'Which method reads one decimal number typed by the user?',o:['nextDouble()','nextInt()','nextLine()','nextChar()'],a:0,why:'nextDouble() reads one double value.'},
+ {lec:4,q:'Which method reads a whole line of text, including spaces?',o:['nextLine()','nextInt()','nextDouble()','next()'],a:0,why:'nextLine() reads everything typed up to the Enter key.'},
+ {lec:4,q:'int age = input.nextInt(); — what type must age be?',o:['int','double','String','boolean'],a:0,why:'nextInt() returns an int, so it must be stored in an int variable.'},
+ {lec:4,q:'To translate "the area of a circle with radius r" into Java you should write:',o:['area = 3.14 * r * r;','area = 3.14 + r + r;','area = r;','area = 3.14(r)(r);'],a:0,why:'Multiplication in Java is written with *, matching the math formula pi * r * r.'},
 ];
 
 const PRED=[
@@ -604,6 +719,22 @@ const PRED=[
  {lec:2,code:['{','  System.out.print("Java ");','  System.out.println("Rocks");','}'],out:'Java Rocks',hint:'A block only groups statements; it does not change the output.',why:'The braces group two statements. They run in order: Java + Rocks on one line.'},
  {lec:2,code:['System.out.print("1");','System.out.print("2");','System.out.println("3");'],out:'123',hint:'Only the last statement ends the line.',why:'All three digits are on one line: 123.'},
  {lec:2,code:['System.out.println("Line 1");','//System.out.println("Line 2");','System.out.println("Line 3");'],out:'Line 1\nLine 3',hint:'Which line is a comment?',why:'Line 2 is commented out, so it never runs.'},
+ {lec:3,code:['int x = 5;','System.out.println(++x);','System.out.println(x);'],out:'6\n6',hint:'++x changes x BEFORE printing.',why:'++x adds 1 first, so x becomes 6, and both lines then show 6.'},
+ {lec:3,code:['int x = 5;','System.out.println(x++);','System.out.println(x);'],out:'5\n6',hint:'x++ prints the OLD value, then changes x.',why:'x++ shows the current value (5) first, and only afterwards increases x to 6.'},
+ {lec:3,code:['int apples = 3;','int bananas = 5;','int total = apples + bananas;','System.out.println(total);'],out:'8',hint:'Add the two variables together.',why:'total stores apples + bananas, which is 3 + 5 = 8.'},
+ {lec:3,code:['double price = 2.5;','double qty = 4;','System.out.println(price * qty);'],out:'10.0',hint:'Multiply the two doubles.',why:'2.5 * 4 = 10.0. A double always prints with at least one decimal digit.'},
+ {lec:3,code:['String name = "Sara";','System.out.println("Hello " + name);'],out:'Hello Sara',hint:'+ joins text together when at least one side is a String.',why:'"Hello " + name joins the text "Hello " with the value of name.'},
+ {lec:3,code:['int a = 10;','int b = 3;','System.out.println(a - b);','System.out.println(a * b);'],out:'7\n30',hint:'Work out each line in order.',why:'a - b is 10 - 3 = 7, and a * b is 10 * 3 = 30.'},
+ {lec:3,code:['int count = 1;','count = count + 1;','count++;','System.out.println(count);'],out:'3',hint:'count changes twice before it is printed.',why:'count starts at 1, becomes 2 after count = count + 1, then 3 after count++.'},
+ {lec:4,code:['System.out.println(2 + 3 * 4);'],out:'14',hint:'Which operator happens first: + or *?',why:'* has higher precedence than +, so 3 * 4 = 12 is done first, then 2 + 12 = 14.'},
+ {lec:4,code:['System.out.println((2 + 3) * 4);'],out:'20',hint:'Parentheses are always done first.',why:'The parentheses force 2 + 3 = 5 to happen first, then 5 * 4 = 20.'},
+ {lec:4,code:['System.out.println(7 / 2);'],out:'3',hint:'Both numbers are int.',why:'int division throws away the remainder: 7 / 2 is 3, not 3.5.'},
+ {lec:4,code:['System.out.println(7 % 2);'],out:'1',hint:'% gives the remainder, not the quotient.',why:'7 divided by 2 leaves a remainder of 1.'},
+ {lec:4,code:['System.out.println(7.0 / 2);'],out:'3.5',hint:'One of the numbers has a decimal point.',why:'Because 7.0 is a double, the division keeps the decimal part: 3.5.'},
+ {lec:4,code:['int a = 20;','int b = 4;','int c = 2;','System.out.println(a / b / c);'],out:'2',hint:'Division happens left to right.',why:'a / b / c is done left to right: 20 / 4 = 5, then 5 / 2 = 2 (int division).'},
+ {lec:4,code:['System.out.println(10 - 2 - 3);'],out:'5',hint:'+ and - go left to right.',why:'10 - 2 - 3 is done left to right: 10 - 2 = 8, then 8 - 3 = 5.'},
+ {lec:4,code:['System.out.println(2 + 3 * 4 - 1);'],out:'13',hint:'Do the multiplication first, then go left to right.',why:'3 * 4 = 12 first, giving 2 + 12 - 1, then left to right: 14 - 1 = 13.'},
+ {lec:4,code:['double c = 37;','double f = c * 9 / 5 + 32;','System.out.println(f);'],out:'98.6',hint:'Follow precedence: * and / before +.',why:'This is the Celsius-to-Fahrenheit formula: 37 * 9 / 5 + 32 = 333 / 5 + 32 = 66.6 + 32 = 98.6.'},
 ];
 
 const FIX=[
@@ -615,6 +746,15 @@ const FIX=[
  {lec:2,lines:['/* This is a comment','public class Test {','  public static void main(String[] args) {','    System.out.println("Test");','  }','}'],bad:0,q:'What is wrong here?',o:['The paragraph comment is never closed: add */','The class name is wrong','main needs a semicolon'],a:0,fix:'/* This is a comment */',why:'A paragraph comment starts with /* and must end with */. Without it, everything below is swallowed by the comment.'},
  {lec:2,lines:['public class Test {','  public static void main(String[] args) {','    int class = 5;','  }','}'],bad:2,q:'What is wrong with this line?',o:['class is a reserved word and cannot be a name','5 must be in quotes','int must be uppercase'],a:0,fix:'    int count = 5;',why:'Reserved words have a special meaning for the compiler, so choose another name.'},
  {lec:2,lines:['public class Test {','  public static void main(String[] args) {','    System.out.println("Hi");','  }'],bad:4,eof:true,q:'What is missing?',o:['The closing brace } of the class block','A semicolon after main','The word void'],a:0,fix:'}',why:'Every { needs its own }. The class block was never closed.'},
+ {lec:3,lines:['public class Test {','  public static void main(String[] args) {','    int 2total = 5;','  }','}'],bad:2,q:'What is wrong with this line?',o:['A variable name cannot start with a digit','int must be double','5 must be in quotes'],a:0,fix:'    int total2 = 5;',why:'A variable name must start with a letter, _ or $, never with a digit.'},
+ {lec:3,lines:['public class Test {','  public static void main(String[] args) {','    int count;','    System.out.println(count);','  }','}'],bad:3,q:'What is wrong with this line?',o:['count was never given a value before it is used','println needs two arguments','count must be a String'],a:0,fix:'    count = 5;\n    System.out.println(count);',why:'A variable must be initialized (given a value) before Java will let you read it.'},
+ {lec:3,lines:['public class Test {','  public static void main(String[] args) {','    int class = 10;','  }','}'],bad:2,q:'What is wrong with this line?',o:['class is a reserved word and cannot be used as a variable name','10 must be in quotes','int must be lowercase'],a:0,fix:'    int total = 10;',why:'class already has a special meaning in Java, so it cannot be used as a name.'},
+ {lec:3,lines:['public class Test {','  public static void main(String[] args) {','    double price = 9.99;','    int rounded = price;','  }','}'],bad:2,q:'What is wrong with this line?',o:['A double cannot be assigned to an int without a cast','price must be an int','9.99 must be in quotes'],a:0,fix:'    int rounded = (int) price;',why:'Going from double to int can lose the decimal part, so Java requires an explicit cast: (int) price.'},
+ {lec:3,lines:['public class Test {','  public static void main(String[] args) {','    int x = 5','    System.out.println(x);','  }','}'],bad:2,q:'What is wrong with this line?',o:['The semicolon is missing','x must be a double','5 must be in quotes'],a:0,fix:'    int x = 5;',why:'Every statement, including a variable declaration, ends with a semicolon.'},
+ {lec:4,lines:['public class Test {','  public static void main(String[] args) {','    int apples = 7','    int sold = 3;','    System.out.println(apples - sold);','  }','}'],bad:2,q:'What is wrong with this line?',o:['The semicolon is missing','apples must be a double','sold must come before apples'],a:0,fix:'    int apples = 7;',why:'Every statement needs its own semicolon, even if the next line looks correct.'},
+ {lec:4,lines:['public class Test {','  public static void main(String[] args) {','    Scanner input = new Scanner(System.in);','    int age = input.nextInt();','  }','}'],bad:0,q:'What is wrong here? (Hint: look above the class.)',o:['The import java.util.Scanner; line is missing','Scanner must be lowercase','nextInt() should be nextInteger()'],a:0,fix:'import java.util.Scanner;\npublic class Test {',why:'Without import java.util.Scanner; at the top, Java cannot find the Scanner class.'},
+ {lec:4,lines:['public class Test {','  public static void main(String[] args) {','    int a = 10;','    int b = 0;','    System.out.println(a / b);','  }','}'],bad:4,q:'What kind of problem is this?',o:['A runtime error: dividing an int by zero crashes the program','A syntax error: this will not compile','A logic error: it just prints the wrong number'],a:0,fix:'    System.out.println(a / 2);  // (choose a divisor that is not zero)',why:'The code compiles fine, but dividing by zero crashes the program while it runs: a runtime error.'},
+ {lec:4,lines:['public class Test {','  public static void main(String[] args) {','    int price = 100;','    int qty = 3;','    int total = price + qty * 2;','  }','}'],bad:4,q:'The program should add a 2-item discount AFTER adding price and qty, but precedence breaks that plan. What is the real problem?',o:['Precedence runs qty * 2 before the addition, which is not what was intended: it needs parentheses','total must be a double','price and qty must be swapped'],a:0,fix:'    int total = (price + qty) * 2;',why:'Without parentheses, * happens before +, which may not match the formula you meant to write.'},
 ];
 
 const BUILD=[
@@ -636,6 +776,24 @@ const BUILD=[
  {lec:2,title:'Pop-up message',goal:'Show Welcome to Java! in a dialog box.',check:{dialog:'Welcome to Java!'},
   lines:['import javax.swing.JOptionPane;','public class Popup {','public static void main(String[] args) {','JOptionPane.showMessageDialog(null, "Welcome to Java!");','}','}'],
   extra:['System.out.showMessageDialog(null, "Welcome to Java!");']},
+ {lec:3,title:'Area of a rectangle',goal:'Store width 4 and height 5 in variables, then print their product (the area): 20',check:{out:'20'},
+  lines:['public class Area {','public static void main(String[] args) {','int width = 4;','int height = 5;','System.out.println(width * height);','}','}'],
+  extra:['int width = 4','System.out.println(width + height);']},
+ {lec:3,title:'Count up',goal:'Start count at 1, use count++ to increase it, then print count: 2',check:{out:'2'},
+  lines:['public class Count {','public static void main(String[] args) {','int count = 1;','count++;','System.out.println(count);','}','}'],
+  extra:['int count = 1','System.out.println(count)']},
+ {lec:3,title:'Join text and a number',goal:'Print Temperature: 30 using a variable for the number 30.',check:{out:'Temperature: 30'},
+  lines:['public class Temp {','public static void main(String[] args) {','int temp = 30;','System.out.println("Temperature: " + temp);','}','}'],
+  extra:['int temp = 30','System.out.println("Temperature: " temp);']},
+ {lec:4,title:'Order of operations',goal:'Print the value of 2 + 3 * 4, letting precedence (not parentheses) decide the order: 14',check:{out:'14'},
+  lines:['public class Calc {','public static void main(String[] args) {','System.out.println(2 + 3 * 4);','}','}'],
+  extra:['System.out.println((2 + 3) * 4);']},
+ {lec:4,title:'Average of three numbers',goal:'Print the average of 10, 20 and 30: 20.0 (add them first, then divide by 3).',check:{out:'20.0'},
+  lines:['public class Avg {','public static void main(String[] args) {','double a = 10;','double b = 20;','double c = 30;','System.out.println((a + b + c) / 3);','}','}'],
+  extra:['System.out.println(a + b + c / 3);']},
+ {lec:4,title:'Circumference of a circle',goal:'Print the circumference of a circle with radius 7, using 2 * 3.14 * radius: 43.96',check:{out:'43.96'},
+  lines:['public class Circle {','public static void main(String[] args) {','double radius = 7;','System.out.println(2 * 3.14 * radius);','}','}'],
+  extra:['double radius = 7','System.out.println(2 + 3.14 + radius);']},
 ];
 
 const PAIRS=[
@@ -667,6 +825,28 @@ const PAIRS=[
  {lec:2,a:'Method',b:'A collection of statements that performs an action'},
  {lec:2,a:'showMessageDialog',b:'Shows a message in a dialog box',mono:1},
  {lec:2,a:'Statement',b:'Represents an action or a sequence of actions'},
+ {lec:3,a:'Variable',b:'A named box in memory that stores a value'},
+ {lec:3,a:'int',b:'Stores whole numbers',mono:1},
+ {lec:3,a:'double',b:'Stores numbers with a decimal point',mono:1},
+ {lec:3,a:'boolean',b:'Stores only true or false',mono:1},
+ {lec:3,a:'char',b:'Stores one single character',mono:1},
+ {lec:3,a:'String',b:'Stores text (not a primitive type)',mono:1},
+ {lec:3,a:'++x',b:'Adds 1 to x FIRST, then gives the new value',mono:1},
+ {lec:3,a:'x++',b:'Gives the CURRENT value of x first, then adds 1',mono:1},
+ {lec:3,a:'Declare',b:'Give a variable its type and name before using it'},
+ {lec:3,a:'Initialize',b:'Give a variable its first value'},
+ {lec:3,a:'Cast',b:'Force a conversion, like (int) 9.7'},
+ {lec:3,a:'Reserved word',b:'Cannot be used as a variable name, e.g. class'},
+ {lec:4,a:'%',b:'Modulus: gives the remainder of a division',mono:1},
+ {lec:4,a:'Operator precedence',b:'The order operators are worked out: ( ) then * / % then + -'},
+ {lec:4,a:'Syntax error',b:'Broken Java grammar, caught by the compiler'},
+ {lec:4,a:'Runtime error',b:'Compiles fine, but crashes while the program runs'},
+ {lec:4,a:'Logic error',b:'Runs fine, but gives the wrong answer'},
+ {lec:4,a:'Scanner',b:'The class used to read input typed by the user',mono:1},
+ {lec:4,a:'nextInt()',b:'Reads one whole number from the keyboard',mono:1},
+ {lec:4,a:'nextDouble()',b:'Reads one decimal number from the keyboard',mono:1},
+ {lec:4,a:'nextLine()',b:'Reads a whole line of text from the keyboard',mono:1},
+ {lec:4,a:'System.in',b:'The keyboard, used to build a Scanner',mono:1},
 ];
 
 const EX={
@@ -755,14 +935,17 @@ const IC={
  build:'<rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><path d="M17 13v8M13 17h8"/>',
  match:'<circle cx="6" cy="12" r="3"/><circle cx="18" cy="12" r="3"/><path d="M9 12h6"/>',
  play:'<path d="M7 4l13 8-13 8z"/>',
+ notes:'<path d="M5 4h11l3 3v13H5z"/><path d="M16 4v3h3M8 10h7M8 13h7M8 16h4"/>',
  keys:'<path d="M8 6l-5 6 5 6M16 6l5 6-5 6M14 4l-4 16"/>',
  pinned:'<path d="M12 17v5M8 3h8l-1 6 3 4H6l3-4z"/>',
+ assigned:'<path d="M12 17v5M8 3h8l-1 6 3 4H6l3-4z"/>',
  teacher:'<path d="M4 6h16M4 12h10M4 18h7"/><path d="M17 15l2 2 3-4"/>',
  badge:'<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
 };
 function modes(){
   const arr=[
    {id:'home',name:'Home',sub:''},
+   {id:'notes',name:'Lectures',sub:'Notes & practice'},
    {id:'quiz',name:'Quick Quiz',sub:'Multiple choice'},
    {id:'keys',name:'Keywords & Commands',sub:'Direct questions'},
    {id:'predict',name:'Predict the Output',sub:'What will print?'},
@@ -772,9 +955,8 @@ function modes(){
    {id:'play',name:'Playground',sub:'Write and run Java'},
    {id:'progress',name:'My Progress',sub:'Badges and report'},
   ];
-  const pin=getPin();
-  if(pin)arr.splice(1,0,{id:'pinned',name:"Instructor's Set",sub:pin.title||'Pinned questions'});
-  if(!(EMBED&&EMBED.lock))arr.push({id:'teacher',name:'Instructor',sub:'Pick and pin questions'});
+  const set=SITE.assign;
+  if(set&&set.ids&&set.ids.length)arr.splice(2,0,{id:'assigned',name:"Assigned Set",sub:set.title||'Chosen by your instructor'});
   return arr;
 }
 let mode='home',timers=[];
@@ -784,19 +966,122 @@ function go(id){
   if(id!=='home'&&id!=='progress'){S.visited[id]=true;checkBadges();save();}
   document.querySelectorAll('#nav button').forEach(b=>{if(b.dataset.id===id)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
   const m=$('#main');m.replaceChildren();m.classList.remove('classmode');
-  ({home:viewHome,quiz:viewQuiz,keys:viewKeys,pinned:viewPinned,teacher:viewTeacher,predict:viewPredict,fix:viewFix,build:viewBuild,match:viewMatch,play:viewPlay,progress:viewProgress})[id](m);
+  ({home:viewHome,notes:viewNotes,lecture:viewLecture,quiz:viewQuiz,keys:viewKeys,assigned:viewAssigned,teacher:viewTeacher,predict:viewPredict,fix:viewFix,build:viewBuild,match:viewMatch,play:viewPlay,progress:viewProgress})[id](m);
   window.scrollTo(0,0);
 }
 function buildChrome(){
   $('#nav').replaceChildren(...modes().map(m=>h('button',{'data-id':m.id,onclick:()=>go(m.id)},
-    h('span',{class:'ico',html:svg(IC[m.id==='progress'?'badge':m.id])}),
+    h('span',{class:'ico',html:svg(IC[m.id==='progress'?'badge':m.id]||IC.notes)}),
     h('span',{},m.name,m.sub?h('span',{class:'sub'},m.sub):null))));
   const seg=$('#lecSeg');
-  seg.replaceChildren(...[['1','Lec 1'],['2','Lec 2'],['both','Both']].map(([v,t])=>h('button',{'aria-pressed':S.lec===v?'true':'false',onclick:()=>{S.lec=v;save();buildChrome();go(mode);}},t)));
+  seg.replaceChildren(...[['1','Lec 1'],['2','Lec 2'],['3','Lec 3'],['4','Lec 4'],['both','All']].map(([v,t])=>h('button',{'aria-pressed':S.lec===v?'true':'false',onclick:()=>{S.lec=v;save();buildChrome();go(mode);}},t)));
   renderMe();
   document.querySelectorAll('#nav button').forEach(b=>{if(b.dataset.id===mode)b.setAttribute('aria-current','page');});
 }
 const lecChip=l=>h('span',{class:'chip'+(l===2?' l2':'')},'Lecture '+l);
+
+/* ---------- Lecture notes: key points + a very simple summary ---------- */
+let currentLec=null;
+const BUILTIN_LECNOTES=[
+ {lec:1,title:'Introduction to Computers, Programs, and Java',
+  points:[
+   'A **computer** takes input, follows the steps in a **program**, and produces output — automatically and at high speed.',
+   '**Hardware** is the physical parts you can touch (CPU, memory, storage, input/output devices). **Software** is the programs that tell the hardware what to do.',
+   'All data is stored as **bits** (0s and 1s). 8 bits make one **byte**.',
+   '**RAM** is fast but temporary (volatile) — it loses its data when the power turns off. Disks and CDs are slower but permanent (storage).',
+   'Without a program, a computer is just an empty machine. Programs are written using **programming languages**.',
+   'There are three levels of language: **machine language** (binary), **assembly language** (readable commands like ADD), and **high-level languages** (English-like, such as Java).',
+   'An **assembler** turns assembly language into machine code. A **compiler** turns high-level code like Java into **bytecode**.',
+   'The **JVM** (Java Virtual Machine) runs Java bytecode. That is why Java runs on any computer that has a JVM — write once, run anywhere.',
+   '**System.out.print()** keeps printing on the same line. **System.out.println()** moves to a new line after printing.',
+  ],
+  summary:'A computer only does what a program tells it to do. We write that program in a language people can read, like Java. A compiler turns it into bytecode, and the JVM runs that bytecode on any computer. Inside the machine, everything — even text — is stored as just 0s and 1s.',
+  builtin:true},
+ {lec:2,title:'Anatomy of a Java Program',
+  points:[
+   'Every Java program lives inside a **class**: public class Name { ... }',
+   '**Comments** are notes for people; the compiler ignores them completely. // for one line, /* */ for several lines, /** */ for documentation.',
+   '**Reserved words** like class, public, static and void already have a fixed meaning in Java — you cannot use them as names.',
+   '**Modifiers** say how something can be used. public means other programs can access it. private means they cannot.',
+   'Every **statement** ends with a **semicolon ( ; )**. Forgetting it is one of the most common beginner mistakes.',
+   'A pair of **braces { }** forms a **block** that groups statements together.',
+   '**public static void main(String[] args)** is the method where every Java program starts running.',
+   '**System.out.println(...)** is a method that displays a message on the console. **JOptionPane.showMessageDialog(...)** shows it in a small pop-up window instead (needs import javax.swing.JOptionPane; at the top).',
+  ],
+  summary:'A Java program is built from a class, and every class needs a main method — that is where the program starts. Inside main, you write statements, and each one ends with a semicolon. Curly braces { } group statements into blocks. Comments ( // or /* */ ) are just notes for people; Java skips them completely.',
+  builtin:true},
+ {lec:3,title:'Variables and Primitive Types',
+  points:[
+   'A **variable** is a named box in memory that stores a value. You must **declare** it with a type before you use it: type name = value;',
+   'Java has 8 **primitive types**: byte, short, **int**, long, float, **double**, **char**, **boolean** — plus **String**, which is not primitive but stores text.',
+   '**int** stores whole numbers (e.g. 5, -12). **double** stores decimal numbers (e.g. 3.14). **boolean** stores only true or false. **char** stores one single character in single quotes, like \'A\'.',
+   'A variable **name** must start with a letter, _ or $, cannot start with a digit, and cannot be a **reserved word** like int or class. Java is case-sensitive, so age and Age are different names.',
+   'An **uninitialized** variable (declared but never given a value) cannot be used yet — Java gives an error if you try to read it.',
+   '**++x** (pre-increment) adds 1 to x first and then gives the new value. **x++** (post-increment) gives the current value first and then adds 1. --x and x-- do the same with subtracting 1.',
+   '**Type conversion**: putting an int into a double happens automatically (widening, e.g. double d = 5;). Putting a double into an int is not automatic — it needs a **cast**, like (int) 5.9, and loses the decimal part.',
+   'Numeric literals can have a type hint: 5 is int, 5.0 is double. Text must always be inside double quotes "...".',
+  ],
+  summary:'A variable is a labeled box that holds one value of one type. Choose int for whole numbers, double for numbers with decimals, boolean for true/false, char for a single character, and String for text. Declare a variable once, with its type, before you use it — and give it a value before you read it.',
+  builtin:true},
+ {lec:4,title:'Arithmetic Expressions, Errors, and the Scanner Class',
+  points:[
+   'Java\'s arithmetic operators are **+ (add)**, **- (subtract)**, *** (multiply)**, **/ (divide)** and **% (modulus / remainder)**.',
+   '**Operator precedence** decides what the computer works out first: parentheses ( ) first, then *** / %** (left to right), then **+ -** (left to right). Writing math on paper into Java code means following this same order.',
+   'Dividing two **ints** with / throws away the remainder (7 / 2 is 3, not 3.5). To get a decimal answer, make at least one side a double. The **%** operator gives you only the remainder (7 % 2 is 1).',
+   'There are three kinds of programming errors: a **syntax error** (broken Java grammar, caught by the compiler, e.g. a missing semicolon), a **runtime error** (the program compiles but crashes while running, e.g. dividing by zero), and a **logic error** (the program runs fine but gives the wrong answer).',
+   'The **Scanner** class reads input typed by the user. Step 1: import java.util.Scanner; at the top. Step 2: create one, Scanner input = new Scanner(System.in);. Step 3: ask a question with print, then read the answer.',
+   '**input.nextInt()** reads one whole number. **input.nextDouble()** reads one decimal number. **input.nextLine()** reads a whole line of text (it also "eats" the leftover new-line after nextInt/nextDouble, so that order matters).',
+   'Always store what Scanner reads inside a variable of a matching type: int age = input.nextInt();',
+  ],
+  summary:'Arithmetic in Java follows the same order of operations as in math class: parentheses, then * / %, then + -. Int division drops the decimal part, so mix in a double when you need one. Errors come in three flavors — syntax, runtime and logic — and the Scanner class is how a program asks the user for numbers or text instead of having them hard-coded.',
+  builtin:true},
+];
+function allLectures(){return BUILTIN_LECNOTES.concat(SITE.lectures||[]).slice().sort((a,b)=>a.lec-b.lec);}
+function noteRuns(str){
+  const out=[];const re=/\*\*(.+?)\*\*/g;let last=0,m;
+  while((m=re.exec(str))){
+    if(m.index>last)out.push(str.slice(last,m.index));
+    out.push(h('b',{class:'term'},m[1]));last=re.lastIndex;
+  }
+  if(last<str.length)out.push(str.slice(last));
+  return out;
+}
+function firstSentence(s){const m=s.match(/^.*?[.!?](\s|$)/);return m?m[0].trim():s;}
+function openLecture(n){currentLec=n;go('lecture');}
+function viewNotes(m){
+  m.append(h('h1',{},'Lectures'),
+    h('p',{class:'lead'},'Start with a lecture: read the key points and the simple summary, then practise its questions.'));
+  const lecs=allLectures().filter(l=>S.lec==='both'||String(l.lec)===S.lec);
+  m.append(h('div',{class:'leccards'},lecs.map(l=>{
+    const n=approvedFrom(allQuestions(),l.lec).length;
+    return h('div',{class:'leccard'},
+      h('div',{},h('div',{class:'topline'},h('h2',{},'Lecture '+l.lec),lecChip(l.lec)),
+        h('div',{},l.title),h('div',{class:'teaser'},firstSentence(l.summary)),
+        h('div',{class:'stat'},n?n+' practice questions available':'No practice questions approved yet')),
+      h('button',{class:'btn',onclick:()=>openLecture(l.lec)},'Open Lecture '+l.lec));
+  })));
+  if(!lecs.length)m.append(h('p',{class:'lead'},'No lectures match the current filter.'));
+}
+function viewLecture(m){
+  const l=allLectures().find(x=>x.lec===currentLec);
+  if(!l){m.append(h('h1',{},'Lecture not found'),h('button',{class:'btn',onclick:()=>go('notes')},'Back to Lectures'));return;}
+  m.append(h('button',{class:'btn ghost',onclick:()=>go('notes')},'← All lectures'),
+    h('div',{class:'topline',style:'margin-top:14px'},h('h1',{},'Lecture '+l.lec),lecChip(l.lec)),
+    h('p',{class:'lead'},l.title));
+  m.append(h('div',{class:'panel notecard'},
+    h('div',{class:'notelabel'},'Key points'),
+    h('ul',{class:'keypoints'},l.points.map(p=>h('li',{},...noteRuns(p)))),
+    h('div',{class:'summarybox'},h('div',{class:'notelabel'},'In simple words'),h('p',{},l.summary))));
+  const bank=approvedFrom(allQuestions(),l.lec);
+  const s=h('div',{class:'panel'},
+    h('h2',{},'Practise Lecture '+l.lec),
+    bank.length?h('p',{class:'lead',style:'font-size:15px'},bank.length+' approved questions on this lecture — a mix of concepts, keywords, fill-in-the-blank and commands to type.'):h('p',{class:'lead',style:'font-size:15px'},'No questions have been approved for this lecture yet. Check back soon.'),
+    h('div',{class:'btnrow'},bank.length?h('button',{class:'btn',onclick:()=>startSet(m,shuffle(bank).slice(0,10),{title:'Lecture '+l.lec+' practice',shuffleO:true,back:'lecture'})},'Start practice'):null,
+      h('button',{class:'btn sec',onclick:()=>{S.lec=String(l.lec);save();buildChrome();go('predict');}},'Predict the Output'),
+      h('button',{class:'btn sec',onclick:()=>{S.lec=String(l.lec);save();buildChrome();go('fix');}},'Find the Bug'),
+      h('button',{class:'btn sec',onclick:()=>{S.lec=String(l.lec);save();buildChrome();go('build');}},'Build the Program')));
+  m.append(s);
+}
 
 /* code highlighting */
 function hl(line){
@@ -846,7 +1131,7 @@ function renderConsole(el,{out='',dialogs=[],err=null,src='',rt=null,caret=true,
    ===================================================================== */
 function viewHome(m){
   m.append(h('h1',{},'Practice Java. See it run.'),
-    h('p',{class:'lead'},'Short activities based on Lecture 1 (computers, programs, Java) and Lecture 2 (anatomy of a Java program). Every right answer earns XP, so try to keep your streak going.'));
+    h('p',{class:'lead'},'Short activities based on Lectures 1 to 4: computers and Java (1), anatomy of a Java program (2), variables and primitive types (3), and arithmetic, errors and the Scanner class (4). Every right answer earns XP, so try to keep your streak going.'));
   const con=h('div',{class:'console'});
   m.append(h('div',{class:'hero',role:'img','aria-label':'A Java program printing Ready to learn Java?'},con));
   const code='System.out.println("Ready to learn Java?");';
@@ -860,9 +1145,10 @@ function viewHome(m){
     const iv=setInterval(()=>{i++;draw(code.slice(0,i),false);if(i>=code.length){clearInterval(iv);timers.push(setTimeout(()=>draw(code,true),500));}},45);
     timers.push(iv);
   }
-  const pin=getPin();
+  const set=SITE.assign;
   const rows=[];
-  if(pin)rows.push(["Instructor's set: "+(pin.title||'pinned questions'),pin.ids.length+' questions on the keywords and commands your instructor chose.','pinned','Start the set']);
+  rows.push(['Browse your lectures','Notes and practice questions, one lecture at a time.','notes','Open Lectures']);
+  if(set&&set.ids&&set.ids.length)rows.push(["Assigned set: "+(set.title||'chosen questions'),set.ids.length+' questions your instructor chose specifically.','assigned','Start the set']);
   rows.push(
    ['Take a 10-question quiz','Mixed questions from the lectures, with an explanation after every answer.','quiz','Start quiz'],
    ['Practise keywords and commands','Direct questions: what a keyword does, fill in the blank, or type the command.','keys','Practise'],
@@ -873,15 +1159,16 @@ function viewHome(m){
     h('li',{},'Upload this single file to Blackboard (Content, then Upload a file) or link to it. It works on phones, needs no login, and works offline.'),
     h('li',{},'In class, open Quick Quiz and switch on Class mode. Read the question aloud, let students answer in the chat, then press Reveal answer.'),
     h('li',{},'Students can copy a short progress report from My Progress and paste it into a Blackboard assignment or discussion post.'),
-    h('li',{},'Use the lecture switch at the top left to limit all activities to Lecture 1 or Lecture 2.'),
-    h('li',{},'To pin your own questions, open Instructor in the menu. Tick the questions, then share a code or download a student copy.'))));
-  if(!EMBED)m.append(codeEntry());
+    h('li',{},'Use the lecture switch at the top left to limit all activities to one lecture (1 to 4), or choose All.'),
+    h('li',{},'The small ⚙ button at the bottom of the menu opens your private instructor area — add lectures, review and approve questions, and export the updated file.'))));
 }
 
 /* ---------- QUIZ ---------- */
 let Q=null,classMode=false;
 function viewQuiz(m){
-  const qs=shuffle(pool(MCQ)).slice(0,10).map(q=>{const idx=shuffle([0,1,2,3]);return {...q,opts:idx.map(i=>q.o[i]),ans:idx.indexOf(q.a)};});
+  const base=shuffle(approvedFrom(conceptBank())).slice(0,10);
+  if(!base.length){m.append(h('h1',{},'Quick Quiz'),h('p',{class:'lead'},'No concept questions have been approved yet for this filter. Try "Both" lectures, or check back soon.'));return;}
+  const qs=base.map(q=>{const idx=shuffle([0,1,2,3]);return {...q,opts:idx.map(i=>q.o[i]),ans:idx.indexOf(q.a)};});
   Q={qs,i:0,score:0,locked:false};drawQuiz(m);
 }
 function drawQuiz(m){
@@ -1329,33 +1616,136 @@ const KEY=[
  kc(2,['{ }','block','print'],'Write a block { } that contains two print statements which together print: Java Rocks',{out:'Java Rocks',loose:true,srcRe:/\{[\s\S]*\}/,tip:'Put both print statements between { and }.',sample:'{\n  System.out.print("Java ");\n  System.out.println("Rocks");\n}',why:'A block groups statements. The two prints share one line.'}),
  kc(2,['println'],'Write the command that prints the number 5 and moves to a new line.',{out:'5\n',sample:'System.out.println(5);',why:'Numbers do not need quotes.'}),
  kc(2,['print','println'],'Write two commands that print Result: and 5 on the same line.',{out:'Result: 5',loose:true,sample:'System.out.print("Result: ");\nSystem.out.println(5);',why:'print keeps the same line, so 5 appears right after Result: .'}),
+ /* ---- Lecture 3: variables & primitive types ---- */
+ km(3,['int'],'Which type would you use to store a whole number like 25?',['int','double','boolean','char'],'int stores whole numbers.'),
+ km(3,['double'],'Which type would you use to store 3.14?',['double','int','boolean','String'],'double stores numbers with a decimal point.'),
+ km(3,['boolean'],'Which type stores only true or false?',['boolean','char','int','double'],'boolean has exactly two possible values: true and false.'),
+ km(3,['char'],'Which type stores a single character such as ‘A’?',['char','String','int','boolean'],'char holds exactly one character, written in single quotes.'),
+ km(3,['String'],'Which type stores text such as "Hello"?',['String','char','int','boolean'],'String stores a sequence of characters. It is not a primitive type.'),
+ km(3,['declare'],'Giving a variable its type and name for the first time is called:',['Declaring it','Printing it','Casting it','Importing it'],'int age; declares a variable named age of type int.'),
+ km(3,['initialize'],'Giving a variable its first value is called:',['Initializing it','Declaring it','Casting it','Comparing it'],'int age = 20; both declares and initializes age.'),
+ km(3,['cast','(int)'],'What does (int) do in int n = (int) 9.7;?',['Casts (converts) the double into an int, dropping the decimal part','Rounds the number to the nearest whole number','Multiplies the number by int','Prints the number as text'],'A cast forces a conversion; it truncates the decimal part, it does not round.'),
+ km(3,['++'],'What does the operator ++ do to a variable?',['Adds 1 to it','Subtracts 1 from it','Multiplies it by 2','Converts it to a String'],'++ increases (increments) a variable by 1.'),
+ km(3,['--'],'What does the operator -- do to a variable?',['Subtracts 1 from it','Adds 1 to it','Divides it by 2','Converts it to a boolean'],'-- decreases (decrements) a variable by 1.'),
+ km(3,['++x','pre-increment'],'In ++x, when does x actually change?',['Before its value is used','After its value is used','x never changes','Only inside a loop'],'++x (pre-increment) changes x first, then gives the new value.'),
+ km(3,['x++','post-increment'],'In x++, when does x actually change?',['After its value is used','Before its value is used','x never changes','Only inside a println'],'x++ (post-increment) gives the current value first, then changes x afterwards.'),
+ km(3,['reserved word'],'Which of these CANNOT be used as a variable name?',['total','class','price','count2'],'class is a reserved word with a fixed meaning in Java.'),
+ kf(3,['int'],'Fill in the missing type.',['____ score = 95;'],['int'],'score holds a whole number, so its type is int.'),
+ kf(3,['double'],'Fill in the missing type.',['____ price = 4.99;'],['double'],'price holds a decimal number, so its type is double.'),
+ kf(3,['boolean'],'Fill in the missing type.',['____ isPassed = true;'],['boolean'],'isPassed can only ever be true or false.'),
+ kf(3,['char'],'Fill in the missing type.',["____ grade = 'A';"],['char'],'grade holds one single character.'),
+ kf(3,['String'],'Fill in the missing type.',['____ name = "Lina";'],['String'],'name holds text.'),
+ kf(3,['++'],'Fill in the missing symbol that increases x by 1.',['x____;'],['++'],'x++; (or ++x;) adds 1 to x.'),
+ kf(3,['(int)'],'Fill in the missing cast.',['int n = ____ 9.7;'],['(int)'],'(int) converts the double into an int, dropping the decimal part.'),
+ kc(3,['int'],'Declare an int variable named age with the value 20, then print it.',{out:'20',loose:true,sample:'int age = 20;\nSystem.out.println(age);',why:'Declare with a type, give it a value, then print it.'}),
+ kc(3,['double'],'Declare a double variable named price with the value 4.5, then print it.',{out:'4.5',loose:true,sample:'double price = 4.5;\nSystem.out.println(price);',why:'double stores numbers with a decimal point.'}),
+ kc(3,['++'],'Declare int count = 1; then use ++ to make it 2, and print count.',{out:'2',loose:true,sample:'int count = 1;\ncount++;\nSystem.out.println(count);',why:'count++ adds 1 to count.'}),
+ kc(3,['String','+'],'Declare String name = "Sam"; then print Hi Sam using + to join the text.',{out:'Hi Sam',loose:true,sample:'String name = "Sam";\nSystem.out.println("Hi " + name);',why:'+ joins text together when at least one side is a String.'}),
+ /* ---- Lecture 4: arithmetic, errors & Scanner ---- */
+ km(4,['Scanner'],'Which class do you use to read input typed by the user?',['Scanner','String','System','Integer'],'The Scanner class reads keyboard input.'),
+ km(4,['import java.util.Scanner'],'Which import line lets you use the Scanner class?',['import java.util.Scanner;','import java.io.Scanner;','import java.swing.Scanner;','No import is needed'],'Scanner lives in the java.util package.'),
+ km(4,['new Scanner(System.in)'],'Which line correctly creates a Scanner that reads the keyboard?',['Scanner input = new Scanner(System.in);','Scanner input = System.in;','new Scanner input();','Scanner.read(System.in);'],'new Scanner(System.in) builds a Scanner connected to the keyboard.'),
+ km(4,['nextInt'],'Which method reads one whole number typed by the user?',['nextInt()','nextDouble()','nextLine()','next()'],'nextInt() reads one int value.'),
+ km(4,['nextDouble'],'Which method reads one decimal number typed by the user?',['nextDouble()','nextInt()','nextLine()','nextChar()'],'nextDouble() reads one double value.'),
+ km(4,['nextLine'],'Which method reads a whole line of text, including spaces?',['nextLine()','nextInt()','nextDouble()','next()'],'nextLine() reads everything typed up to the Enter key.'),
+ km(4,['%'],'Which operator gives you the remainder of a division?',['%','/','//','mod'],'% is the modulus (remainder) operator in Java.'),
+ km(4,['precedence'],'Which part is calculated first in 5 + 2 * 3?',['2 * 3','5 + 2','5 * 2','It goes strictly left to right'],'* has higher precedence than +, so it is calculated first.'),
+ km(4,['syntax error'],'A missing semicolon causes a:',['Syntax error','Runtime error','Logic error','Warning only'],'Broken grammar, like a missing semicolon, is a syntax error caught by the compiler.'),
+ km(4,['runtime error'],'Dividing by zero while the program is running causes a:',['Runtime error','Syntax error','Logic error','A compiler warning'],'The code compiles, but crashes while running: a runtime error.'),
+ km(4,['logic error'],'Using + instead of * by mistake, so the program runs but gives the wrong total, is a:',['Logic error','Syntax error','Runtime error','Import error'],'The program runs without crashing, but the answer is wrong: a logic error.'),
+ kf(4,['Scanner'],'Fill in the missing class name.',['____ input = new Scanner(System.in);'],['Scanner'],'The variable input is declared with the type Scanner.'),
+ kf(4,['Scanner'],'Fill in the missing class name.',['import java.util.____;'],['Scanner'],'This import line makes the Scanner class available.'),
+ kf(4,['nextInt'],'Fill in the missing method.',['int age = input.____();'],['nextInt'],'nextInt() reads one whole number.'),
+ kf(4,['nextDouble'],'Fill in the missing method.',['double gpa = input.____();'],['nextDouble'],'nextDouble() reads one decimal number.'),
+ kf(4,['nextLine'],'Fill in the missing method.',['String name = input.____();'],['nextLine'],'nextLine() reads a whole line of text.'),
+ kf(4,['%'],'Fill in the missing operator (the remainder of a division).',['int r = 7 ____ 2;   // r becomes 1'],['%'],'% gives the remainder: 7 % 2 is 1.'),
+ kf(4,['System.in'],'Fill in the missing argument.',['Scanner input = new Scanner(____);'],['System.in'],'System.in represents the keyboard.'),
+ kc(4,['precedence','*'],'Write the command that prints the value of 4 + 2 * 3.',{out:'10',loose:true,sample:'System.out.println(4 + 2 * 3);',why:'* happens before +, so 2 * 3 = 6 first, then 4 + 6 = 10.'}),
+ kc(4,['%'],'Write the command that prints the remainder of 9 divided by 4.',{out:'1',loose:true,sample:'System.out.println(9 % 4);',why:'9 % 4 leaves a remainder of 1.'}),
+ kc(4,['/'],'Write the command that prints 9 / 4 using integer division.',{out:'2',loose:true,sample:'System.out.println(9 / 4);',why:'int division drops the decimal part: 9 / 4 is 2.'}),
 ];
 MCQ.forEach((q,i)=>{q.id='m'+(i+1);q.t='mcq';q.cat='concept';});
 KEY.forEach((q,i)=>{q.id='k'+(i+1);q.cat=q.t==='mcq'?'keyword':q.t;});
-const ALLQ=[...MCQ,...KEY];
-const QBYID=Object.fromEntries(ALLQ.map(q=>[q.id,q]));
+const BUILTIN_APPROVED=[...MCQ,...KEY].map(q=>q.id);
 const CATNAME={concept:'Concept question',keyword:'Keyword question',fill:'Fill in the keyword',cmd:'Type the command'};
 const ansText=q=>q.t==='mcq'?q.o[q.a]:q.t==='fill'?q.ans[0]:q.sample;
 
-/* ---- pin codes ---- */
-const EMBED=(()=>{try{return JSON.parse($('#pinned').textContent);}catch(e){return null;}})();
-const getPin=()=>EMBED||S.pin;
-function encodeCode(pin){
-  const json=JSON.stringify({t:pin.title||'',i:pin.ids,q:pin.shuffleQ?1:0,o:pin.shuffleO===false?0:1,k:pin.showKw===false?0:1});
-  return 'JL1.'+btoa(unescape(encodeURIComponent(json))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
-}
-function decodeCode(code){
+/* ---- site data: lectures, custom questions, approvals, backend, pin ---- */
+function defaultSite(){return {v:1,pinHash:'cec8840e9302427e458aec1b7d6e7763e1d04074451ee9538202c988000c1b19',lectures:[],customQuestions:[],approved:BUILTIN_APPROVED.slice(),assign:null,nextId:1};}
+let SITE=(()=>{
   try{
-    code=String(code||'').trim();
-    if(!code.startsWith('JL1.'))return null;
-    let b=code.slice(4).replace(/-/g,'+').replace(/_/g,'/');while(b.length%4)b+='=';
-    const o=JSON.parse(decodeURIComponent(escape(atob(b))));
-    const ids=(o.i||[]).filter(id=>QBYID[id]);
-    if(!ids.length)return null;
-    return {title:o.t||'',ids,shuffleQ:!!o.q,shuffleO:o.o!==0,showKw:o.k!==0};
-  }catch(e){return null;}
+    const raw=JSON.parse($('#sitedata').textContent);
+    if(!raw)return defaultSite();
+    return {...defaultSite(),...raw};
+  }catch(e){return defaultSite();}
+})();
+function allQuestions(){return [...MCQ,...KEY,...(SITE.customQuestions||[])];}
+function qById(id){return allQuestions().find(q=>q.id===id);}
+const isApproved=id=>SITE.approved.includes(id);
+const conceptBank=()=>allQuestions().filter(q=>q.cat==='concept');
+const keywordBank=()=>allQuestions().filter(q=>q.cat!=='concept');
+function approvedFrom(bank,lecId){
+  let arr=bank.filter(q=>isApproved(q.id));
+  arr=(typeof lecId==='number')?arr.filter(q=>q.lec===lecId):arr.filter(inLec);
+  return arr;
 }
-const pinQs=pin=>{const qs=pin.ids.map(id=>QBYID[id]).filter(Boolean);return pin.shuffleQ?shuffle(qs):qs;};
+
+/* ---- instructor PIN (private area) ---- */
+async function sha256Hex(text){
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+let UNLOCKED=false;
+function closeModal(){$('#modalHost').replaceChildren();document.onkeydown=null;}
+function openModal(node){
+  const bg=h('div',{class:'modalbg',onclick:e=>{if(e.target===bg)closeModal();}},h('div',{class:'modalbox'},node));
+  $('#modalHost').replaceChildren(bg);
+  document.onkeydown=e=>{if(e.key==='Escape')closeModal();};
+  return bg;
+}
+function askPin(){
+  const inp=h('input',{class:'inp',type:'password',inputmode:'numeric',maxlength:'12',autocomplete:'off'});
+  const err=h('div',{class:'err'},'');
+  const box=openModal(h('div',{},
+    h('h3',{},'Instructor area'),
+    h('p',{},'This part of the page is private. Enter the PIN to continue.'),
+    inp,err,
+    h('div',{class:'btnrow',style:'margin-top:14px'},
+      h('button',{class:'btn',onclick:check},'Unlock'),
+      h('button',{class:'btn ghost',onclick:closeModal},'Cancel'))));
+  async function check(){
+    const v=inp.value.trim();
+    if(!v){err.textContent='Type the PIN first.';return;}
+    const hash=await sha256Hex(v);
+    if(hash===SITE.pinHash){UNLOCKED=true;closeModal();go('teacher');}
+    else err.textContent='Wrong PIN. Try again.';
+  }
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+  setTimeout(()=>inp.focus(),0);
+}
+function changePinFlow(after){
+  const p1=h('input',{class:'inp',type:'password',inputmode:'numeric',maxlength:'12',autocomplete:'off'});
+  const p2=h('input',{class:'inp',type:'password',inputmode:'numeric',maxlength:'12',autocomplete:'off',style:'margin-top:10px'});
+  const err=h('div',{class:'err'},'');
+  openModal(h('div',{},
+    h('h3',{},'Set a new PIN'),
+    h('p',{},'Choose something only you know. You will need it every time you open the instructor area on a new browser.'),
+    p1,p2,err,
+    h('div',{class:'btnrow',style:'margin-top:14px'},
+      h('button',{class:'btn',onclick:save2},'Save PIN'),
+      h('button',{class:'btn ghost',onclick:closeModal},'Cancel'))));
+  async function save2(){
+    if(p1.value.length<4){err.textContent='Use at least 4 characters.';return;}
+    if(p1.value!==p2.value){err.textContent='The two entries do not match.';return;}
+    SITE.pinHash=await sha256Hex(p1.value);
+    closeModal();toast('PIN updated. Export and re-upload to make it live for everyone.');
+    if(after)after();
+  }
+  setTimeout(()=>p1.focus(),0);
+}
+
+/* ---- assigned set (a hand-picked subset the instructor chose) ---- */
+const setQs=set=>{const qs=(set.ids||[]).map(qById).filter(Boolean);return set.shuffleQ?shuffle(qs):qs;};
 
 /* ---- grading a typed command by running it ---- */
 function gradeCmd(q,code){
@@ -1479,129 +1869,263 @@ function setResult(m){
     h('div',{class:'btnrow'},h('button',{class:'btn',onclick:copy},'Copy result'),cm)));
   m.append(h('div',{class:'btnrow'},
     SP.missed.length?h('button',{class:'btn',onclick:()=>{const again=SP.missed.slice();startSet(m,again,SP.opts);}},'Retry missed ('+SP.missed.length+')'):null,
-    SP.opts.back==='teacher'?h('button',{class:'btn sec',onclick:()=>go('teacher')},'Back to instructor tools'):h('button',{class:'btn sec',onclick:()=>go(SP.opts.back||'keys')},SP.opts.back==='pinned'?'Back to the set':'New set'),
+    SP.opts.back==='teacher'?h('button',{class:'btn sec',onclick:()=>go('teacher')},'Back to instructor tools'):h('button',{class:'btn sec',onclick:()=>go(SP.opts.back||'keys')},SP.opts.back==='assigned'?'Back to the set':SP.opts.back==='lecture'?'Back to this lecture':'New set'),
     h('button',{class:'btn ghost',onclick:()=>go('home')},'Home')));
 }
 
 /* ---- Keywords & Commands (practice) ---- */
 function viewKeys(m){
-  const qs=shuffle(pool(KEY)).slice(0,10);
+  const qs=shuffle(approvedFrom(keywordBank())).slice(0,10);
+  if(!qs.length){m.append(h('h1',{},'Keywords & Commands'),h('p',{class:'lead'},'No keyword or command questions have been approved yet for this filter. Try "Both" lectures, or check back soon.'));return;}
   startSet(m,qs,{title:'Keywords & Commands',shuffleO:true,back:'keys'});
 }
 
-/* ---- Instructor's pinned set (student side) ---- */
-function viewPinned(m){
-  const pin=getPin();
-  if(!pin){m.append(h('h1',{},"Instructor's set"),h('p',{class:'lead'},'No set has been pinned yet. Enter the code from your instructor on the Home page.'));return;}
-  const qs=pinQs(pin);
+/* ---- Instructor's assigned set (student side) ---- */
+function viewAssigned(m){
+  const set=SITE.assign;
+  if(!set||!set.ids||!set.ids.length){m.append(h('h1',{},"Assigned Set"),h('p',{class:'lead'},'Your instructor has not assigned a set yet.'));return;}
+  const qs=setQs(set);
   const counts={};qs.forEach(q=>counts[q.cat]=(counts[q.cat]||0)+1);
   const kws=[...new Set(qs.flatMap(q=>q.kw||[]))];
-  m.append(h('h1',{},pin.title||"Instructor's set"),
+  m.append(h('h1',{},set.title||"Assigned Set"),
     h('p',{class:'lead'},qs.length+' questions chosen by your instructor, on the keywords and commands of the lectures.'),
     h('div',{class:'panel'},
       h('div',{class:'tags'},Object.entries(counts).map(([c,k])=>h('span',{class:'chip cat'},k+' × '+CATNAME[c]))),
-      kws.length&&pin.showKw!==false?h('div',{style:'margin-top:14px'},h('b',{},'Keywords and commands in this set'),kwChips(kws.slice(0,40))):null,
-      h('div',{class:'btnrow'},h('button',{class:'btn',onclick:()=>startSet(m,pinQs(pin),{title:pin.title||"Instructor's set",shuffleO:pin.shuffleO!==false,back:'pinned'})},'Start the set'))));
+      kws.length&&set.showKw!==false?h('div',{style:'margin-top:14px'},h('b',{},'Keywords and commands in this set'),kwChips(kws.slice(0,40))):null,
+      h('div',{class:'btnrow'},h('button',{class:'btn',onclick:()=>startSet(m,setQs(set),{title:set.title||"Assigned Set",shuffleO:set.shuffleO!==false,back:'assigned'})},'Start the set'))));
 }
 
-/* ---- Instructor tools ---- */
+/* ---- Instructor tools (private, PIN-gated) ---- */
+let TTAB='review';
 function viewTeacher(m){
-  const T=S.teacher||(S.teacher={title:'',ids:[],shuffleQ:false,shuffleO:true,showKw:true});
-  const sel=new Set(T.ids);
-  const F={lec:'all',cat:'all',text:''};
-  const codeBox=h('textarea',{class:'ta',rows:4,readonly:true,'aria-label':'Share code'});
-  const countEl=h('b',{},'0 questions selected');
-  const list=h('div',{});
-  const rows=[];
-  function persist(){T.ids=ALLQ.filter(q=>sel.has(q.id)).map(q=>q.id);save();}
-  function refresh(){
-    persist();
-    countEl.textContent=sel.size+(sel.size===1?' question selected':' questions selected');
-    codeBox.value=sel.size?encodeCode({title:T.title,ids:T.ids,shuffleQ:T.shuffleQ,shuffleO:T.shuffleO,showKw:T.showKw}):'Tick at least one question to get a code.';
-    rows.forEach(r=>{r.el.classList.toggle('on',sel.has(r.q.id));r.cb.checked=sel.has(r.q.id);});
-    [pv,cp,dl].forEach(b=>b.disabled=!sel.size);
+  const tabs=[['review','Review & Approve'],['lectures','Lectures'],['add','Add Question'],['assign','Assign a Set'],['export','Export']];
+  m.append(h('h1',{},'Instructor Area'),
+    h('p',{class:'lead'},'Private to you. Review questions, manage lectures, and export the file you upload to GitHub.'));
+  const bar=h('div',{class:'tabbar'},tabs.map(([id,t])=>h('button',{'aria-current':TTAB===id?'page':null,onclick:()=>{TTAB=id;draw();}},t)));
+  const body=h('div',{});
+  m.append(bar,body);
+  function draw(){
+    bar.querySelectorAll('button').forEach((b,i)=>b.setAttribute('aria-current',tabs[i][0]===TTAB?'page':'false'));
+    body.replaceChildren();
+    ({review:drawReview,lectures:drawLectures,add:drawAdd,assign:drawAssign,export:drawExport})[TTAB](body);
   }
-  function matches(q){
-    if(F.lec!=='all'&&String(q.lec)!==F.lec)return false;
-    if(F.cat!=='all'&&q.cat!==F.cat)return false;
-    if(F.text){const t=F.text.toLowerCase();const hay=(q.q+' '+(q.kw||[]).join(' ')+' '+(q.code||[]).join(' ')+' '+(q.o||[]).join(' ')+' '+ansText(q)).toLowerCase();if(!hay.includes(t))return false;}
-    return true;
-  }
-  ALLQ.forEach(q=>{
-    const cb=h('input',{type:'checkbox','aria-label':'Pin question',onchange:()=>{cb.checked?sel.add(q.id):sel.delete(q.id);refresh();}});
-    const el=h('label',{class:'qrow'},cb,h('div',{},
-      h('div',{class:'tags'},h('span',{class:'chip cat'},CATNAME[q.cat]),lecChip(q.lec),(q.kw||[]).slice(0,3).map(k=>h('code',{class:'kwc small'},k))),
-      h('div',{class:'qq'},q.q),
-      q.t==='fill'?h('div',{style:'margin-top:6px'},fillCode(q.code)):null,
-      h('div',{class:'ans'},'Answer: ',h('code',{},ansText(q)))));
-    rows.push({q,el,cb});list.append(el);
-  });
-  function applyFilter(){let n=0;rows.forEach(r=>{const ok=matches(r.q);r.el.style.display=ok?'':'none';if(ok)n++;});shown.textContent=n+' shown';}
-  const shown=h('span',{class:'switch'},'');
-  const pv=h('button',{class:'btn sec',onclick:()=>{const qs=pinQs({ids:T.ids,shuffleQ:T.shuffleQ});startSet(m,qs,{title:T.title||'Preview',shuffleO:T.shuffleO,back:'teacher'});}},'Preview as student');
-  const cp=h('button',{class:'btn',onclick:()=>{codeBox.select();let ok=false;try{ok=document.execCommand('copy');}catch(e){}cpMsg.textContent=ok?'Code copied!':'Select the code and copy it.';}},'Copy code');
-  const dl=h('button',{class:'btn go',onclick:download},'Download student copy');
-  const cpMsg=h('span',{class:'switch','aria-live':'polite'});
-  function buildCopy(pin){
-    const c=document.documentElement.cloneNode(true);
-    ['#nav','#main','#me','#lecSeg','#toasts'].forEach(s=>{const e=c.querySelector(s);if(e)e.replaceChildren();});
-    const mn=c.querySelector('#main');if(mn)mn.removeAttribute('class');
-    c.querySelector('#pinned').textContent=JSON.stringify(pin).replace(/</g,'\\u003c');
-    return '<!DOCTYPE html>\n'+c.outerHTML;
-  }
-  function download(){
-    const pin={title:T.title,ids:T.ids,shuffleQ:T.shuffleQ,shuffleO:T.shuffleO,showKw:T.showKw,lock:true};
-    const name='Java_Lab_'+((T.title||'set').replace(/[^A-Za-z0-9]+/g,'_').replace(/^_|_$/g,'')||'set')+'.html';
-    try{
-      const url=URL.createObjectURL(new Blob([buildCopy(pin)],{type:'text/html'}));
-      const a=h('a',{href:url,download:name});document.body.append(a);a.click();a.remove();
-      cpMsg.textContent='Downloaded '+name;
-    }catch(e){cpMsg.textContent='Download is blocked here. Use the code instead.';}
-  }
-  window.__buildCopy=buildCopy;
-  const cats=[['all','All types'],['concept','Concept questions'],['keyword','Keyword questions'],['fill','Fill in the keyword'],['cmd','Type the command']];
-  m.append(h('h1',{},'Instructor tools'),
-    h('p',{class:'lead'},'Choose exactly which questions your students see. Then share a code, or download a copy of this page with your questions pinned.'),
-    h('div',{class:'panel'},h('h2',{},'1. Name the set'),
-      h('div',{class:'btnrow'},h('input',{class:'namein',type:'text',placeholder:'For example: Week 2 check',value:T.title,'aria-label':'Set title',style:'min-width:min(100%,320px)',oninput:e=>{T.title=e.target.value;refresh();}})),
-      h('div',{class:'btnrow'},
-        h('label',{class:'switch'},h('input',{type:'checkbox',checked:T.shuffleQ,onchange:e=>{T.shuffleQ=e.target.checked;refresh();}}),'Shuffle the question order for each student'),
-        h('label',{class:'switch'},h('input',{type:'checkbox',checked:T.shuffleO!==false,onchange:e=>{T.shuffleO=e.target.checked;refresh();}}),'Shuffle the answer choices'),
-        h('label',{class:'switch'},h('input',{type:'checkbox',checked:T.showKw!==false,onchange:e=>{T.showKw=e.target.checked;refresh();}}),'Show the list of keywords before the set starts (turn off for a test)'))),
-    h('div',{class:'panel'},h('h2',{},'2. Pick the questions'),
+  draw();
+
+  /* -- Review & Approve -- */
+  function drawReview(body){
+    const F={lec:'all',cat:'all',text:'',status:'all'};
+    const list=h('div',{});
+    const rows=[];
+    const shown=h('span',{class:'switch'},'');
+    function paintRow(q){
+      const approved=isApproved(q.id);
+      const cb=h('input',{type:'checkbox',checked:approved,'aria-label':'Approve question',onchange:()=>{setApproved(q.id,cb.checked);save();paintRow(q);shown.textContent=shown.textContent;}});
+      const el=h('label',{class:'qrow'+(approved?' on':'')},cb,h('div',{},
+        h('div',{class:'tags'},h('span',{class:'chip cat'},CATNAME[q.cat]),lecChip(q.lec),!q.id.startsWith('u')?null:h('span',{class:'pill new'},'your question'),(q.kw||[]).slice(0,3).map(k=>h('code',{class:'kwc small'},k))),
+        h('div',{class:'qq'},q.q),
+        q.t==='fill'?h('div',{style:'margin-top:6px'},fillCode(q.code)):null,
+        h('div',{class:'ans'},'Answer: ',h('code',{},ansText(q)))));
+      const idx=rows.findIndex(r=>r.q.id===q.id);
+      if(idx>-1){rows[idx].el.replaceWith(el);rows[idx].el=el;}
+      return el;
+    }
+    allQuestions().forEach(q=>{const el=paintRow(q);rows.push({q,el});list.append(el);});
+    function matches(q){
+      if(F.lec!=='all'&&String(q.lec)!==F.lec)return false;
+      if(F.cat!=='all'&&q.cat!==F.cat)return false;
+      if(F.status==='approved'&&!isApproved(q.id))return false;
+      if(F.status==='pending'&&isApproved(q.id))return false;
+      if(F.text){const t=F.text.toLowerCase();const hay=(q.q+' '+(q.kw||[]).join(' ')+' '+(q.code||[]).join(' ')+' '+(q.o||[]).join(' ')+' '+ansText(q)).toLowerCase();if(!hay.includes(t))return false;}
+      return true;
+    }
+    function applyFilter(){let n=0;rows.forEach(r=>{const ok=matches(r.q);r.el.style.display=ok?'':'none';if(ok)n++;});shown.textContent=n+' shown';}
+    const cats=[['all','All types'],['concept','Concept questions'],['keyword','Keyword questions'],['fill','Fill in the keyword'],['cmd','Type the command']];
+    body.append(
+      h('p',{class:'lead',style:'font-size:15px'},'Only approved questions (ticked) are ever shown to students, in the quiz, keyword practice and lecture pages. Anything you add stays hidden until you tick it here.'),
       h('div',{class:'filters'},
-        h('select',{'aria-label':'Lecture',onchange:e=>{F.lec=e.target.value;applyFilter();}},h('option',{value:'all'},'Both lectures'),h('option',{value:'1'},'Lecture 1'),h('option',{value:'2'},'Lecture 2')),
+        h('select',{'aria-label':'Lecture',onchange:e=>{F.lec=e.target.value;applyFilter();}},[['all','All lectures'],...allLectures().map(l=>[String(l.lec),'Lecture '+l.lec])].map(([v,t])=>h('option',{value:v},t))),
         h('select',{'aria-label':'Question type',onchange:e=>{F.cat=e.target.value;applyFilter();}},cats.map(([v,t])=>h('option',{value:v},t))),
-        h('input',{class:'namein',type:'search',placeholder:'Search a keyword, e.g. println',style:'min-width:0;flex:1 1 200px','aria-label':'Search',oninput:e=>{F.text=e.target.value.trim();applyFilter();}}),
+        h('select',{'aria-label':'Status',onchange:e=>{F.status=e.target.value;applyFilter();}},[['all','Any status'],['approved','Approved only'],['pending','Waiting for review']].map(([v,t])=>h('option',{value:v},t))),
+        h('input',{class:'namein',type:'search',placeholder:'Search, e.g. println',style:'min-width:0;flex:1 1 200px','aria-label':'Search',oninput:e=>{F.text=e.target.value.trim();applyFilter();}}),
         shown),
       h('div',{class:'btnrow'},
-        h('button',{class:'btn ghost',onclick:()=>{rows.forEach(r=>{if(r.el.style.display!=='none')sel.add(r.q.id);});refresh();}},'Select all shown'),
-        h('button',{class:'btn ghost',onclick:()=>{rows.forEach(r=>{if(r.el.style.display!=='none')sel.delete(r.q.id);});refresh();}},'Clear shown')),
-      list),
-    h('div',{class:'stickybar'},countEl,h('div',{class:'btnrow',style:'margin:0'},pv,cp,dl)),
-    h('div',{class:'panel'},h('h2',{},'3. Share with students'),
-      h('p',{class:'lead',style:'font-size:15px'},'Option A: post this code. Students paste it in the box on the Home page. Option B: download the student copy and upload that file to Blackboard instead. It opens with your questions already pinned, and the instructor tools are hidden.'),
-      codeBox,h('div',{class:'btnrow'},cpMsg),
-      h('p',{class:'lead',style:'font-size:14px'},'Tip: if you host this page at a web address, add #pin= and the code to the end of the link, and students land directly on your set. These tools are not password protected.')));
-  applyFilter();refresh();
-}
+        h('button',{class:'btn ghost',onclick:()=>{rows.forEach(r=>{if(r.el.style.display!=='none'){setApproved(r.q.id,true);paintRow(r.q);}});save();}},'Approve all shown'),
+        h('button',{class:'btn ghost',onclick:()=>{rows.forEach(r=>{if(r.el.style.display!=='none'){setApproved(r.q.id,false);paintRow(r.q);}});save();}},'Unapprove all shown')),
+      list);
+    applyFilter();
+  }
+  function setApproved(id,val){
+    const has=SITE.approved.includes(id);
+    if(val&&!has)SITE.approved.push(id);
+    if(!val&&has)SITE.approved=SITE.approved.filter(x=>x!==id);
+  }
 
-/* ---- Code entry on Home ---- */
-function codeEntry(){
-  const inp=h('input',{class:'inp',type:'text',placeholder:'JL1.…','aria-label':'Instructor code',style:'width:min(100%,420px);font-size:15px'});
-  const msg=h('div',{'aria-live':'polite',style:'margin-top:8px'});
-  const load=()=>{
-    const pin=decodeCode(inp.value);
-    if(!pin){msg.replaceChildren(h('div',{class:'fb no'},'That code was not recognized. Copy it again from your instructor.'));return;}
-    S.pin=pin;save();buildChrome();go('pinned');
-  };
-  return h('details',{},h('summary',{},'Have a code from your instructor?'),h('div',{class:'btnrow'},inp,h('button',{class:'btn',onclick:load},'Load set')),msg);
+  /* -- Lectures -- */
+  function drawLectures(body){
+    const nextNum=Math.max(0,...allLectures().map(l=>l.lec))+1;
+    body.append(h('p',{class:'lead',style:'font-size:15px'},'Lectures 1 to 4 are built in. Add more here as you teach them — students will see them on the Lectures page once you export and re-upload.'));
+    allLectures().forEach(l=>{
+      body.append(h('div',{class:'panel'},
+        h('div',{class:'topline'},h('h3',{},'Lecture '+l.lec+' — '+l.title),l.builtin?h('span',{class:'chip'},'built in'):h('button',{class:'btn ghost',onclick:()=>{if(confirm('Delete Lecture '+l.lec+'? This does not delete its questions.')){SITE.lectures=SITE.lectures.filter(x=>x.lec!==l.lec);draw();}}},'Delete')),
+        h('div',{class:'notelabel'},'Key points'),h('ul',{class:'keypoints'},l.points.map(p=>h('li',{},...noteRuns(p)))),
+        h('div',{class:'summarybox'},h('div',{class:'notelabel'},'In simple words'),h('p',{},l.summary))));
+    });
+    const numIn=h('input',{class:'namein',type:'number',value:nextNum,style:'width:100px'});
+    const titleIn=h('input',{class:'namein',type:'text',placeholder:'Lecture title',style:'min-width:min(100%,340px)'});
+    const ptsIn=h('textarea',{class:'ta',rows:6,placeholder:'One key point per line. Wrap important words in ** ** to highlight them, e.g.\n**Inheritance** lets a class reuse another class\'s code.'});
+    const sumIn=h('textarea',{class:'ta',rows:3,placeholder:'A very simple one or two sentence summary.'});
+    const err=h('div',{class:'err'},'');
+    function addLecture(){
+      const num=parseInt(numIn.value,10);
+      if(!num||num<1){err.textContent='Give the lecture a number.';return;}
+      if(allLectures().some(l=>l.lec===num)){err.textContent='Lecture '+num+' already exists.';return;}
+      if(!titleIn.value.trim()){err.textContent='Give the lecture a title.';return;}
+      const points=ptsIn.value.split('\n').map(s=>s.trim()).filter(Boolean);
+      if(!points.length){err.textContent='Add at least one key point.';return;}
+      SITE.lectures.push({lec:num,title:titleIn.value.trim(),points,summary:sumIn.value.trim()||points[0],builtin:false});
+      save();toast('Lecture '+num+' added.');draw();
+    }
+    body.append(h('div',{class:'panel'},h('h3',{},'Add a lecture'),
+      h('div',{class:'formgrid'},
+        h('div',{class:'formrow'},h('div',{},h('label',{},'Lecture number'),numIn),h('div',{},h('label',{},'Title'),titleIn)),
+        h('div',{},h('label',{},'Key points (one per line)'),ptsIn),
+        h('div',{},h('label',{},'Simple summary'),sumIn),
+        err,h('div',{class:'btnrow'},h('button',{class:'btn',onclick:addLecture},'Add lecture')))));
+  }
+
+  /* -- Add Question -- */
+  function drawAdd(body){
+    const typeIn=h('select',{'aria-label':'Question type'},[['mcq','Multiple choice'],['fill','Fill in the blank'],['cmd','Type the command']].map(([v,t])=>h('option',{value:v},t)));
+    const lecIn=h('select',{'aria-label':'Lecture'},allLectures().map(l=>h('option',{value:l.lec},'Lecture '+l.lec)));
+    const fields=h('div',{});
+    const err=h('div',{class:'err'},'');
+    function drawFields(){
+      fields.replaceChildren();err.textContent='';
+      if(typeIn.value==='mcq'){
+        fields.append(
+          h('div',{},h('label',{},'Category'),h('select',{id:'catSel'},[['concept','Concept (Quick Quiz)'],['keyword','Keyword (Keywords & Commands)']].map(([v,t])=>h('option',{value:v},t)))),
+          h('div',{},h('label',{},'Question'),h('textarea',{id:'qText',class:'ta',rows:2,placeholder:'What does the keyword private mean?'})),
+          h('div',{},h('label',{},'Correct answer'),h('input',{id:'correct',class:'namein',type:'text',style:'width:100%'})),
+          h('div',{},h('label',{},'Wrong answer 1'),h('input',{id:'w1',class:'namein',type:'text',style:'width:100%'})),
+          h('div',{},h('label',{},'Wrong answer 2'),h('input',{id:'w2',class:'namein',type:'text',style:'width:100%'})),
+          h('div',{},h('label',{},'Wrong answer 3'),h('input',{id:'w3',class:'namein',type:'text',style:'width:100%'})),
+          h('div',{},h('label',{},'Why (shown after answering)'),h('textarea',{id:'why',class:'ta',rows:2})));
+      }else if(typeIn.value==='fill'){
+        fields.append(
+          h('div',{},h('label',{},'Question'),h('textarea',{id:'qText',class:'ta',rows:2,placeholder:'Fill in the missing keyword.'})),
+          h('div',{},h('label',{},'Code line(s) — use ____ for the blank'),h('textarea',{id:'code',class:'ta',rows:3,placeholder:'____ class Welcome {'})),
+          h('div',{},h('label',{},'Accepted answer(s), comma-separated'),h('input',{id:'ans',class:'namein',type:'text',style:'width:100%',placeholder:'public'})),
+          h('div',{},h('label',{},'Why (shown after answering)'),h('textarea',{id:'why',class:'ta',rows:2})));
+      }else{
+        fields.append(
+          h('div',{},h('label',{},'Question'),h('textarea',{id:'qText',class:'ta',rows:2,placeholder:'Write the command that prints Hi.'})),
+          h('div',{},h('label',{},'Expected result'),h('select',{id:'mode'},[['out','Console output'],['dialog','Dialog box message']].map(([v,t])=>h('option',{value:v},t)))),
+          h('div',{},h('label',{},'Expected text'),h('textarea',{id:'expect',class:'ta',rows:2,placeholder:'Hi'})),
+          h('div',{},h('label',{},'A correct solution (used to grade, and shown if the student gives up)'),h('textarea',{id:'sample',class:'ta',rows:3,placeholder:'System.out.println("Hi");'})),
+          h('div',{},h('label',{},h('input',{type:'checkbox',id:'loose'}),' Ignore extra spaces / small formatting differences')),
+          h('div',{},h('label',{},'Why (shown after answering)'),h('textarea',{id:'why',class:'ta',rows:2})));
+      }
+    }
+    typeIn.onchange=drawFields;drawFields();
+    function submit(){
+      const lec=parseInt(lecIn.value,10);
+      const $$=id=>fields.querySelector('#'+id);
+      const why=$$('why').value.trim();
+      const qText=$$('qText').value.trim();
+      if(!qText){err.textContent='Write the question text.';return;}
+      if(!why){err.textContent='Add a short explanation (why).';return;}
+      let q=null;
+      if(typeIn.value==='mcq'){
+        const correct=$$('correct').value.trim(),w1=$$('w1').value.trim(),w2=$$('w2').value.trim(),w3=$$('w3').value.trim();
+        if(!correct||!w1||!w2||!w3){err.textContent='Fill in the correct answer and all three wrong answers.';return;}
+        const cat=$$('catSel').value;
+        const idx=shuffle([0,1,2,3]);const opts4=[correct,w1,w2,w3];
+        const o=idx.map(i=>opts4[i]),a=idx.indexOf(0);
+        q={t:'mcq',lec,cat,q:qText,o,a,why,kw:[]};
+      }else if(typeIn.value==='fill'){
+        const code=$$('code').value.split('\n');
+        if(!code.some(l=>l.includes('____'))){err.textContent='Use ____ somewhere in the code to mark the blank.';return;}
+        const ans=$$('ans').value.split(',').map(s=>s.trim()).filter(Boolean);
+        if(!ans.length){err.textContent='Give at least one accepted answer.';return;}
+        q={t:'fill',lec,cat:'fill',q:qText,code,ans,why,kw:[]};
+      }else{
+        const mode=$$('mode').value,expect=$$('expect').value,sample=$$('sample').value.trim();
+        if(!sample){err.textContent='Give a correct solution.';return;}
+        if(!expect.trim()){err.textContent='Give the expected text.';return;}
+        q={t:'cmd',lec,cat:'cmd',q:qText,sample,why,kw:[],loose:$$('loose').checked};
+        if(mode==='dialog'){q.dialog=expect.trim();q.imp=true;}else{q.out=expect.endsWith('\n')?expect:expect+'\n';}
+      }
+      q.id='u'+(SITE.nextId++);
+      SITE.customQuestions.push(q);
+      save();toast('Question added — remember to approve it in Review & Approve.');
+      typeIn.value='mcq';drawFields();
+      fields.querySelectorAll('input,textarea').forEach(el=>{if(el.type==='checkbox')el.checked=false;else el.value='';});
+      err.textContent='';
+    }
+    body.append(h('p',{class:'lead',style:'font-size:15px'},'New questions are hidden from students until you approve them in the Review tab.'),
+      h('div',{class:'formgrid'},
+        h('div',{class:'formrow'},h('div',{},h('label',{},'Type'),typeIn),h('div',{},h('label',{},'Lecture'),lecIn)),
+        fields,err,h('div',{class:'btnrow'},h('button',{class:'btn',onclick:submit},'Add question'))));
+  }
+
+  /* -- Assign a Set -- */
+  function drawAssign(body){
+    const A=SITE.assign||(SITE.assign={title:'',ids:[],shuffleQ:false,shuffleO:true,showKw:true});
+    const sel=new Set(A.ids);
+    const approvedQs=allQuestions().filter(q=>isApproved(q.id));
+    const list=h('div',{});
+    const rows=[];
+    const countEl=h('b',{},'');
+    function refreshCount(){countEl.textContent=sel.size+(sel.size===1?' question selected':' questions selected');A.ids=approvedQs.filter(q=>sel.has(q.id)).map(q=>q.id);save();}
+    approvedQs.forEach(q=>{
+      const cb=h('input',{type:'checkbox',checked:sel.has(q.id),onchange:()=>{cb.checked?sel.add(q.id):sel.delete(q.id);refreshCount();}});
+      const el=h('label',{class:'qrow'+(sel.has(q.id)?' on':'')},cb,h('div',{},h('div',{class:'tags'},h('span',{class:'chip cat'},CATNAME[q.cat]),lecChip(q.lec)),h('div',{class:'qq'},q.q)));
+      rows.push(el);list.append(el);
+    });
+    body.append(
+      h('p',{class:'lead',style:'font-size:15px'},'Optional: hand-pick a specific set (only from approved questions) for a particular assignment. This appears on the Home page as "Assigned Set".'),
+      h('div',{class:'formgrid'},
+        h('div',{},h('label',{},'Set title'),h('input',{class:'namein',type:'text',value:A.title,style:'width:100%',oninput:e=>{A.title=e.target.value;save();}})),
+        h('div',{class:'btnrow'},
+          h('label',{class:'switch'},h('input',{type:'checkbox',checked:A.shuffleQ,onchange:e=>{A.shuffleQ=e.target.checked;save();}}),'Shuffle question order'),
+          h('label',{class:'switch'},h('input',{type:'checkbox',checked:A.shuffleO!==false,onchange:e=>{A.shuffleO=e.target.checked;save();}}),'Shuffle answer choices'))),
+      approvedQs.length?h('div',{style:'margin-top:14px'},countEl,list):h('p',{class:'lead'},'Approve some questions first in the Review tab.'),
+      h('div',{class:'btnrow',style:'margin-top:14px'},
+        h('button',{class:'btn sec',onclick:()=>{if(!A.ids.length){toast('Pick at least one question first.');return;}startSet(m,setQs(A),{title:A.title||'Preview',shuffleO:A.shuffleO!==false,back:'teacher',noLog:true});}},'Preview as student'),
+        h('button',{class:'btn ghost',onclick:()=>{A.ids=[];sel.clear();save();drawAssign(body);}},'Clear set')));
+    refreshCount();
+  }
+
+  /* -- Export -- */
+  function drawExport(body){
+    const pinRow=h('div',{class:'btnrow'});
+    pinRow.append(h('button',{class:'btn sec',onclick:()=>changePinFlow()},'Change instructor PIN'));
+    function doExport(){
+      const c=document.documentElement.cloneNode(true);
+      ['#nav','#main','#me','#lecSeg','#toasts','#modalHost'].forEach(sel=>{const e=c.querySelector(sel);if(e)e.replaceChildren();});
+      c.querySelector('#sitedata').textContent=JSON.stringify(SITE).replace(/</g,'\\u003c');
+      const html='<!DOCTYPE html>\n'+c.outerHTML;
+      const blob=new Blob([html],{type:'text/html'});
+      const url=URL.createObjectURL(blob);
+      const a=h('a',{href:url,download:'index.html'});document.body.append(a);a.click();a.remove();
+      toast('Downloaded index.html');
+    }
+    body.append(
+      h('p',{class:'lead',style:'font-size:15px'},'Everything you changed here (lectures, questions, approvals, and the assigned set) only exists on this device until you export and re-upload.'),
+      h('div',{class:'panel'},h('h3',{},'1. Download the updated file'),
+        h('button',{class:'btn go',onclick:doExport},'Download index.html')),
+      h('div',{class:'panel'},h('h3',{},'2. Re-upload to GitHub'),
+        h('p',{class:'lead',style:'font-size:14.5px'},'Open your repository on github.com, click index.html, click the pencil (Edit) or use Upload files, replace it with the file you just downloaded, keep the same filename, and commit. The live link updates in a minute or two.')),
+      h('div',{class:'panel'},h('h3',{},'Instructor PIN'),
+        h('p',{class:'lead',style:'font-size:14.5px'},'Change your PIN any time. You still need to export and re-upload for the new PIN to apply to the file students use.'),
+        pinRow));
+  }
 }
 
 /* boot */
 buildChrome();
-{const hm=(location.hash||'').match(/pin=([A-Za-z0-9_.\-]+)/);const pin=hm&&!EMBED?decodeCode(hm[1]):null;if(pin){S.pin=pin;save();buildChrome();go('pinned');}else go(EMBED?'pinned':'home');}
+$('#instrBtn').onclick=()=>{if(UNLOCKED)go('teacher');else askPin();};
+go('home');
 </script>
-
-
-</body></html>
+</body>
+</html>
